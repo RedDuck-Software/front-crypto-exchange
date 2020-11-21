@@ -48,16 +48,12 @@
   import {Component, Vue, Prop, Emit} from 'vue-property-decorator'
   import Ca from "@/components/tags/ca.vue";
 
-  type Currency = { text: string; value: number };
-
   @Component({
     name: "CHeader",
     components: {Ca}
   })
 
   export default class CHeader extends Vue {
-    /*    @Prop({ default: () => [] })
-    currencies!: Currency[];*/
 
     public fiat = { text: "USD", value: 0 }
 
