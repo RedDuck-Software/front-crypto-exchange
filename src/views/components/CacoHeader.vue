@@ -26,21 +26,19 @@
           </div>
         </div>
 
-        <select class="select-fiat">
+        <select
+          class="select-fiat"
+          v-model="fiat"
+          @change="switchFiat"
+        >
           <option
             v-for="(item, i) in currencies"
             :key="i"
-            :value="item.value"
+            :value="item"
           >
             {{ item.text }}
           </option>
         </select>
-
-<!--        <p-select
-          name="fiat"
-          v-model="fiat"
-          :options="currencies"
-        />-->
       </div>
     </div>
   </header>
@@ -92,6 +90,12 @@
     public switchTheme () {
       this.darkTheme = !this.darkTheme
       return this.darkTheme
+    }
+
+    @Emit('swich-fiat')
+    public switchFiat () {
+      console.log(this.fiat)
+      return this.fiat
     }
   }
 
