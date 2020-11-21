@@ -9,7 +9,7 @@
         />
 
         <ca
-          :item="(darkTheme) ? headLogo.dark : headLogo.light"
+          :item="(dark) ? headLogo.dark : headLogo.light"
           class="header__logo-link p-8 z-50"
         />
 
@@ -17,7 +17,7 @@
           <div @click="switchTheme" class="toggling_icons">
             <img
               class="sun-icon"
-              v-if="darkTheme"
+              v-if="dark"
               src="@/assets/img/icons/sun-icon.svg"
               alt=""
             />
@@ -56,11 +56,10 @@
   })
 
   export default class CHeader extends Vue {
-    public darkTheme = true
-    public fiat = { text: "USD", value: 0 }
-
-/*    @Prop({ default: () => [] })
+    /*    @Prop({ default: () => [] })
     currencies!: Currency[];*/
+
+    public fiat = { text: "USD", value: 0 }
 
     public currencies = [
       { text: "USD", value: 0 },
@@ -86,16 +85,18 @@
       }
     }
 
-    @Emit('change-mode')
-    public switchTheme () {
-      this.darkTheme = !this.darkTheme
-      return this.darkTheme
+    get dark () {
+      return this.$store.getters.theme == 'dark'
     }
 
-    @Emit('swich-fiat')
+    public switchTheme () {
+      const next = this.dark ? 'light' : 'dark'
+      this.$store.commit("SET_THEME", next)
+    }
+
     public switchFiat () {
       console.log(this.fiat)
-      return this.fiat
+      this.$store.commit("SET_FIAT", this.fiat.text)
     }
   }
 
