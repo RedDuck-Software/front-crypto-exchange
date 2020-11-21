@@ -1,0 +1,10 @@
+<svg id="Group_2" data-name="Group 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <radialGradient id="radial-gradient" cx="-0.171" cy="1.176" r="1.461" gradientUnits="objectBoundingBox">
+      <stop offset="0.75" stop-color="#ec2f61"/>
+      <stop offset="0.75" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect id="Group_2_background" data-name="Group 2 background" width="36" height="36" fill="#a8a8a8"/>
+  <path id="Progress2" d="M18,36A18,18,0,0,1,5.272,5.272,18,18,0,0,1,30.728,30.728,17.882,17.882,0,0,1,18,36ZM18,6A12,12,0,1,0,30,18,12.013,12.013,0,0,0,18,6Z" fill="url(#radial-gradient)"/>
+</svg>
