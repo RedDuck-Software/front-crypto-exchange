@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     theme: 'dark',
     fiat: 'USD',
+    activeTab: 'transfer',
   },
 
   mutations: {
@@ -17,6 +18,10 @@ export default new Vuex.Store({
     SET_FIAT (state, type) {
       state.fiat = type
     },
+
+    SET_ACTIVE_TAB (state, type) {
+      state.activeTab = type
+    },
   },
 
   getters: {
@@ -26,6 +31,8 @@ export default new Vuex.Store({
       const text = state.fiat
       const type = (text == 'USD') ? 0 : 1
       return { text: text, value: type}
-    }
+    },
+
+    activeTab: state => state.activeTab,
   }
 })
