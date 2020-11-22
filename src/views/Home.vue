@@ -2,7 +2,9 @@
   <div id="app" :class="{ light: light}" class="main">
     <CHeader/>
 
-    <TransferTab></TransferTab>
+    <CBodyTop></CBodyTop>
+
+    <CBodyBottom></CBodyBottom>
 
     <TabContent></TabContent>
 
@@ -14,18 +16,18 @@
 import { Component, Vue } from 'vue-property-decorator'
 import CFooter from "@/views/components/CacoFooter.vue";
 import CHeader from "@/views/components/CacoHeader.vue";
-import TransferTab from "@/views/components/TransferTab.vue";
-import TabContent from "@/views/components/TabContent.vue";
+import CBodyTop from "@/views/components/CacoBodyTop.vue";
+import CBodyBottom from "@/views/components/CacoBodyBottom.vue";
 
 const baseURL = 'https://api-cash4crypto.azurewebsites.net/api';
 
   @Component({
     name: "Home",
     components: {
+      CBodyBottom,
+      CBodyTop,
       CFooter,
       CHeader,
-      TransferTab,
-      TabContent,
     },
   })
 
