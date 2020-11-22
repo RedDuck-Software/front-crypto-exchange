@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <div class="converter__wrap-text">
+    <div
+      v-if="activeTab == 'transfer'"
+      class="converter__wrap-text"
+    >
       <h1
         class="converter__title primary-title text-center"
         :class="{ light__font_one: light }"
@@ -21,6 +24,27 @@
       >
         Transfer coins under the value of $200 and receive payment
         instantly.
+      </p>
+    </div>
+
+    <!-- On click on btn Donate replace title -->
+    <!-- ------------------------------------ -->
+    <div
+      v-else
+      class="donate__wrap-text d-none"
+    >
+      <h1
+        class="donate__title text-center"
+        :class="{ light__font_one: light }"
+      >
+        Donate any unwanted coins and help someone in need.
+      </h1>
+      <p
+        class="donate__text text-center"
+        :class="{ light__font_two: light}"
+      >
+        You will be given the option to provide your email address, to
+        update you on where your coins were used.
       </p>
     </div>
 
