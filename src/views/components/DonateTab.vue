@@ -47,5 +47,35 @@
 </script>
 
 <style scoped>
+  @media screen and (max-width: 1022px) {
+    .diference__text {
+      width: 65%;
+    }
+  }
 
+  @media screen and (max-width: 767px) {
+    .diference__img  {
+      width: calc(8vw + .5em);
+    }
+    .diference__title {
+      font-size: calc(3.5vw + .3em);
+    }
+
+    .diference__text {
+      width: 71%;
+      font-size: calc(1.5vw + .3em);
+    }
+  }
+
+  @media screen and (min-width: 661px) and (min-height: 830px) {
+    .diference {
+      margin: 2rem auto 3rem;
+    }
+  }
+
+  @media screen and (min-width: 750px) and (min-height: 900px) {
+    .diference {
+      margin: 2rem auto 3rem;
+    }
+  }
 </style>
