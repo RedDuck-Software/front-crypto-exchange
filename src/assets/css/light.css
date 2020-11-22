@@ -1,3 +1,58 @@
-body {
-    background-color: #fff;
+/* styles for light version */
+/* ************************ */
+
+.dNone {
+    display: none;
+}
+
+.light {
+    background: #fff !important;
+}
+
+.light__font_one span {
+    color: #484848 !important;
+}
+
+.light__font_two span {
+    color: #585858 !important;
+}
+
+.light__font_three span {
+    color: #585858 !important;
+}
+
+.light__font_four span {
+    color: #a0a0a0 !important;
+}
+
+.light__font_six span {
+    color: #8a8a8a !important;
+}
+
+.light__font_one {
+    color: #484848 !important;
+}
+
+.light__font_two {
+    color: #585858 !important;
+}
+
+.light__font_three {
+    color: #585858 !important;
+}
+
+.light__bg_arrow{
+    background-color: #585858 !important;
+}
+
+.light__font_four {
+    color: #a0a0a0 !important;
+}
+
+.light__font_six {
+    color: #8a8a8a !important;
+}
+
+.light__bg {
+    background-color: #efefef !important;
 }

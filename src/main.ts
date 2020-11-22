@@ -8,6 +8,8 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import './assets/css/tailwind.css'
 import './assets/css/style.css'
 import './assets/css/normalize.css'
+import './assets/css/converter.css'
+import './assets/css/light.css'
 // @ts-ignore
 import Proton from '@proton-ui/proton'
 

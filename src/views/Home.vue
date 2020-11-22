@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ light: lightTheme}" class="main">
+  <div id="app" :class="{ light: light}" class="main">
     <CHeader/>
 
     <TransferTab></TransferTab>
@@ -31,5 +31,9 @@ const baseURL = 'https://api-cash4crypto.azurewebsites.net/api';
 
 export default class Home extends Vue {
     public lightTheme = true
+
+    get light () {
+      return this.$store.getters.theme == 'light'
+    }
 }
 </script>
