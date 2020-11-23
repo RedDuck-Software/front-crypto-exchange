@@ -1,19 +1,78 @@
 <template>
   <transfer-variant>
     <template v-slot:selection>
-      <span>Show this message</span>
+
+      <div
+        v-if="selected"
+        @click="open = !open"
+        class="coin flex align-center"
+      >
+        <img
+          v-if="selected.icon && variant === 'cryptocurrency'"
+          class="coin__logo"
+          :src="selected.icon"
+        />
+        <img
+        v-else-if="selected.icon"
+          class="coin__logo"
+          :src="selected.icon"
+        />
+        <span
+          class="coin__name ml-2"
+          :class="currentClass"
+        >
+          {{ selected.name }}
+        </span>
+        <div v-if="!open" class="coin__arrow coin__arrow-close relative" :class="currentArrowClass"></div>
+        <div v-else class="coin__arrow coin__arrow-open relative" :class="currentArrowClass"></div>
+        <i v-if="!open" class="fa fa-arrow-down text-gray-300 ml-2" :class="currentClass" aria-hidden="true"></i>
+        <i v-else class="fa fa-arrow-up text-gray-300 ml-2" :class="currentClass" aria-hidden="true"></i>
+      </div>
+      <div
+        v-else
+        @click="open = !open"
+        class="coin flex align-center"
+      >
+        <span
+          class="coin__name ml-2"
+          :class="currentClass"
+        >
+          Select <!-- {{variant === 'payment_system' ? 'Destination' : 'Cryptocurrency'}}-->
+        </span>
+        <div v-if="!open" class="coin__arrow coin__arrow-close relative" :class="currentArrowClass"></div>
+        <div v-else class="coin__arrow coin__arrow-open relative" :class="currentArrowClass"></div>
+        <i v-if="!open" class="fa fa-arrow-down text-gray-300 ml-2" :class="currentClass" aria-hidden="true"></i>
+        <i v-else class="fa fa-arrow-up text-gray-300 ml-2" :class="currentClass" aria-hidden="true"></i>
+      </div>
+      <div
+        class="text-white sm:ml-0 md:ml-3 d-flex align-items-center"
+        v-if="variant === 'payment_system'"
+      >
+        <p class="email" :class="currentClass">{{ email }}</p>
+        <img
+          v-if="email !== ''"
+          src="@/assets/img/accept.png"
+          alt="Done!"
+          class="valid_email_tick"
+        />
+      </div>
+      <div class="ml-3 text-xs crypto__val" v-if="variant === 'cryptocurrency'" :class="currentClass">
+        Av:
+        <span class="text-base d-inline" :class="currentClass">{{ balance }}</span>
+      </div>
+      
     </template>
 
     <template v-slot:input>
       <label>
-<!--        <input
+       <input
           v-model="value"
           @keypress="checkCoinInput"
           @click.stop
           :class="[currentClass, currentPlaceholder]"
           placeholder="0"
           class="from__input text-right"
-        />-->
+        />
       </label>
     </template>
   </transfer-variant>
@@ -83,7 +142,8 @@
     }
 
     get currentPlaceholder () {
-      return this.$store.getters.theme == 'dark' ? 'darkPlaceholder' : 'lightPlaceholder'
+      // return this.$store.getters.theme == 'dark' ? 'darkPlaceholder' : 'lightPlaceholder'
+      return this.$store.getters.theme == 'dark' ? 'lightPlaceholder' : 'darkPlaceholder'
     }
 
     /* ----------------------------------------------------------------- */

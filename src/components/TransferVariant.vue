@@ -4,7 +4,6 @@
       <div class="coin__wrap flex items-center justify-between">
         <div class="coin__wrapper d-flex align-items-center">
           <slot name="selection" />
-          <!--<span>Show this message</span>-->
         </div>
 
         <slot name="errorMessage" />
@@ -42,6 +41,10 @@
     background: #595b5e;
     border: 33px solid rgba(67, 69, 72, 1);
     border-radius: 85px;
+  }
+
+  .coin__wrapper {
+    cursor: pointer;
   }
 
   .validation {
@@ -186,10 +189,11 @@
     height: 1rem;
     margin: 0 .5rem;
   }
-  .darkMode, .darkPlaceholder::placeholder{
+
+  .lightMode, .lightPlaceholder::placeholder{
     color: #585858 !important;
   }
-  .lightMode, .lightPlaceholder::placeholder{
+  .darkMode, .darkPlaceholder::placeholder{
     color: #fff;
   }
 
@@ -219,13 +223,13 @@
   }
 
   .from__input {
-    max-width: 40%;
+    display: block;
+    max-width: 41%;
     margin-right: 1rem;
-    margin-left: .9rem;
-    padding: .1rem .3rem .3rem 0;
+    margin-left: auto;
+    padding: .1rem 0 .3rem 0;
 
     background: inherit;
-
     font-size: 1.5rem;
     border-radius: 20px;
   }
@@ -312,6 +316,7 @@
     .coin__wrapper {
       flex-wrap: wrap;
       max-width: 50%;
+      cursor: pointer;
     }
 
     .coin {
