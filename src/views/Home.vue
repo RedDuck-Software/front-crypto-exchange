@@ -6,8 +6,6 @@
 
     <CBodyBottom></CBodyBottom>
 
-    <TabContent></TabContent>
-
     <CFooter/>
   </div>
 </template>
