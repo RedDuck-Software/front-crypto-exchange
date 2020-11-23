@@ -22,7 +22,7 @@
               alt=""
             />
 
-            <i v-else class="far fa-moon"></i>
+            <i v-else class="far fa-moon" />
           </div>
         </div>
 
@@ -44,7 +44,7 @@
         </label>-->
 
         <div
-          v-click-outside="close"
+          v-click-outside="hideSelect"
           class="text-center text-xs hover:cursor-pointer relative mt-6 currencySelection"
         >
           <button
@@ -52,7 +52,7 @@
             :class="open ? 'button__open' : 'button__closed'"
             class="bg-color text-white currencyButton"
           >
-            <span>{{ selectedFiat.text }}</span>
+            <span>{{ selectedFiat.name }}</span>
             <i class="fa fa-arrow-down" />
           </button>
 
@@ -66,10 +66,9 @@
               v-for="(currency, key) in currencies"
               :key="key"
             >
-              {{ currency.text }}
+              {{ currency.name }}
             </button>
           </div>
-          <!-- ----------------- -->
         </div>
       </div>
     </div>
@@ -78,20 +77,25 @@
 
 <script lang="ts">
   import {Component, Vue, Prop, Emit} from 'vue-property-decorator'
+  import ClickOutside from 'vue-click-outside';
   import Ca from "@/components/tags/ca.vue";
+  import Entity from '@/interfaces/Entity';
 
   @Component({
     name: "CHeader",
-    components: {Ca}
+    components: {Ca},
+    directives: {
+      ClickOutside,
+    },
   })
 
   export default class CHeader extends Vue {
 
-    public selectedFiat = { text: "USD", value: 0 }
+    public selectedFiat = { name: "USD", id: 0 }
     public open = false
     public currencies = [
-      { text: "USD", value: 0 },
-      { text: "EUR", value: 1 },
+      { name: "USD", id: 0 },
+      { name: "EUR", id: 1 },
     ]
 
     public headLogo = {
@@ -122,9 +126,14 @@
       this.$store.commit("SET_THEME", next)
     }
 
-    public changeFiat () {
-      console.log(this.selectedFiat)
-      this.$store.commit("SET_FIAT", this.selectedFiat.text)
+    public hideSelect () {
+      this.open = false
+    }
+
+    public changeFiat (item: Entity) {
+      this.selectedFiat = item
+      this.open = false
+      this.$store.commit("SET_FIAT", this.selectedFiat.name)
     }
   }
 

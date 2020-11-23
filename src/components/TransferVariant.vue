@@ -2,10 +2,7 @@
   <div class="custom-bg hover:cursor-pointer converter__from">
     <div class="w-full">
       <div class="coin__wrap flex items-center justify-between">
-        <div class="coin__wrapper d-flex align-items-center">
-          <slot name="selection" />
-          <!--<span>Show this message</span>-->
-        </div>
+        <slot name="selection" />
 
         <slot name="errorMessage" />
 
