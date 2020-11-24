@@ -4,7 +4,7 @@
       <c-select-box
         v-model="selected"
         :items="paymentSystems"
-        multistep
+        :multistep="true"
       />
     </template>
 

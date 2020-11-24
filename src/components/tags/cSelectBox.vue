@@ -81,6 +81,68 @@
             </div>
           </div>
         </div>
+
+        <!-- TODO add other steps -->
+        <div
+          v-show="step === 2"
+          class="h-100 p-3 flex flex-col"
+        >
+          <div class="flex flex-row my-1">
+            <img
+              v-if="vModel.icon"
+              :src="require(`@/assets/img/${vModel.icon}`)"
+            />
+
+            <span
+              class="text-gray-main text-2xl"
+              :class="currentClass"
+            >
+              {{ vModel.name }}
+            </span>
+          </div>
+
+          <div class="ml-1 flex-grow-1 d-flex flex-col justify-content-around">
+            <label
+              for="input-email__enter"
+              class="text-gray-main my-1"
+            >
+              Add Paypal Email Address
+            </label>
+
+            <input
+              v-model="localEmail"
+              type="text"
+              placeholder="Email:"
+              id="input-email__enter"
+              class="my-1 mt-3"
+            />
+
+            <label
+              v-if="emailError"
+              style="color: red; font-size: .9rem;"
+            >
+              Invalid Email!
+            </label>
+
+            <div class="flex justify-between flex-row items-center mt-3">
+              <button
+                type="button"
+                @click="onBackClicked"
+                class="text-gray-main rounded-full small-transition px-2 py-1 hover:text-gray-400"
+              >
+                Back
+              </button>
+
+              <button
+                type="button"
+                @click="onEmailDone"
+                class="input-email__btn small-transition bg-gray-300"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </slot>
   </div>
@@ -142,6 +204,26 @@
           this.open = false;
         }
       }
+    }
+
+
+    /** ------------------------------ MultiStep -------------------------------------- **/
+
+    public localEmail = ''
+    public emailError = ''
+
+    public onBackClicked() {
+      // this.$emit("select", 0);
+      this.step = 1;
+    }
+
+    public onEmailDone() {
+      const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      if (!regex.test(this.localEmail)) {
+        this.emailError = 'Invalid Email'
+        return
+      }
+      this.open = false;
     }
   }
 </script>
