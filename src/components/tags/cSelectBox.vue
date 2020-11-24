@@ -4,11 +4,11 @@
     v-click-outside="() => { open = false}"
   >
     <div
+      v-if="vModel.icon"
       @click="open = !open"
       class="coin flex align-center"
     >
       <img
-        v-if="vModel.icon"
         class="coin__logo"
         :src="require(`@/assets/img/${vModel.icon}`)"
       />
@@ -23,16 +23,38 @@
       <div class="coin__arrow relative" :class="arrowClass" />
       <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
 
-      <slot
+      <div
         v-if="balance"
-        name="balance"
+        class="ml-3 text-xs crypto__val"
+        :class="currentClass"
       >
-        <div class="ml-3 text-xs crypto__val" :class="currentClass">
-          Av:
-          <span class="text-base d-inline" :class="currentClass">{{ balance }}</span>
-        </div>
-      </slot>
+        Av:
+        <span
+          class="text-base d-inline"
+          :class="currentClass"
+        >
+          {{ balance }}
+        </span>
+      </div>
     </div>
+
+    <div
+      v-else
+      @click="open = !open"
+      class="coin flex align-center"
+    >
+      <span
+        class="coin__name ml-2"
+        :class="currentClass"
+      >
+        Select
+      </span>
+
+      <div class="coin__arrow relative" :class="arrowClass" />
+      <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
+    </div>
+
+    <!-- ---------------------------- Dropdown ------------------------------- -->
 
     <slot name="dropdown">
       <div
@@ -82,6 +104,7 @@
 
     public open = false
     public step = 1
+    public emptyItem = {} as CommonSelectBox
 
     /* --------------------------------------------------------------------- */
     /* --------------------------------------------------------------------- */
@@ -106,7 +129,8 @@
     /* --------------------------------------------------------------------- */
 
     public created () {
-      console.log('balance', this.balance)
+      console.log('vmolde empty', this.vModel.icon)
+      console.log('multistep', this.multistep)
     }
 
     public select(item: CommonSelectBox) {

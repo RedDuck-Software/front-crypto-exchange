@@ -1,34 +1,58 @@
 <template>
-  <transfer-variant />
+  <transfer-variant>
+    <template v-slot:selection>
+      <c-select-box
+        v-model="selected"
+        :items="paymentSystems"
+        multistep
+      />
+    </template>
+
+    <template v-slot:input>
+      <label>
+<!--        <input
+          v-model="value"
+          @keypress="checkCoinInput"
+          @click.stop
+          :class="[currentClass, currentPlaceholder]"
+          placeholder="0"
+          class="from__input text-right"
+        />-->
+      </label>
+    </template>
+  </transfer-variant>
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
-  import CommonSelectbox from "@/interfaces/CommonSelectBox";
+  import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/TransferVariant.vue";
+  import CSelectBox from "@/components/tags/cSelectBox.vue";
 
   @Component({
     name: 'TransferVariantPayment',
-    components: {TransferVariant}
+    components: {CSelectBox, TransferVariant }
   })
 
   export default class TransferVariantPayment extends Vue {
 
-    public paymentSystems: CommonSelectbox[] = [
+    public selected = {} as CommonSelectBox
+
+    public paymentSystems: CommonSelectBox[] = [
       {
         id: 1,
         name: 'PayPal',
         value: 'paypal',
-        icon: require('@/assets/img/logos/paypal.svg'),
-        logo: require('@/assets/img/logos/paypal.png'),
+        icon: 'logos/paypal.svg',
+        logo: 'logos/paypal.png',
         isAllowed: true
       },
       {
         id: 2,
         name: 'Revolut',
         value: 'revolut',
-        icon: require('@/assets/img/logos/revolut-2.svg'),
-        logo: require('@/assets/img/logos/Revolut.svg'),
+        icon: 'logos/revolut-2.svg',
+        logo: 'logos/Revolut.svg',
         isAllowed: false
       }
     ];
