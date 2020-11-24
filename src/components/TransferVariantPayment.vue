@@ -18,16 +18,10 @@
     </template>
 
     <template v-slot:input>
-      <label>
-<!--        <input
-          v-model="value"
-          @keypress="checkCoinInput"
-          @click.stop
-          :class="[currentClass, currentPlaceholder]"
-          placeholder="0"
-          class="from__input text-right"
-        />-->
-      </label>
+      <c-input
+        icon="fas fa-dollar-sign"
+        append="USD"
+      />
     </template>
   </transfer-variant>
 </template>
@@ -37,10 +31,11 @@
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/TransferVariant.vue";
   import CSelectBox from "@/components/tags/cSelectBox.vue";
+  import CInput from "@/components/tags/cInput.vue";
 
   @Component({
     name: 'TransferVariantPayment',
-    components: {CSelectBox, TransferVariant }
+    components: {CInput, CSelectBox, TransferVariant }
   })
 
   export default class TransferVariantPayment extends Vue {

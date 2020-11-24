@@ -10,16 +10,7 @@
     </template>
 
     <template v-slot:input>
-      <label>
-        <input
-          v-model="value"
-          @keypress="checkCoinInput"
-          @click.stop
-          :class="[currentClass, currentPlaceholder]"
-          placeholder="0"
-          class="from__input text-right"
-        />
-      </label>
+      <c-input />
     </template>
   </transfer-variant>
 </template>
@@ -30,10 +21,11 @@
   import TransferVariant from "@/components/TransferVariant.vue";
   import { getAfterCommaSigns } from '@/utils/utils';
   import CSelectBox from "@/components/tags/cSelectBox.vue";
+  import CInput from "@/components/tags/cInput.vue";
 
   @Component({
     name: 'TransferVariantCoin',
-    components: {CSelectBox, TransferVariant}
+    components: {CInput, CSelectBox, TransferVariant}
   })
 
   export default class TransferVariantCoin extends Vue {
@@ -107,42 +99,6 @@
 
     public changeCoin() {
       console.log('changeCoin', this.selectedCoin)
-    }
-/*
-    public onlyNumber ($event: Event) {
-      const keyCode = $event.keyCode ? $event.keyCode : $event.which
-      // console.log('keycode', $event.keyCode, $event.which)
-      if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-        // 46 is dot
-        $event.preventDefault()
-      }
-      if (keyCode === 46 && this.value.includes('.')) {
-        $event.preventDefault()
-      }
-
-      if (
-        this.value.length === 1 &&
-        keyCode !== 46 &&
-        this.value.charAt(0) === '0' &&
-        $event.target.value === '0'
-      ) {
-        $event.preventDefault()
-      }
-    }
-
-    public checkDecimalPrecisions ($event: Event) {
-      const value = this.value
-      const precisions = getAfterCommaSigns(value)
-      console.log('check input', typeof (this.value), value, precisions, this.maxPrecisions)
-      if (precisions >= this.maxPrecisions) {
-        $event.preventDefault()
-      }
-    }*/
-
-    public checkCoinInput ($event: Event) {
-      // console.log('check Coin input', this.value)
-      // this.onlyNumber($event)
-      // this.checkDecimalPrecisions($event)
     }
   }
 </script>
