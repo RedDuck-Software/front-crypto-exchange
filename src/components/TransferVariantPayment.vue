@@ -8,6 +8,15 @@
       />
     </template>
 
+    <template v-slot:errorMessage>
+      <span
+        v-if="error"
+        class="validation-result-money from__result-money"
+      >
+        Insufficient Funds
+      </span>
+    </template>
+
     <template v-slot:input>
       <label>
 <!--        <input
@@ -37,7 +46,7 @@
   export default class TransferVariantPayment extends Vue {
 
     public selected = {} as CommonSelectBox
-
+    public error = true
     public paymentSystems: CommonSelectBox[] = [
       {
         id: 1,
