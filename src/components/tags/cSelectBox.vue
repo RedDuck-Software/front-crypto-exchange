@@ -1,27 +1,44 @@
 <template>
-  <div class="coin__wrapper d-flex align-items-center">
-    <slot name="image">
-      <div
-        @click="open = !open"
-        class="coin flex align-center"
+  <div
+    class="coin__wrapper d-flex align-items-center"
+    v-click-outside="() => { open = false}"
+  >
+    <div
+      @click="open = !open"
+      class="coin flex align-center"
+    >
+      <img
+        v-if="vModel.icon"
+        class="coin__logo"
+        :src="require(`@/assets/img/${vModel.icon}`)"
+      />
+
+      <span
+        class="coin__name ml-2"
+        :class="currentClass"
       >
-        <img
-          v-if="selected.icon"
-          class="coin__logo"
-          :src="require(`@/assets/img/${selected.icon}`)"
-        />
-        <span
-          class="coin__name ml-2"
-          :class="`${$store.getters.theme}Mode`"
-        >
-          {{ selected.name }}
-        </span>
+        {{ vModel.name }}
+      </span>
 
-        <div class="coin__arrow relative" :class="arrowClass" />
-        <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
-      </div>
+      <div class="coin__arrow relative" :class="arrowClass" />
+      <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
 
-      <div class="choices" :class="{ hidden: !open }">
+      <slot
+        v-if="balance"
+        name="balance"
+      >
+        <div class="ml-3 text-xs crypto__val" :class="currentClass">
+          Av:
+          <span class="text-base d-inline" :class="currentClass">{{ balance }}</span>
+        </div>
+      </slot>
+    </div>
+
+    <slot name="dropdown">
+      <div
+        class="choices"
+        :class="{ hidden: !open }"
+      >
         <div v-show="step === 1">
           <div class="coins-menu space-y-2 p-3 overflow-auto">
             <div
@@ -35,17 +52,20 @@
                 class="coins__logo ml-2"
                 :src="require(`@/assets/img/${item.icon}`)"
               />
-              <span class="text-coin">{{ item.name }}</span>
+
+              <span class="text-coin">
+                {{ item.name }}
+              </span>
             </div>
           </div>
         </div>
-     </div>
+      </div>
     </slot>
   </div>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component, Vue, Prop, Model } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
 
   @Component({
@@ -54,58 +74,21 @@
 
   export default class CSelectBox extends Vue {
 
+    @Prop() balance!: string;
+    @Prop() items!: CommonSelectBox[];
+    @Model("change") vModel!: CommonSelectBox;
+
+    @Prop({ default: false}) multistep!: boolean
+
     public open = false
     public step = 1
-    public selected = {
-      contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-      icon: "coins/usdc.svg",
-      id: 10,
-      isAllowed: true,
-      name: "USDC",
-      value: "usdc",
-      logo: '',
-    }
 
-    public items: (CommonSelectBox & {
-      contractAddress: string;
-    })[] = [
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/usdc.svg",
-        id: 10,
-        isAllowed: true,
-        name: "USDC",
-        value: "usdc",
-        logo: '',
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/usdt.svg",
-        id: 13,
-        isAllowed: true,
-        name: "USDT",
-        value: "usdt",
-        logo: ''
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/pax.svg",
-        id: 14,
-        isAllowed: true,
-        name: "PAX",
-        value: "pax",
-        logo: ''
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/eth.svg",
-        id: 2,
-        isAllowed: true,
-        name: "ETH",
-        value: "eth",
-        logo: ''
-      }
-    ];
+    /* --------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
+
+    get currentClass () {
+      return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
+    }
 
     get arrowClass () {
       var clss1 = this.open ? 'coin__arrow-open' : 'coin__arrow-close'
@@ -119,11 +102,22 @@
       return `${clss1} ${clss2}`
     }
 
-    public select(item: CommonSelectBox & {
-      contractAddress: string;
-    }) {
-      this.selected = item
-      this.open = false
+    /* --------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
+
+    public created () {
+      console.log('balance', this.balance)
+    }
+
+    public select(item: CommonSelectBox) {
+      if (item.isAllowed) {
+        this.$emit("change", item);
+        if (this.multistep) {
+          this.step = 2;
+        } else {
+          this.open = false;
+        }
+      }
     }
   }
 </script>
@@ -286,11 +280,13 @@
     height: 1rem;
     margin: 0 .5rem;
   }
+
   .darkMode, .darkPlaceholder::placeholder{
-    color: #585858 !important;
-  }
-  .lightMode, .lightPlaceholder::placeholder{
     color: #fff;
+  }
+
+  .lightMode, .lightPlaceholder::placeholder{
+    color: #585858 !important;
   }
 
   .arrowDarkMode {
