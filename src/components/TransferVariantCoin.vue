@@ -1,19 +1,19 @@
 <template>
   <transfer-variant>
     <template v-slot:selection>
-      <span>Show this message</span>
+      <c-select-box></c-select-box>
     </template>
 
     <template v-slot:input>
       <label>
-<!--        <input
+        <input
           v-model="value"
           @keypress="checkCoinInput"
           @click.stop
           :class="[currentClass, currentPlaceholder]"
           placeholder="0"
           class="from__input text-right"
-        />-->
+        />
       </label>
     </template>
   </transfer-variant>
@@ -24,10 +24,11 @@
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/TransferVariant.vue";
   import { getAfterCommaSigns } from '@/utils/utils';
+  import CSelectBox from "@/components/tags/cSelectBox.vue";
 
   @Component({
     name: 'TransferVariantCoin',
-    components: {TransferVariant}
+    components: {CSelectBox, TransferVariant}
   })
 
   export default class TransferVariantCoin extends Vue {
@@ -116,13 +117,13 @@
       if (precisions >= this.maxPrecisions) {
         $event.preventDefault()
       }
-    }
+    }*/
 
     public checkCoinInput ($event: Event) {
       // console.log('check Coin input', this.value)
-      this.onlyNumber($event)
-      this.checkDecimalPrecisions($event)
-    }*/
+      // this.onlyNumber($event)
+      // this.checkDecimalPrecisions($event)
+    }
   }
 </script>
 

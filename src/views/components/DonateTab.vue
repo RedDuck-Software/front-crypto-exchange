@@ -46,7 +46,7 @@
   }
 </script>
 
-<style scoped>
+<!--<style scoped>
   @media screen and (max-width: 1022px) {
     .diference__text {
       width: 65%;
@@ -78,4 +78,4 @@
       margin: 2rem auto 3rem;
     }
   }
-</style>
+</style>-->

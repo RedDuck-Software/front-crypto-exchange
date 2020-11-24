@@ -26,23 +26,6 @@
           </div>
         </div>
 
-<!--        <label class="text-center text-xs hover:cursor-pointer relative mt-6 currencySelection">
-          <select
-            v-model="fiat"
-            @change="switchFiat"
-            class="bg-color text-white currencyButton"
-          >
-            <option
-              class="p-2 z-50 grey-color"
-              v-for="(item, i) in currencies"
-              :key="i"
-              :value="item"
-            >
-              {{ item.text }}
-            </option>
-          </select>
-        </label>-->
-
         <div
           v-click-outside="hideSelect"
           class="text-center text-xs hover:cursor-pointer relative mt-6 currencySelection"

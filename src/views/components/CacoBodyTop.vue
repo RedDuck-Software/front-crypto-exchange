@@ -110,7 +110,7 @@
   }
 </script>
 
-<style scoped>
+<!--<style scoped>
 
   .d-flex {
     display: flex;
@@ -210,4 +210,4 @@
     }
   }
 
-</style>
+</style>-->
