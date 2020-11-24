@@ -20,8 +20,16 @@
         {{ vModel.name }}
       </span>
 
-      <div class="coin__arrow relative" :class="arrowClass" />
-      <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
+      <div
+        class="coin__arrow relative"
+        :class="arrowClass"
+      />
+
+      <i
+        class="text-gray-300 ml-2"
+        :class="arrowIconClass"
+        aria-hidden="true"
+      />
 
       <div
         v-if="balance"
@@ -50,8 +58,16 @@
         Select
       </span>
 
-      <div class="coin__arrow relative" :class="arrowClass" />
-      <i class="text-gray-300 ml-2" :class="arrowIconClass" aria-hidden="true" />
+      <div
+        class="coin__arrow relative"
+        :class="arrowClass"
+      />
+
+      <i
+        class="text-gray-300 ml-2"
+        :class="arrowIconClass"
+        aria-hidden="true"
+      />
     </div>
 
     <!-- ---------------------------- Dropdown ------------------------------- -->
@@ -82,7 +98,6 @@
           </div>
         </div>
 
-        <!-- TODO add other steps -->
         <div
           v-show="step === 2"
           class="h-100 p-3 flex flex-col"
@@ -166,7 +181,6 @@
 
     public open = false
     public step = 1
-    public emptyItem = {} as CommonSelectBox
 
     /* --------------------------------------------------------------------- */
     /* --------------------------------------------------------------------- */
