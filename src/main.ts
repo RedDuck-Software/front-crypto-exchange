@@ -2,7 +2,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from "@/store";
+import store from "@/store"
+// @ts-ignore
+import VueInputAutowidth from 'vue-input-autowidth'
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import './assets/css/tailwind.css'
@@ -19,6 +21,7 @@ import './assets/css/text.css'*/
 import Proton from '@proton-ui/proton'
 
 Vue.use(Proton)
+Vue.use(VueInputAutowidth)
 Vue.config.productionTip = false
 
 new Vue({

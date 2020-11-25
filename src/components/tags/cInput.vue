@@ -11,12 +11,13 @@
     </slot>
 
     <input
-      v-model="value"
+      v-model="amount"
       @keypress="checkCoinInput"
       @click.stop
       :class="[currentClass, currentPlaceholder]"
       placeholder="0"
       class="from__input text-right"
+      v-autowidth="{maxWidth: '210px', minWidth: 'auto', comfortZone: 0}"
     />
 
     <slot
@@ -43,9 +44,11 @@
 
   export default class CInput extends Vue {
 
-    @Prop() icon!: string
+    @Prop() icon!:   string
     @Prop() append!: string
+    @Prop() limit!:  string
 
+    public amount = ''
 
     get currentClass () {
       return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
@@ -64,5 +67,36 @@
 </script>
 
 <style scoped>
+  .from__input {
+    max-width: 40%;
+    margin-right: 1rem;
+    margin-left: .9rem;
+    padding: .1rem .3rem .3rem 0;
+
+    background: inherit;
+
+    font-size: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .from__input::placeholder {
+    font-size: .9em;
+    color: white;
+  }
+
+  .lightMode, .lightPlaceholder::placeholder{
+    color: #585858 !important;
+  }
+  .darkMode, .darkPlaceholder::placeholder{
+    color: #fff;
+  }
+
+  .text-color-pink {
+    color: #fd2c63;
+  }
+
+  .text-gray-main {
+    color: #c9c9c9;
+  }
 
 </style>
