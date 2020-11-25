@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{ light: light}" class="main">
+  <div :class="{ light: light}" class="main">
     <CHeader/>
 
     <CBodyTop></CBodyTop>

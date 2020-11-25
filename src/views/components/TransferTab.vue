@@ -11,126 +11,105 @@
         <TransferVariantPayment />
 
         <!-- PRIVATE KEY FIELD -->
-<!--
-        <PrivateKeyModal
+        <!--<PrivateKeyModal
           :visible="privateKeyModalVisible"
           @close="privateKeyModalVisible = false"
-        />
+        />-->
+
         <div class="gas__row">
           <div class="gas__col">
             <p
               :class="{ light__font_two: light }"
               class="gas__text"
             >
-              <i class="fas fa-question-circle"></i>
+              <i class="fas fa-question-circle" />
               <span class="gas__poppup">CACO Transaction Fee</span>
               Service Fee =
             </p>
+
             <div class="gas__button__col">
               <label
                 style="color: white; margin-left: 2px;"
                 :class="{ light__font_two: light }"
               >
-                      <span
-                        class="currency-value"
-                        v-if="currencyType === 'EUR'"
-                        :class="{ light__font_two: light }"
-                      >€</span
-                      >
                 <span
                   class="currency-value"
-                  v-if="currencyType === 'USD'"
-                  :class="{ light__font_two: light}"
-                >$</span
+                  :class="{ light__font_two: light }"
                 >
+                  {{ $store.getters.fiatType.text === 'USD' ? '$' : '€'}}
+                </span>
+
                 {{ serviceFees }}
               </label>
             </div>
           </div>
         </div>
-        <div
-          class="converter__wallet-block flex flex-col flex-d-row sm:mt-4 justify-between"
-        >
+
+        <div class="converter__wallet-block flex flex-col flex-d-row sm:mt-4 justify-between">
           <div class="converter__wallet-complete d-none">
             <div class="wallet__select d-flex">
-              <div class="wallet__variant text-center"></div>
+              <div class="wallet__variant text-center" />
             </div>
           </div>
+
           <ConnectWalletButton
             :account="account"
             @change="onAccountChange"
             class="width50 lg:w-37%"
           />
-          <IButton
+
+          <c-button
             @click="send"
             :disabled="transferNowDisabled"
             :class="[ifActiveLightMode, ifConnected]"
             class="wallet__btn md:mt-0 width50 md:ml-4 lg:w-37%"
           >
             Transfer Now
-          </IButton>
+          </c-button>
         </div>
+
         <div class="customInfoRow">
           <div class="customInfoCol">
             <div class="d-flex justify-content-center mt-2">
-                    <span
-                      class="agree__text"
-                      :class="{ light__font_six: isLightTheme}"
-                    >
-                      By clicking "Transfer Now" you agree to the
-                      <a
-                        href="https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing"
-                        class="agree__link"
-                        target="_blank"
-                      >Terms & Conditions</a
-                      >
-                    </span>
+              <span
+                class="agree__text"
+                :class="{ light__font_six: light}"
+              >
+                By clicking "Transfer Now" you agree to the
+                <a
+                  href="https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing"
+                  class="agree__link"
+                  target="_blank"
+                >
+                  Terms & Conditions
+                </a>
+              </span>
             </div>
             <label class="checkboxContainer">
               <p
                 class="agree__text ml-1"
-                :class="{ light__font_six: isLightTheme}"
+                :class="{ light__font_six: light}"
               >
                 Receive updates on CACO developments
               </p>
+
               <input
                 type="checkbox"
                 checked="checked"
-                :class="{ light__font_six: isLightTheme}"
+                :class="{ light__font_six: light }"
               />
+
               <span
                 class="checkboxCheckmark"
-                :class="{ checkboxCheckmark2: isLightTheme }"
-              ></span>
+                :class="{ checkboxCheckmark2: light }"
+              />
             </label>
           </div>
         </div>
-        <a
-          href="https://drive.google.com/file/d/1fqyJz2ZgByga38f3Ascz3Brjr_mCW_t3/view?usp=sharing"
-          target="_blank"
-          class="video flex items-center justify-start mx-auto"
-          :class="{ btn_border: isLightTheme }"
-        >
-          <button
-            type="button"
-            class="video__play"
-            :class="{ light__font_three: isLightTheme, btn_border_radius: isLightTheme}"
-          >
-            <i
-              class="fas fa-play"
-              :class="{ light__font_three: isLightTheme }"
-            ></i>
-          </button>
-          <p
-            class="video__text"
-            :class="{ light__font_three: isLightTheme }"
-          >
-            See Video
-          </p>
-        </a>
-        -->
+
+        <video-card />
       </template>
-<!--
+
       <template v-else>
         <div class="px-5 py-3">
           <p
@@ -148,7 +127,6 @@
           </p>
         </div>
       </template>
-      -->
     </form>
     <!-- ------------------------------------------- -->
     <!-- DONATE FIELD-------------------------- -->
@@ -271,10 +249,16 @@
   import CommonSelectBox from '@/interfaces/CommonSelectBox';
   import TransferVariantCoin from "@/components/TransferVariantCoin.vue";
   import TransferVariantPayment from "@/components/TransferVariantPayment.vue";
+  import ConnectWalletButton from "@/components/ConnectWalletButton.vue";
+  import CButton from "@/components/tags/cButton.vue";
+  import VideoCard from "@/components/VideoCard.vue";
 
   @Component({
     name: 'TransferTab',
     components: {
+      VideoCard,
+      CButton,
+      ConnectWalletButton,
       TransferVariantPayment,
       TransferVariantCoin
     }
@@ -283,6 +267,8 @@
   export default class TransferTab extends Vue {
 
     public transferable = true
+    public serviceFees = '0.0'
+    public account = ''
 
     public cryptoCurrencies: (CommonSelectBox & {
       contractAddress: string;
@@ -307,9 +293,48 @@
       }
     ];
 
+    /** ------------------------------------------------------- **/
+    /** ------------------------------------------------------- **/
+
     get light () {
       return this.$store.getters.theme == 'light'
     }
+
+    get transferNowDisabled() {
+      return true
+/*      return (
+        !this.account ||
+        (this.resultMoney && this.resultMoney > 200) ||
+        this.isLimitExceed ||
+        !this.selectedDestination ||
+        !this.email ||
+        !this.amount ||
+        !Number(this.amount) ||
+        +this.amount <= 0
+      );*/
+    }
+
+    get ifActiveLightMode() {
+      return this.light ? "classLightMode" : "";
+    }
+
+    get ifConnected() {
+      return "classLightModeBg"
+/*      return this.light &&
+      this.account &&
+      this.email &&
+      this.resultMoney <= 200 &&
+      this.resultMoney > 0
+        ? "classLightModeBg"
+        : "";*/
+    }
+
+    /** ------------------------------------------------------- **/
+    /** ------------------------------------------------------- **/
+
+    public onAccountChange() {}
+
+    public send() {}
   }
 
 </script>
@@ -339,6 +364,19 @@
     .form__wrapper {
       width: 77%;
     }
+  }
+
+  .customInfoRow {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .customInfoCol {
+    width: 37%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
   }
 
 </style>
