@@ -1,7 +1,6 @@
 <template>
   <div
     class="coin__wrapper d-flex align-items-center"
-    v-click-outside="() => { open = false}"
   >
     <div
       v-if="vModel.icon"
@@ -76,6 +75,7 @@
       <div
         class="choices"
         :class="{ hidden: !open }"
+        v-click-outside="hideSelect"
       >
         <div v-show="step === 1">
           <div class="coins-menu space-y-2 p-3 overflow-auto">
@@ -166,6 +166,7 @@
 <script lang="ts">
   import { Component, Vue, Prop, Model } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
+  import ClickOutside from 'vue-clict-outside'
 
   @Component({
     name: 'CSelectBox',
@@ -176,7 +177,6 @@
     @Prop() balance!: string;
     @Prop() items!: CommonSelectBox[];
     @Model("change") vModel!: CommonSelectBox;
-
     @Prop({ default: false}) multistep!: boolean
 
     public open = false
@@ -205,8 +205,12 @@
     /* --------------------------------------------------------------------- */
 
     public created () {
-      console.log('vmolde empty', this.vModel.icon)
-      console.log('multistep', this.multistep)
+      // console.log('vmolde empty', this.vModel.icon)
+      // console.log('multistep', this.multistep)
+    }
+
+    public hideSelect () {
+      this.open = false
     }
 
     public select(item: CommonSelectBox) {

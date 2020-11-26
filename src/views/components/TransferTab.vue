@@ -85,6 +85,7 @@
                 </a>
               </span>
             </div>
+
             <label class="checkboxContainer">
               <p
                 class="agree__text ml-1"
@@ -116,7 +117,9 @@
             class="converter__text text-center px-10"
             :class="{ light__font_two: light}"
           >
-            Due to an overwhelming response and high demand, transfers have been temporarily placed on hold and will resume as soon as possible.
+            Due to an overwhelming response and high demand,
+            transfers have been temporarily placed on hold and
+            will resume as soon as possible.
           </p>
 
           <p
@@ -252,10 +255,12 @@
   import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
   import CButton from "@/components/tags/cButton.vue";
   import VideoCard from "@/components/transferTab/VideoCard.vue";
+  import PrivateKeyModal from "@/components/modals/PrivateKeyModal.vue";
 
   @Component({
     name: 'TransferTab',
     components: {
+      PrivateKeyModal,
       VideoCard,
       CButton,
       ConnectWalletButton,
@@ -269,6 +274,7 @@
     public transferable = true
     public serviceFees = '0.0'
     public account = ''
+    public privateKeyModalVisible = false
 
     public cryptoCurrencies: (CommonSelectBox & {
       contractAddress: string;
