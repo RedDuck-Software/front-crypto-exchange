@@ -11,10 +11,10 @@
         <TransferVariantPayment />
 
         <!-- PRIVATE KEY FIELD -->
-        <!--<PrivateKeyModal
+        <PrivateKeyModal
           :visible="privateKeyModalVisible"
           @close="privateKeyModalVisible = false"
-        />-->
+        />
 
         <div class="gas__row">
           <div class="gas__col">
@@ -247,11 +247,11 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
   import CommonSelectBox from '@/interfaces/CommonSelectBox';
-  import TransferVariantCoin from "@/components/TransferVariantCoin.vue";
-  import TransferVariantPayment from "@/components/TransferVariantPayment.vue";
-  import ConnectWalletButton from "@/components/ConnectWalletButton.vue";
+  import TransferVariantCoin from "@/components/transferTab/TransferVariantCoin.vue";
+  import TransferVariantPayment from "@/components/transferTab/TransferVariantPayment.vue";
+  import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
   import CButton from "@/components/tags/cButton.vue";
-  import VideoCard from "@/components/VideoCard.vue";
+  import VideoCard from "@/components/transferTab/VideoCard.vue";
 
   @Component({
     name: 'TransferTab',

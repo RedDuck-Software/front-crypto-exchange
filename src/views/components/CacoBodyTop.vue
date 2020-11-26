@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div
-      v-if="activeTab == 'transfer'"
+      v-if="activeTab === 'transfer'"
       class="converter__wrap-text"
     >
       <h1
@@ -80,7 +80,9 @@
 
   export default class CBodyTop extends Vue{
 
-    public activeTab = 'transfer'
+    get activeTab () {
+      return this.$store.getters.activeTab
+    }
 
     get light () {
       return this.$store.getters.theme == 'light'

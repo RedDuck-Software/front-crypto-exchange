@@ -18,9 +18,9 @@ import './assets/css/transferTab.css'
 import './assets/css/donateTab.css'
 import './assets/css/text.css'*/
 // @ts-ignore
-import Proton from '@proton-ui/proton'
+import PortalVue from 'portal-vue'
 
-Vue.use(Proton)
+Vue.use(PortalVue)
 Vue.use(VueInputAutowidth)
 Vue.config.productionTip = false
 

@@ -30,7 +30,6 @@ const baseURL = 'https://api-cash4crypto.azurewebsites.net/api';
   })
 
 export default class Home extends Vue {
-    public lightTheme = true
 
     get light () {
       return this.$store.getters.theme == 'light'

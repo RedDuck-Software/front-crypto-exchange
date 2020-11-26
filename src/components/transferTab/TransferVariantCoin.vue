@@ -18,7 +18,7 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
-  import TransferVariant from "@/components/TransferVariant.vue";
+  import TransferVariant from "@/components/transferTab/TransferVariant.vue";
   import { getAfterCommaSigns } from '@/utils/utils';
   import CSelectBox from "@/components/tags/cSelectBox.vue";
   import CInput from "@/components/tags/cInput.vue";
