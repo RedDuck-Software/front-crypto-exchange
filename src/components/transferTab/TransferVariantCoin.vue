@@ -10,7 +10,10 @@
     </template>
 
     <template v-slot:input>
-      <c-input />
+      <c-input
+        v-model="coinAmount"
+        :max-precisions="5"
+      />
     </template>
   </transfer-variant>
 </template>
@@ -30,6 +33,7 @@
 
   export default class TransferVariantCoin extends Vue {
 
+    public coinAmount = 0
     public selectedCoin = {
       contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
       icon: "coins/usdc.svg",
@@ -103,5 +107,4 @@
   }
 </script>
 
-<style scoped src="@/assets/css/transferTab.css">
-</style>
+<style scoped src="@/assets/css/transferTab.css" />

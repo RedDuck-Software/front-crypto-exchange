@@ -2,8 +2,7 @@
   <div class="form__wrapper">
     <form
       action="#"
-      id="converter__form"
-      class
+      class="converter__form"
     >
       <TransferVariantCoin />
 

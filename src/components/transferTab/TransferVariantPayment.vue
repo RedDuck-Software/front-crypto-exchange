@@ -19,15 +19,18 @@
 
     <template v-slot:input>
       <c-input
+        v-model="fiatAmount"
         icon="fas fa-dollar-sign"
-        append="USD"
+        :append="$store.getters.fiatType.text"
+        :limit="[0, 200]"
+        :max-precisions="2"
       />
     </template>
   </transfer-variant>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component, Vue, Watch } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/transferTab/TransferVariant.vue";
   import CSelectBox from "@/components/tags/cSelectBox.vue";
@@ -41,6 +44,7 @@
   export default class TransferVariantPayment extends Vue {
 
     public selected = {} as CommonSelectBox
+    public fiatAmount = 0
     public error = true
     public paymentSystems: CommonSelectBox[] = [
       {
@@ -60,6 +64,11 @@
         isAllowed: false
       }
     ];
+
+    @Watch('fiatAmount')
+    onChange(newVal: number, oldVal: number) {
+      console.log('fiatAmount', newVal, oldVal, this.fiatAmount)
+    }
   }
 </script>
 
