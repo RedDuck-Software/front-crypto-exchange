@@ -122,42 +122,5 @@
 
 </script>
 
-<style scoped>
-  .bg-color {
-    background: #fd2c63;
-  }
-
-  .b-shadow {
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
-  }
-
-  .text-gray {
-    color: #9a9a9a;
-  }
-
-  .button__open {
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
-  .button__closed {
-    border-radius: 2rem;
-  }
-
-  .currencyButton {
-    padding: .5rem 2.7rem .5rem 2.1rem;
-    transition: none;
-  }
-
-  .fa-arrow-down {
-    margin: 0 -2rem 0 .8rem;
-  }
-
-  @media only screen and (min-width: 768px) {
-    .currencySelection {
-      font-size: .875rem;
-    }
-  }
+<style scoped src="@/assets/css/header.css">
 </style>

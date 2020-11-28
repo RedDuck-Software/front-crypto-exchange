@@ -1,0 +1,149 @@
+header {
+  grid-area: header;
+}
+
+.header__wrap {
+  justify-content: space-between;
+}
+
+.header__beta {
+  width: 2rem;
+}
+
+.header__logo {
+  height: 101%;
+  width: 5rem;
+  width: 8rem;
+  margin: 0 auto 0 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .header__beta {
+    width: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .header__logo {
+    width: 5rem;
+  }
+}
+
+.header__light {
+  margin: 1.65rem 1.6rem 0 auto;
+  font-size: 1.3em;
+}
+
+.bg-color {
+    background: #fd2c63;
+}
+
+.b-shadow {
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+.text-gray {
+    color: #9a9a9a;
+}
+
+.button__open {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.button__closed {
+    border-radius: 2rem;
+}
+
+.currencyButton {
+    padding: .5rem 2.7rem .5rem 2.1rem;
+    transition: none;
+}
+
+.fa-arrow-down {
+    margin: 0 -2rem 0 .8rem;
+}
+
+@media only screen and (min-width: 768px) {
+    .currencySelection {
+        font-size: .875rem;
+    }
+}
+
+.toggling_icons {
+    transform: rotate(-7deg);
+    transition: 0.3s ease-in-out;
+  }
+  
+  .toggling_icons:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+  
+  .fa-moon {
+    color: #fd2c63;
+    font-size: 1.1em;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .sun-icon {
+    transition: 0.3s ease-in-out;
+  }
+  
+  .header__currency {
+    width: 76px;
+    height: 27px;
+    background: #fd2c63;
+    border: 1px solid #fd2c63;
+    border-radius: 14px;
+    opacity: 0.9;
+  }
+  
+  .active-eur,
+  .active-ukr,
+  .active-usd {
+    padding: 0.315rem 1.6rem;
+    border-radius: 19px;
+    color: #ffffff;
+    font-family: "Lato", sans-serif;
+    font-size: 0.81em;
+    font-weight: 300;
+    line-height: 1.085em;
+    border: none;
+    background: #fd2c63;
+    text-align: end;
+    margin-top: 0.5rem;
+  }
+  
+  .currency-active {
+    padding: 0.315rem 0.625rem;
+    margin-top: 0;
+    color: #ffffff;
+    font-family: "Lato", sans-serif;
+    font-size: 0.81em;
+    font-weight: 300;
+    line-height: 1.085em;
+    border: none;
+    background: none;
+  }
+  
+  .currency-active:hover {
+    box-shadow: none;
+  }
+  
+  .currency-active:focus {
+    outline: none;
+    background: none;
+  }
+  
+  .currency-active i {
+    padding-left: 10px;
+  }
+  
+  .fa-angle-down:before {
+    font-size: 1.1em;
+    font-family: "FontAwesome";
+  }
+  

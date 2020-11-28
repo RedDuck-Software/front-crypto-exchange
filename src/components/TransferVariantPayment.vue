@@ -64,6 +64,5 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped src="@/assets/css/transferTab.css">
 </style>

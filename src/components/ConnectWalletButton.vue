@@ -124,23 +124,5 @@
   }
 </script>
 
-<style scoped>
-  .z-60 {
-    z-index: 60;
-  }
-  .bottom-rounded {
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-  }
-  .top-50 {
-    top: 50%;
-  }
-  .wallet:hover {
-    box-shadow: none;
-  }
-  @media screen and (max-width: 768px) {
-    .block-shadow {
-      top: 57%;
-    }
-  }
+<style scoped src="@/assets/css/connectWalletButton.css">
 </style>

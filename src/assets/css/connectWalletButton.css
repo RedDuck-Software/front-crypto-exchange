@@ -1,0 +1,25 @@
+.z-60 {
+    z-index: 60;
+}
+.bottom-rounded {
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+.top-50 {
+    top: 50%;
+}
+.wallet:hover {
+    box-shadow: none;
+}
+@media screen and (max-width: 768px) {
+    .block-shadow {
+        top: 57%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .flex-d-row {
+        flex-direction: row;
+        max-height: 3.45rem;
+    }
+}

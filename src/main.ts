@@ -10,13 +10,16 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import './assets/css/tailwind.css'
 import './assets/css/style.css'
 import './assets/css/normalize.css'
+import './assets/css/menuOptions.css'
+import './assets/css/connectWalletButton.css'
 import './assets/css/converter.css'
-/*import './assets/css/light.css'
+import './assets/css/light.css'
 import './assets/css/header.css'
 import './assets/css/footer.css'
 import './assets/css/transferTab.css'
 import './assets/css/donateTab.css'
-import './assets/css/text.css'*/
+import './assets/css/text.css'
+import './assets/css/video.css'
 // @ts-ignore
 import Proton from '@proton-ui/proton'
 
