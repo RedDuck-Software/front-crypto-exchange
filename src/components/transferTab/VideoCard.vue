@@ -38,3 +38,6 @@
     }
   }
 </script>
+
+<style scoped src="@/assets/css/video.css">
+</style>
