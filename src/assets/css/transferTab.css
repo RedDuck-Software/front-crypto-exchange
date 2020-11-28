@@ -668,3 +668,44 @@
       margin-top: .5rem;
     }
   }
+
+  .form__wrapper {
+    position: relative;
+    margin: 1.25rem auto 0;
+    width: 49.75rem;
+  }
+
+  @media screen and (min-width: 625px) {
+    .form__wrapper {
+      width: 75%;
+    }
+  }
+
+  @media screen and (min-width: 320px) and (max-width: 624px) {
+    .form__wrapper {
+      margin: 0 auto;
+      width: 100%;
+    }
+  }
+
+  @media screen and (min-width: 625px) and (max-width: 1200px) {
+    .form__wrapper {
+      width: 77%;
+    }
+  }
+
+  .customInfoRow {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .customInfoCol {
+    width: 37%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
+
+
