@@ -12,7 +12,7 @@
 
     <input
       v-model="amount"
-      @keypress="checkInput"
+      @keydown="changeInside"
       @click.stop
       :class="[limitValidation, currentClass, currentPlaceholder]"
       placeholder="0"
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop, Model, Emit } from 'vue-property-decorator'
+  import { Component, Vue, Prop, Model, Emit, Watch } from 'vue-property-decorator'
 
   @Component({
     name: 'CInput',
@@ -44,13 +44,16 @@
 
   export default class CInput extends Vue {
 
+    @Model() vModel!: number
     @Prop() icon!:   string
     @Prop() append!: string
     @Prop() limit!: Array<number>
     @Prop() maxPrecisions!: number
-    @Model("change") vModel = 0
+    @Prop() variant!: string
 
     public amount = 0
+
+    /** ---------------------------------- GET ---------------------------------------- **/
 
     get currentClass () {
       return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
@@ -64,7 +67,26 @@
       if (!this.limit) return ''
       const min = this.limit[0]
       const max = this.limit[1]
-      return (this.amount < min || this.amount > max) ? 'validation-result-money' : '';
+      return (this.amount < min || this.amount > max) ? 'validation-result-money' : ''
+    }
+
+    /** ---------------------------------- Watch --------------------------------------- **/
+
+    @Watch("vModel")
+    onChangeOutside(newVal: number) {
+      if (this.$store.getters.typingActive != this.variant) this.amount = newVal
+    }
+
+    /** ------------------------------------------------------------------------------ **/
+
+    public changeInside ($event: KeyboardEvent) {
+      if (this.onlyNumber($event) &&
+        this.checkDecimalPrecisions($event) &&
+        this.checkLimit($event)
+      ) {
+        this.$store.commit("SET_INPUT_ACTIVE", this.variant)
+        this.$emit("change", this.amount);
+      }
     }
 
     public onlyNumber($event: KeyboardEvent) {
@@ -77,10 +99,11 @@
     }
 
     public checkDecimalPrecisions($event: KeyboardEvent) {
+      const char = $event.key
       const tmp = this.amount + ""
       const decimal = tmp.split(".")[1]
       if (decimal) {
-        if (decimal.length >= this.maxPrecisions) {
+        if (decimal.length >= this.maxPrecisions && char != 'Backspace' && char != 'Delete') {
           $event.preventDefault()
           return false
         }
@@ -89,23 +112,16 @@
     }
 
     public checkLimit($event: KeyboardEvent) {
+      const char = $event.key
       if (!this.limit) return true
-      if (this.amount < this.limit[0] || this.amount > this.limit[1]) {
+      if ((this.amount < this.limit[0]
+        || this.amount > this.limit[1]) &&
+        char != 'Backspace' && char != 'Delete'
+      ) {
         $event.preventDefault()
         return false
       }
       return true
-    }
-
-    public checkInput ($event: KeyboardEvent) {
-      // console.log('check Coin input', this.value)
-      if (this.onlyNumber($event) &&
-        this.checkDecimalPrecisions($event) &&
-        this.checkLimit($event)
-      ) {
-        this.$emit("change", this.amount);
-        console.log('change', this.amount)
-      }
     }
   }
 </script>

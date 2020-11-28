@@ -5,3 +5,7 @@ export function getAfterCommaSigns (x: string) {
   }
   return 0
 }
+
+export function toMaxPrecisions (x: string, max: number) {
+  return parseFloat(x).toFixed(max)
+}

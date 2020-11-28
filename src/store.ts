@@ -8,6 +8,7 @@ export default new Vuex.Store({
     theme: 'dark',
     fiat: 'USD',
     activeTab: 'transfer',
+    typingActive: '',
   },
 
   mutations: {
@@ -20,7 +21,11 @@ export default new Vuex.Store({
     },
 
     SET_ACTIVE_TAB (state, type) {
-      state.activeTab = type
+      state.activeTab = type    // transfer or donate
+    },
+
+    SET_INPUT_ACTIVE (state, type) {
+      state.typingActive = type  // coin or fiat
     },
   },
 
@@ -34,5 +39,6 @@ export default new Vuex.Store({
     },
 
     activeTab: state => state.activeTab,
+    typingActive: state => state.typingActive,
   }
 })

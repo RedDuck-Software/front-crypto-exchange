@@ -4,10 +4,18 @@
       action="#"
       class="converter__form"
     >
-      <TransferVariantCoin />
+      <TransferVariantCoin
+        v-model="coinAmount"
+        :fiat-amount="fiatAmount"
+        :exchange-rate="exchangeRate"
+      />
 
       <template v-if="transferable">
-        <TransferVariantPayment />
+        <TransferVariantPayment
+          v-model="fiatAmount"
+          :coin-amount="coinAmount"
+          :exchange-rate="exchangeRate"
+        />
 
         <!-- PRIVATE KEY FIELD -->
         <PrivateKeyModal
@@ -157,6 +165,9 @@
 
   export default class TransferTab extends Vue {
 
+    public coinAmount = 0
+    public fiatAmount = 0
+    public exchangeRate = 0.123
     public transferable = true
     public serviceFees = '0.0'
     public account = ''
@@ -194,16 +205,6 @@
 
     get transferNowDisabled() {
       return true
-/*      return (
-        !this.account ||
-        (this.resultMoney && this.resultMoney > 200) ||
-        this.isLimitExceed ||
-        !this.selectedDestination ||
-        !this.email ||
-        !this.amount ||
-        !Number(this.amount) ||
-        +this.amount <= 0
-      );*/
     }
 
     get ifActiveLightMode() {
@@ -212,13 +213,6 @@
 
     get ifConnected() {
       return "classLightModeBg"
-/*      return this.light &&
-      this.account &&
-      this.email &&
-      this.resultMoney <= 200 &&
-      this.resultMoney > 0
-        ? "classLightModeBg"
-        : "";*/
     }
 
     /** ------------------------------------------------------- **/

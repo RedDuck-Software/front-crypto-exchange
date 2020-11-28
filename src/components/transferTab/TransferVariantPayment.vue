@@ -1,10 +1,13 @@
 <template>
-  <transfer-variant>
+  <transfer-variant
+    variant="fiat"
+  >
     <template v-slot:selection>
       <c-select-box
         v-model="selected"
         :items="paymentSystems"
         :multistep="true"
+        @change="changePayment"
       />
     </template>
 
@@ -19,32 +22,39 @@
 
     <template v-slot:input>
       <c-input
-        v-model="fiatAmount"
+        v-model="amount"
         icon="fas fa-dollar-sign"
         :append="$store.getters.fiatType.text"
         :limit="[0, 200]"
-        :max-precisions="2"
+        :max-precisions="maxPrecisions"
+        @change="changeFiatAmount(value = $event)"
+        variant="fiat"
       />
     </template>
   </transfer-variant>
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator'
+  import { Component, Vue, Watch, Prop, Emit, Model } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/transferTab/TransferVariant.vue";
   import CSelectBox from "@/components/tags/cSelectBox.vue";
   import CInput from "@/components/tags/cInput.vue";
+  import {toMaxPrecisions} from "@/utils/utils";
 
   @Component({
     name: 'TransferVariantPayment',
-    components: {CInput, CSelectBox, TransferVariant }
+    components: { CInput, CSelectBox, TransferVariant }
   })
 
   export default class TransferVariantPayment extends Vue {
 
+    @Model("change") fiatAmount!: number
+    @Prop() coinAmount!: number
+    @Prop({default: 1}) exchangeRate!: number
+    public maxPrecisions = 2
     public selected = {} as CommonSelectBox
-    public fiatAmount = 0
+    public amount = 0
     public error = true
     public paymentSystems: CommonSelectBox[] = [
       {
@@ -65,9 +75,27 @@
       }
     ];
 
-    @Watch('fiatAmount')
-    onChange(newVal: number, oldVal: number) {
-      console.log('fiatAmount', newVal, oldVal, this.fiatAmount)
+    /** ------------------------------------------------------------------ **/
+
+    @Watch('coinAmount')
+    onChangeCoinAmount() {
+      // console.log("onChangeCoinAmount")
+      if (this.$store.getters.typingActive != 'fiat') {
+        const amount = this.coinAmount * this.exchangeRate
+        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
+      }
+    }
+
+    /** ------------------------------------------------------------------ **/
+
+    public changePayment() {
+      // console.log("changePayment")
+    }
+
+    @Emit("change")
+    public changeFiatAmount(value: number) {
+      // console.log("changeFiatAmount")
+      return value
     }
   }
 </script>

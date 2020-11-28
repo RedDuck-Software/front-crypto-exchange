@@ -11,18 +11,20 @@
 
     <template v-slot:input>
       <c-input
-        v-model="coinAmount"
-        :max-precisions="5"
+        v-model="amount"
+        :max-precisions="maxPrecisions"
+        variant="coin"
+        @change="changeCoinAmount(value = $event)"
       />
     </template>
   </transfer-variant>
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component, Vue, Prop, Watch, Emit, Model } from 'vue-property-decorator'
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import TransferVariant from "@/components/transferTab/TransferVariant.vue";
-  import { getAfterCommaSigns } from '@/utils/utils';
+  import {getAfterCommaSigns, toMaxPrecisions} from '@/utils/utils';
   import CSelectBox from "@/components/tags/cSelectBox.vue";
   import CInput from "@/components/tags/cInput.vue";
 
@@ -33,7 +35,10 @@
 
   export default class TransferVariantCoin extends Vue {
 
-    public coinAmount = 0
+    @Model("change") coinAmount!: number
+    @Prop() fiatAmount!: number
+    @Prop({default: 1}) exchangeRate!: number
+    public amount = 0
     public selectedCoin = {
       contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
       icon: "coins/usdc.svg",
@@ -88,21 +93,27 @@
     public value = '0';
     public maxPrecisions = 3
 
-    /* ----------------------------------------------------------------- */
+    /** ----------------------------------------------------------------- **/
 
-    get currentClass () {
-      return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
+    @Watch("fiatAmount")
+    onChangeFiatAmount() {
+      // console.log("onChangeFiatAmount")
+      if (this.$store.getters.typingActive != 'coin') {
+        const amount = this.fiatAmount / this.exchangeRate
+        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
+      }
     }
 
-    get currentPlaceholder () {
-      return this.$store.getters.theme == 'dark' ? 'darkPlaceholder' : 'lightPlaceholder'
-    }
-
-    /* ----------------------------------------------------------------- */
-    /* ----------------------------------------------------------------- */
+    /** ----------------------------------------------------------------- **/
 
     public changeCoin() {
-      console.log('changeCoin', this.selectedCoin)
+      // console.log('changeCoin', this.selectedCoin)
+    }
+
+    @Emit("change")
+    public changeCoinAmount(value: number) {
+      // console.log("changeCoinAmount", this.$store.getters.typingActive, value, this.amount)
+      return value
     }
   }
 </script>
