@@ -23,7 +23,7 @@
           @close="privateKeyModalVisible = false"
         />
 
-        <GasRow :service-fees="serviceFees"/>
+        <gas-row :service-fees="serviceFees" />
 
         <buttons-row />
 

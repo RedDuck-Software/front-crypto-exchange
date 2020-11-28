@@ -23,7 +23,7 @@
     <template v-slot:input>
       <c-input
         v-model="amount"
-        icon="fas fa-dollar-sign"
+        :icon="icon"
         :append="$store.getters.fiatType.text"
         :limit="[0, 200]"
         :max-precisions="maxPrecisions"
@@ -74,6 +74,12 @@
         isAllowed: false
       }
     ];
+
+    /** ------------------------------------------------------------------ **/
+
+    get icon () {
+      return this.$store.getters.fiatType.text == 'USD' ? 'fas fa-dollar-sign' : 'fas fa-euro-sign'
+    }
 
     /** ------------------------------------------------------------------ **/
 
