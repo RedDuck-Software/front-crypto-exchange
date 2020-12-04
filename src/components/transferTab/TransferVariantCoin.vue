@@ -3,7 +3,7 @@
     <template v-slot:selection>
       <c-select-box
         v-model="selectedCoin"
-        :items="cryptoCurrencies"
+        :items="coinList"
         :balance="'0'"
         @change="changeCoin"
       />
@@ -38,6 +38,7 @@
     @Model("change") coinAmount!: number
     @Prop() fiatAmount!: number
     @Prop({default: 1}) exchangeRate!: number
+    @Prop() coinList!: CommonSelectBox & { contractAddress: string }
     public amount = 0
     public selectedCoin = {
       contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
@@ -92,6 +93,8 @@
 
     public value = '0';
     public maxPrecisions = 3
+
+    /** ----------------------------------------------------------------- **/
 
     /** ----------------------------------------------------------------- **/
 

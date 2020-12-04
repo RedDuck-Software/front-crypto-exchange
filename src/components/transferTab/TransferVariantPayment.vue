@@ -24,7 +24,7 @@
       <c-input
         v-model="amount"
         :icon="icon"
-        :append="$store.getters.fiatType.text"
+        :append="$store.getters.fiat.name"
         :limit="[0, 200]"
         :max-precisions="maxPrecisions"
         @change="changeFiatAmount(value = $event)"
@@ -78,7 +78,7 @@
     /** ------------------------------------------------------------------ **/
 
     get icon () {
-      return this.$store.getters.fiatType.text == 'USD' ? 'fas fa-dollar-sign' : 'fas fa-euro-sign'
+      return this.$store.getters.fiat.name == 'USD' ? 'fas fa-dollar-sign' : 'fas fa-euro-sign'
     }
 
     /** ------------------------------------------------------------------ **/

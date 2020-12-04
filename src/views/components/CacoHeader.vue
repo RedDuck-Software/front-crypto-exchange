@@ -45,11 +45,11 @@
           >
             <button
               class="p-2 z-50 grey-color"
-              @click.stop="changeFiat(currency)"
-              v-for="(currency, key) in currencies"
+              @click.stop="changeFiat(val)"
+              v-for="(val, key) in fiatList"
               :key="key"
             >
-              {{ currency.name }}
+              {{ val.name }}
             </button>
           </div>
         </div>
@@ -74,13 +74,7 @@
 
   export default class CHeader extends Vue {
 
-    public selectedFiat = { name: "USD", id: 0 }
     public open = false
-    public currencies = [
-      { name: "USD", id: 0 },
-      { name: "EUR", id: 1 },
-    ]
-
     public headLogo = {
       dark: {
         href: "/",
@@ -100,9 +94,22 @@
       }
     }
 
+    /** ----------------------------------------------- **/
+
     get dark () {
       return this.$store.getters.theme == 'dark'
     }
+
+    get selectedFiat() {
+      console.log('selectedFiat', this.$store.getters.fiat)
+      return this.$store.getters.fiat
+    }
+
+    get fiatList() {
+      return this.$store.getters.fiatList
+    }
+
+    /** ----------------------------------------------- **/
 
     public switchTheme () {
       const next = this.dark ? 'light' : 'dark'
@@ -114,9 +121,8 @@
     }
 
     public changeFiat (item: Entity) {
-      this.selectedFiat = item
       this.open = false
-      this.$store.commit("SET_FIAT", this.selectedFiat.name)
+      this.$store.commit("setFiat", item)
     }
   }
 

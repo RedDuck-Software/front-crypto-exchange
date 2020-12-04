@@ -19,7 +19,7 @@
             class="currency-value"
             :class="{ light__font_two: light }"
           >
-            {{ $store.getters.fiatType.text === 'USD' ? '$' : '€'}}
+            {{ $store.getters.fiat.name === 'USD' ? '$' : '€'}}
           </span>
 
           {{ serviceFees }}

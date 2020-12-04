@@ -106,7 +106,7 @@
     }
 
     public setTab (tabName: string) {
-      this.$store.commit('SET_ACTIVE_TAB', tabName)
+      this.$store.commit('setActiveTab', tabName)
     }
   }
 </script>
