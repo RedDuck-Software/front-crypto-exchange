@@ -40,7 +40,6 @@
     @Prop() coinList!: (CommonSelectBox & { contractAddress: string })[]
     public amount = 0
     public coin = {} as CommonSelectBox & { contractAddress: string }
-
     public value = '0';
     public maxPrecisions = 3
 
@@ -55,11 +54,12 @@
 
     @Watch("fiatAmount")
     onChangeFiatAmount() {
-      // console.log("onChangeFiatAmount")
-      if (this.$store.getters.typingActive != 'coin') {
-        const amount = this.fiatAmount / this.exchangeRate
-        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
-      }
+      this.updateCoinAmount()
+    }
+
+    @Watch("exchangeRate")
+    onChangeRate() {
+      this.updateCoinAmount()
     }
 
     @Watch("coinList")
@@ -80,6 +80,12 @@
 
     /** ----------------------------------------------------------------- **/
 
+    public updateCoinAmount() {
+      if (this.$store.getters.typingActive != 'coin') {
+        const amount = this.fiatAmount / this.exchangeRate
+        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
+      }
+    }
   }
 </script>
 

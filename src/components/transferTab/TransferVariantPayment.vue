@@ -86,11 +86,11 @@
     @Watch('coinAmount')
     onChangeCoinAmount() {
       // console.log("onChangeCoinAmount")
-      if (this.$store.getters.typingActive != 'fiat') {
-        const amount = this.coinAmount * this.exchangeRate
-        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
-      }
+      this.updateFiatAmount()
     }
+
+    @Watch('exchangeRate')
+    onChangeRate() { this.updateFiatAmount() }
 
     /** ------------------------------------------------------------------ **/
 
@@ -102,6 +102,13 @@
     public changeFiatAmount(value: number) {
       // console.log("changeFiatAmount")
       return value
+    }
+
+    public updateFiatAmount() {
+      if (this.$store.getters.typingActive != 'fiat') {
+        const amount = this.coinAmount * this.exchangeRate
+        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
+      }
     }
   }
 </script>

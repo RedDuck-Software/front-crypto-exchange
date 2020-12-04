@@ -163,12 +163,6 @@
             this.maxCoinPrecisions = 5
           }
 
-/*          // TODO update amount when reconnect
-          if (this.$store.getters.typingActive === 'coin' && this.coinAmount) {
-            // this.updateCoinAmount(this.amount);
-          } else if (this.$store.getters.typingActive === 'fiat' && +this.fiatAmount) {
-            // this.updateFiatAmount(this.fiatAmount);
-          }*/
           // this.minCoinAmount = 0.01 / this.currencyExchangeRate;
           // this.maxCoinPrecisions = getAfterCommaSigns(this.minCoinAmount);
           // console.log("received new exchange rate:", this.currencyExchangeRate);
@@ -178,7 +172,6 @@
       await this.connection.start();
       await this.loadFiatList();
       await this.loadCoinList();
-
       await this.updateEstimatedGas();
 
       this.connectionHeartBeat = new signalR.HubConnectionBuilder()
