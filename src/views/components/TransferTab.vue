@@ -71,6 +71,9 @@
   import axios from "axios";
   import Entity from '@/interfaces/Entity';
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
+  import MetamaskService from '@/MetamaskService';
+  import { getAfterCommaSigns, rounded } from '@/utils/utils';
+  import { erc20TokenContractAbi } from '@/constants';
 
   const baseURL = "https://api-cash4crypto.azurewebsites.net/api"
   type GasInfo = {
@@ -110,6 +113,12 @@
     public maxCoinPrecisions = 2
     public maxFiatPrecisions = 2
 
+    public estimatedGas: GasInfo = {
+      gasLimit: -1,
+      mediumGasPrice: -1
+    }
+    public getGasIntervalID = setInterval(this.getGas, 30000)
+
     /** ------------------------------------------------------- **/
     /** ------------------------------------------------------- **/
 
@@ -118,10 +127,19 @@
     }
 
     get serviceFees() {
-      return 0
-/*      return this.rounded(
-        MetamaskService.getFees(+this.amount * this.currencyExchangeRate)
-      );*/
+      return rounded(
+        MetamaskService.getFees(
+          this.coinAmount * this.exchangeRate
+        )
+      );
+    }
+
+    get currentCoin() {
+      return this.$store.getters.coin
+    }
+
+    get currentFiat() {
+      return this.$store.getters.fiat
     }
 
     /** ------------------------------------------------------- **/
@@ -145,8 +163,8 @@
             this.maxCoinPrecisions = 5
           }
 
-/*        TODO update amount when reconnect
-          if (this.$store.getters.typingActive === 'coin' && +this.coinAmount) {
+/*          // TODO update amount when reconnect
+          if (this.$store.getters.typingActive === 'coin' && this.coinAmount) {
             // this.updateCoinAmount(this.amount);
           } else if (this.$store.getters.typingActive === 'fiat' && +this.fiatAmount) {
             // this.updateFiatAmount(this.fiatAmount);
@@ -161,7 +179,7 @@
       await this.loadFiatList();
       await this.loadCoinList();
 
-      // await this.updateEstimatedGas();
+      await this.updateEstimatedGas();
 
       this.connectionHeartBeat = new signalR.HubConnectionBuilder()
         .withUrl(`${baseURL}/heartbeatHub`)
@@ -213,17 +231,21 @@
       }
     }
 
-/*    public async getEstimatedGas () {
-      this.estimatedGas = await this.getGas()
+    public updateEstimatedGas () {
+      if (this.getGasIntervalID) {
+        clearInterval(this.getGasIntervalID)
+      }
+      this.getGas()
+      this.getGasIntervalID = setInterval(this.getGas, 30000)
     }
 
-    public async getGas (): Promise<GasInfo> {
+    /** ---------------------------------------------------------- **/
+
+    public async getGas ()/*: Promise<GasInfo>*/ {
       console.log('getGas CALLED')
       let gasLimit = 21000
 
-      const coin = this.coinList.find(
-        (crypto) => crypto.id === this.coinType
-      )
+      const coin = this.currentCoin
 
       if (!coin) {
         return {
@@ -238,12 +260,12 @@
 
         // console.log("got token decimals", tokenDecimals);
         const serviceFeePercent = MetamaskService.getFeesPercent(
-          +this.amount * this.currencyExchangeRate
+          +this.coinAmount * this.exchangeRate
         )
-        const amountToSend = '' + (+this.amount + +this.amount * serviceFeePercent)
+        const amountToSend = '' + (this.coinAmount + this.coinAmount * serviceFeePercent)
 
         // web3 library does not understand decimals
-        const countAfterComma = getAfterCommaSigns(+amountToSend)
+        const countAfterComma = getAfterCommaSigns(amountToSend)
         const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
 
         // console.log("integerTransferAmount: ", integerTransferAmount);
@@ -287,8 +309,24 @@
 
       // console.log("gasinfo:", gasInfo);
 
-      return gasInfo
-    }*/
+      this.estimatedGas = gasInfo
+    }
+
+    private async getContractInstanceAndDecimals (coin: any) {
+      const contractInstance = this.getContractInstance(coin.contractAddress)
+      const decimals = await contractInstance.methods.decimals().call()
+      return { contractInstance, decimals }
+    }
+
+    public getContractInstance (contractAddress: string) {
+      const tokenContract = new web3.eth.Contract(
+        erc20TokenContractAbi,
+        contractAddress
+      )
+
+      return tokenContract
+    }
+
   }
 
 </script>

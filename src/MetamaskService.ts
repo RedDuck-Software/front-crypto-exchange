@@ -1,6 +1,5 @@
-/*
 import { erc20TokenContractAbi } from '@/constants'
-// import CommonSelectbox from '@/interfaces/CommonSelectbox'
+import CommonSelectbox from '@/interfaces/CommonSelectbox'
 import Web3 from 'web3'
 
 // not all methods are about metamask e.g getfees getamountminusfees
@@ -134,4 +133,3 @@ export default class MetamaskService {
     return balance.toNumber()
   }
 }
-*/

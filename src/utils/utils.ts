@@ -9,3 +9,7 @@ export function getAfterCommaSigns (x: string) {
 export function toMaxPrecisions (x: string, max: number) {
   return parseFloat(x).toFixed(max)
 }
+
+export function rounded (num: number) {
+  return Math.round(num * 100) / 100
+}
