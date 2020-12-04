@@ -84,7 +84,7 @@
         this.checkDecimalPrecisions($event) &&
         this.checkLimit($event)
       ) {
-        this.$store.commit("SET_INPUT_ACTIVE", this.variant)
+        this.$store.commit("setInputActive", this.variant)
         this.$emit("change", this.amount);
       }
     }

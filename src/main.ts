@@ -22,10 +22,13 @@ import './assets/css/text.css'
 import './assets/css/video.css'
 // @ts-ignore
 import PortalVue from 'portal-vue'
+import axios from 'axios'
 
 Vue.use(PortalVue)
 Vue.use(VueInputAutowidth)
 Vue.config.productionTip = false
+// Vue.prototype.$http = axios
+// axios.defaults.baseURL = 'https://api-cash4crypto.azurewebsites.net/api'
 
 new Vue({
   router,

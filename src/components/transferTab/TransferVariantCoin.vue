@@ -2,10 +2,9 @@
   <transfer-variant>
     <template v-slot:selection>
       <c-select-box
-        v-model="selectedCoin"
+        v-model="coin"
         :items="coinList"
         :balance="'0'"
-        @change="changeCoin"
       />
     </template>
 
@@ -38,58 +37,9 @@
     @Model("change") coinAmount!: number
     @Prop() fiatAmount!: number
     @Prop({default: 1}) exchangeRate!: number
-    @Prop() coinList!: CommonSelectBox & { contractAddress: string }
+    @Prop() coinList!: (CommonSelectBox & { contractAddress: string })[]
     public amount = 0
-    public selectedCoin = {
-      contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-      icon: "coins/usdc.svg",
-      id: 10,
-      isAllowed: true,
-      name: "USDC",
-      value: "usdc",
-      logo: '',
-    }
-
-    public cryptoCurrencies: (CommonSelectBox & {
-      contractAddress: string;
-    })[] = [
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/usdc.svg",
-        id: 10,
-        isAllowed: true,
-        name: "USDC",
-        value: "usdc",
-        logo: '',
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/usdt.svg",
-        id: 13,
-        isAllowed: true,
-        name: "USDT",
-        value: "usdt",
-        logo: ''
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/pax.svg",
-        id: 14,
-        isAllowed: true,
-        name: "PAX",
-        value: "pax",
-        logo: ''
-      },
-      {
-        contractAddress: "0xf6fe970533fe5c63d196139b14522eb2956f8621",
-        icon: "coins/eth.svg",
-        id: 2,
-        isAllowed: true,
-        name: "ETH",
-        value: "eth",
-        logo: ''
-      }
-    ];
+    public coin = {} as CommonSelectBox & { contractAddress: string }
 
     public value = '0';
     public maxPrecisions = 3
@@ -97,6 +47,11 @@
     /** ----------------------------------------------------------------- **/
 
     /** ----------------------------------------------------------------- **/
+
+    @Watch("coin")
+    onChangeCoin() {
+      this.$store.commit("setCoin", this.coin)
+    }
 
     @Watch("fiatAmount")
     onChangeFiatAmount() {
@@ -107,17 +62,24 @@
       }
     }
 
-    /** ----------------------------------------------------------------- **/
-
-    public changeCoin() {
-      // console.log('changeCoin', this.selectedCoin)
+    @Watch("coinList")
+    onUpdateCoinList() {
+      console.log('coinList', this.coinList)
+      if (this.coinList) {
+        this.coin = this.coinList[0]
+      }
     }
+
+    /** ----------------------------------------------------------------- **/
 
     @Emit("change")
     public changeCoinAmount(value: number) {
       // console.log("changeCoinAmount", this.$store.getters.typingActive, value, this.amount)
       return value
     }
+
+    /** ----------------------------------------------------------------- **/
+
   }
 </script>
 
