@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component, Vue, Watch } from 'vue-property-decorator'
   import TransferVariantCoin from "@/components/transferTab/TransferVariantCoin.vue";
   import TransferVariantPayment from "@/components/transferTab/TransferVariantPayment.vue";
   import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
@@ -100,7 +100,7 @@
 
     public coinAmount = 0
     public fiatAmount = 0
-    public exchangeRate = 0.123
+    public exchangeRate = 0
     public transferable = true
     public privateKeyModalVisible = false
     public connection: signalR.HubConnection | null = null
@@ -118,6 +118,9 @@
       mediumGasPrice: -1
     }
     public getGasIntervalID = setInterval(this.getGas, 30000)
+
+    public balance = 0;
+    public account = '';
 
     /** ------------------------------------------------------- **/
     /** ------------------------------------------------------- **/
@@ -143,6 +146,53 @@
     }
 
     /** ------------------------------------------------------- **/
+
+    @Watch('currentCoin')
+    async onChangeCoin(nVal: any, oVal: any) {
+      if (this.connection) {
+        await this.connection.invoke(
+          'Unsubscribe',
+          oVal.id,
+          this.currentFiat.id,
+        )
+
+        await this.connection.invoke(
+          'Subscribe',
+          nVal.id,
+          this.currentFiat.id
+        )
+
+        if (nVal) {
+          // console.log('balance', this.balance)
+          const balance = await MetamaskService.getBalance(this.account, nVal)
+          // console.log('new balance', balance)
+          this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
+          // console.log('new balance', this.balance)
+        }
+
+        await this.updateEstimatedGas()
+      }
+    }
+
+    @Watch('currentFiat', { immediate: true, deep: true })
+    async onChangeFiat(nVal: any, oVal: any) {
+      if (this.connection) {
+        await this.connection.invoke(
+          'Unsubscribe',
+          this.currentCoin.id,
+          oVal.id,
+        )
+
+        await this.connection.invoke(
+          'Subscribe',
+          this.currentCoin.id,
+          nVal.id,
+        )
+      }
+
+      await this.updateEstimatedGas()
+    }
+
     /** ------------------------------------------------------- **/
 
     async created() {
@@ -232,7 +282,7 @@
       this.getGasIntervalID = setInterval(this.getGas, 30000)
     }
 
-    /** ---------------------------------------------------------- **/
+    /** -----------------------------Get Gas---------------------------- **/
 
     public async getGas ()/*: Promise<GasInfo>*/ {
       console.log('getGas CALLED')
@@ -319,6 +369,9 @@
 
       return tokenContract
     }
+
+    /** ---------------------------------------------------------- **/
+
 
   }
 
