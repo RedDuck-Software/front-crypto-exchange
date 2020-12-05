@@ -151,6 +151,14 @@
       return this.$store.getters.fiat
     }
 
+    get payment() {
+      return this.$store.getters.payment
+    }
+
+    get desEmail() {
+      return this.$store.getters.desEmail
+    }
+
     get isLimitExceed() {
       console.log('TransferTab-isLimitExceed')
       let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
@@ -172,14 +180,6 @@
         summedPrice += gasInEthAmount
       }
       return summedPrice > this.balance
-    }
-
-    get payment() {
-      return this.$store.getters.payment
-    }
-
-    get desEmail() {
-      return this.$store.getters.desEmail
     }
 
     get transferNowDisabled () {
