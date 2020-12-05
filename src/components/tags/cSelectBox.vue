@@ -125,7 +125,7 @@
             </label>
 
             <input
-              v-model="localEmail"
+              v-model="email"
               type="text"
               placeholder="Email:"
               id="input-email__enter"
@@ -174,9 +174,9 @@
 
   export default class CSelectBox extends Vue {
 
+    @Model("change") vModel!: CommonSelectBox;
     @Prop() balance!: number;
     @Prop() items!: CommonSelectBox[];
-    @Model("change") vModel!: CommonSelectBox;
     @Prop({ default: false}) multistep!: boolean
 
     public open = false
@@ -227,7 +227,7 @@
 
     /** ------------------------------ MultiStep -------------------------------------- **/
 
-    public localEmail = ''
+    public email = ''
     public emailError = ''
 
     public onBackClicked() {
@@ -237,11 +237,12 @@
 
     public onEmailDone() {
       const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
-      if (!regex.test(this.localEmail)) {
+      if (!regex.test(this.email)) {
         this.emailError = 'Invalid Email'
-        return
+        return ''
       }
       this.open = false;
+      this.$store.commit('setDesEmail', this.email)
     }
   }
 </script>

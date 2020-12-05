@@ -28,7 +28,10 @@
 
         <gas-row :service-fees="serviceFees" />
 
-        <buttons-row v-model="account"/>
+        <buttons-row
+          v-model="account"
+          :transfer-now-disabled="transferNowDisabled"
+        />
 
         <custom-info-row />
 
@@ -148,7 +151,7 @@
       return this.$store.getters.fiat
     }
 
-    get isLimitExceed () {
+    get isLimitExceed() {
       console.log('TransferTab-isLimitExceed')
       let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
       coinFee = +toMaxPrecisions(''+coinFee, this.maxCoinPrecisions)
@@ -169,6 +172,24 @@
         summedPrice += gasInEthAmount
       }
       return summedPrice > this.balance
+    }
+
+    get payment() {
+      return this.$store.getters.payment
+    }
+
+    get desEmail() {
+      return this.$store.getters.desEmail
+    }
+
+    get transferNowDisabled () {
+      return (
+        !this.account ||
+        (this.fiatAmount && this.fiatAmount > 200) ||
+        !this.coinAmount || this.coinAmount <= 0 ||
+        this.isLimitExceed ||
+        !this.payment || !this.desEmail
+      )
     }
 
     /** ------------------------------------------------------- **/

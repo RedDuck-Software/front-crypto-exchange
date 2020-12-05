@@ -12,7 +12,8 @@ export default new Vuex.Store({
     activeTab: 'transfer',
     typingActive: '',
     fiatList: [],
-    coinList: [],
+    payment: {},
+    desEmail: '',
   },
 
   mutations: {
@@ -40,20 +41,23 @@ export default new Vuex.Store({
       state.fiatList = payload
     },
 
-    setCoinList (state, payload) {
-      state.coinList = payload
+    setPayment (state, payload) {
+      state.payment = payload
     },
+
+    setDesEmail(state, payload) {
+      state.desEmail = payload
+    }
   },
 
   getters: {
     theme: state => state.theme,
-    fiat: state => {
-      return state.fiat
-    },
+    fiat: state => state.fiat,
     coin: state => state.coin,
     activeTab: state => state.activeTab,
     typingActive: state => state.typingActive,
     fiatList: state => state.fiatList,
-    coinList: state => state.coinList
+    payment: state => state.payment,
+    desEmail: state => state.desEmail
   }
 })

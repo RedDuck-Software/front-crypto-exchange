@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-  import {Component, Model, Vue, Emit} from 'vue-property-decorator'
+  import {Component, Model, Vue, Emit, Prop} from 'vue-property-decorator'
   import CButton from "@/components/tags/cButton.vue";
   import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
 
@@ -37,15 +37,12 @@
 
     @Model("change", { default: "" })
     account!: string;
+    @Prop({default: false}) transferNowDisabled!: boolean
 
     public Account = ''
 
     get light () {
       return this.$store.getters.theme == 'light'
-    }
-
-    get transferNowDisabled() {
-      return true
     }
 
     get ifActiveLightMode() {

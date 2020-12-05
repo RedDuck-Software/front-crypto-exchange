@@ -4,7 +4,7 @@
   >
     <template v-slot:selection>
       <c-select-box
-        v-model="selected"
+        v-model="payment"
         :items="paymentSystems"
         :multistep="true"
         @change="changePayment"
@@ -54,7 +54,7 @@
     @Prop() isLimitExceed!: number;
     @Prop({default: 1}) exchangeRate!: number
     public maxPrecisions = 2
-    public selected = {} as CommonSelectBox
+    public payment = {} as CommonSelectBox
     public amount = 0
     public paymentSystems: CommonSelectBox[] = [
       {
@@ -85,7 +85,6 @@
 
     @Watch('coinAmount')
     onChangeCoinAmount() {
-      // console.log("onChangeCoinAmount")
       this.updateFiatAmount()
     }
 
@@ -94,13 +93,8 @@
 
     /** ------------------------------------------------------------------ **/
 
-    public changePayment() {
-      // console.log("changePayment")
-    }
-
     @Emit("change")
     public changeFiatAmount(value: number) {
-      // console.log("changeFiatAmount")
       return value
     }
 
@@ -110,8 +104,11 @@
         this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
       }
     }
+
+    public changePayment() {
+      this.$store.commit('setPayment', this.payment)
+    }
   }
 </script>
 
-<style scoped src="@/assets/css/transferTab.css">
-</style>
+<style scoped src="@/assets/css/transferTab.css" />
