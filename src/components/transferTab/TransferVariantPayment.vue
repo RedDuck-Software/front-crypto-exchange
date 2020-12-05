@@ -13,7 +13,7 @@
 
     <template v-slot:errorMessage>
       <span
-        v-if="error"
+        v-if="isLimitExceed"
         class="validation-result-money from__result-money"
       >
         Insufficient Funds
@@ -51,11 +51,11 @@
 
     @Model("change") fiatAmount!: number
     @Prop() coinAmount!: number
+    @Prop() isLimitExceed!: number;
     @Prop({default: 1}) exchangeRate!: number
     public maxPrecisions = 2
     public selected = {} as CommonSelectBox
     public amount = 0
-    public error = true
     public paymentSystems: CommonSelectBox[] = [
       {
         id: 1,

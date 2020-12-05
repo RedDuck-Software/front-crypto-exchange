@@ -17,6 +17,7 @@
           v-model="fiatAmount"
           :coin-amount="coinAmount"
           :exchange-rate="exchangeRate"
+          :is-limit-exceed="isLimitExceed"
         />
 
         <!-- PRIVATE KEY FIELD -->
@@ -73,7 +74,7 @@
   import Entity from '@/interfaces/Entity';
   import CommonSelectBox from "@/interfaces/CommonSelectBox";
   import MetamaskService from '@/MetamaskService';
-  import { getAfterCommaSigns, rounded } from '@/utils/utils';
+  import {getAfterCommaSigns, rounded, toMaxPrecisions} from '@/utils/utils';
   import { erc20TokenContractAbi } from '@/constants';
 
   const baseURL = "https://api-cash4crypto.azurewebsites.net/api"
@@ -147,6 +148,29 @@
       return this.$store.getters.fiat
     }
 
+    get isLimitExceed () {
+      console.log('TransferTab-isLimitExceed')
+      let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
+      coinFee = +toMaxPrecisions(''+coinFee, this.maxCoinPrecisions)
+
+      if (!this.account) return false
+      if (!this.currentCoin) return false
+
+      const userEthAmount = this.ethBalance
+      const gasInEthAmount =
+        (this.estimatedGas.mediumGasPrice * this.estimatedGas.gasLimit) /
+        1_000_000_000 /
+        1_000_000_000
+
+      if (userEthAmount < gasInEthAmount) return true
+
+      let summedPrice = this.coinAmount + +coinFee
+      if (this.currentCoin.value === 'eth') {
+        summedPrice += gasInEthAmount
+      }
+      return summedPrice > this.balance
+    }
+
     /** ------------------------------------------------------- **/
 
     @Watch('$store.getters.coin')
@@ -166,11 +190,8 @@
         )
 
         if (nVal) {
-          // console.log('balance', this.balance)
           const balance = await MetamaskService.getBalance(this.account, nVal)
-          // console.log('new balance', balance)
           this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
-          // console.log('new balance', this.balance)
         }
 
         await this.updateEstimatedGas()
@@ -265,7 +286,6 @@
       const response = await axios.get<Entity[]>(
         `${baseURL}/supported-tokens/cryptocurrencies`
       )
-      // console.log(response);
 
       this.coinList = response.data
         .map((crypto) => ({
@@ -288,7 +308,7 @@
         await this.connection.invoke(
           'Subscribe',
           this.coinList[0].id,
-          this.$store.getters.fiat.id
+          this.currentFiat.id
         )
       }
     }
