@@ -4,7 +4,7 @@
       <c-select-box
         v-model="coin"
         :items="coinList"
-        :balance="'0'"
+        :balance="balance"
       />
     </template>
 
@@ -36,6 +36,7 @@
 
     @Model("change") coinAmount!: number
     @Prop() fiatAmount!: number
+    @Prop() balance!: number
     @Prop({default: 1}) exchangeRate!: number
     @Prop() coinList!: (CommonSelectBox & { contractAddress: string })[]
     public amount = 0

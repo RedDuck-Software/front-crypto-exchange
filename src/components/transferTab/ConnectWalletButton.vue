@@ -41,7 +41,6 @@
   import { Wallet } from "@/interfaces/Wallet";
   import TrezorConnect from "trezor-connect";
   import Web3 from "web3";
-  import PrivateKeyModal from "@/components/modals/PrivateKeyModal.vue";
   import ClickOutside from "vue-click-outside";
   import { GetPublicKey } from "trezor-connect/lib/types/networks/bitcoin.js.flow";
   import CButton from "@/components/tags/cButton.vue";
@@ -62,6 +61,7 @@
       ClickOutside,
     },
   })
+
   export default class ConnectWalletButton extends Vue {
     public open = false;
 
@@ -124,5 +124,4 @@
   }
 </script>
 
-<style scoped src="@/assets/css/connectWalletButton.css">
-</style>
+<style scoped src="@/assets/css/connectWalletButton.css" />

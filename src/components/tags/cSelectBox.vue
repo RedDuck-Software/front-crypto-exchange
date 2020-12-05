@@ -32,7 +32,7 @@
       />
 
       <div
-        v-if="balance"
+        v-if="balance != undefined"
         class="ml-3 text-xs crypto__val"
         :class="currentClass"
       >
@@ -174,7 +174,7 @@
 
   export default class CSelectBox extends Vue {
 
-    @Prop() balance!: string;
+    @Prop() balance!: number;
     @Prop() items!: CommonSelectBox[];
     @Model("change") vModel!: CommonSelectBox;
     @Prop({ default: false}) multistep!: boolean

@@ -7,7 +7,7 @@
     </div>
 
     <ConnectWalletButton
-      :account="account"
+      v-model="Account"
       @change="onAccountChange"
       class="width50 lg:w-37%"
     />
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+  import {Component, Model, Vue, Emit} from 'vue-property-decorator'
   import CButton from "@/components/tags/cButton.vue";
   import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
 
@@ -35,7 +35,10 @@
 
   export default class ButtonsRow extends Vue {
 
-    public account = ''
+    @Model("change", { default: "" })
+    account!: string;
+
+    public Account = ''
 
     get light () {
       return this.$store.getters.theme == 'light'
@@ -53,7 +56,10 @@
       return "classLightModeBg"
     }
 
-    public onAccountChange() {}
+    @Emit('change')
+    public onAccountChange() {
+      return this.Account
+    }
 
     public send() {}
   }

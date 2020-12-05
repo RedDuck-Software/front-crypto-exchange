@@ -9,6 +9,7 @@
         :fiat-amount="fiatAmount"
         :exchange-rate="exchangeRate"
         :coin-list="coinList"
+        :balance="balance"
       />
 
       <template v-if="transferable">
@@ -26,7 +27,7 @@
 
         <gas-row :service-fees="serviceFees" />
 
-        <buttons-row />
+        <buttons-row v-model="account"/>
 
         <custom-info-row />
 
@@ -100,7 +101,7 @@
 
     public coinAmount = 0
     public fiatAmount = 0
-    public exchangeRate = 0
+    public exchangeRate = 1.023
     public transferable = true
     public privateKeyModalVisible = false
     public connection: signalR.HubConnection | null = null
@@ -120,6 +121,7 @@
     public getGasIntervalID = setInterval(this.getGas, 30000)
 
     public balance = 0;
+    public ethBalance = 0;
     public account = '';
 
     /** ------------------------------------------------------- **/
@@ -147,8 +149,9 @@
 
     /** ------------------------------------------------------- **/
 
-    @Watch('currentCoin')
+    @Watch('$store.getters.coin')
     async onChangeCoin(nVal: any, oVal: any) {
+      console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
@@ -174,8 +177,9 @@
       }
     }
 
-    @Watch('currentFiat', { immediate: true, deep: true })
+    @Watch('$store.getters.fiat', { immediate: true, deep: true })
     async onChangeFiat(nVal: any, oVal: any) {
+      console.log('TransferTab-onChangeFiat', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
@@ -191,6 +195,21 @@
       }
 
       await this.updateEstimatedGas()
+    }
+
+    @Watch('account')
+    async onChangeAccount() {
+      console.log('TransferTab-onChangeAccount')
+      let balance = 0
+      let ethBalance = 0
+      const coin = this.currentCoin
+      if (coin) {
+        balance = await MetamaskService.getBalance(this.account, coin)
+        ethBalance = await MetamaskService.getEthBalancePromise(this.account)
+      }
+
+      this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
+      this.ethBalance = ethBalance
     }
 
     /** ------------------------------------------------------- **/
@@ -285,89 +304,13 @@
     /** -----------------------------Get Gas---------------------------- **/
 
     public async getGas ()/*: Promise<GasInfo>*/ {
-      console.log('getGas CALLED')
-      let gasLimit = 21000
-
-      const coin = this.currentCoin
-
-      if (!coin) {
-        return {
-          gasLimit: -1,
-          mediumGasPrice: -99
-        }
+      const fakeGas = Math.floor(Math.random() * (5 - 1) + 1) / 100
+      console.log('TransferTab-getGas CALLED', fakeGas)
+      return this.estimatedGas = {
+        gasLimit: fakeGas,
+        mediumGasPrice: 1
       }
-
-      if (coin.value.toLowerCase() !== 'eth') {
-        const { contractInstance, decimals } = await this.getContractInstanceAndDecimals(coin)
-        const tokenDecimals = window.web3.utils.toBN(decimals)
-
-        // console.log("got token decimals", tokenDecimals);
-        const serviceFeePercent = MetamaskService.getFeesPercent(
-          +this.coinAmount * this.exchangeRate
-        )
-        const amountToSend = '' + (this.coinAmount + this.coinAmount * serviceFeePercent)
-
-        // web3 library does not understand decimals
-        const countAfterComma = getAfterCommaSigns(amountToSend)
-        const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
-
-        // console.log("integerTransferAmount: ", integerTransferAmount);
-
-        // WARNING here - the order of mul and div is IMPORTANT
-        // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
-        // warning please be thriple careful before messing up with this code.
-        const calculatedTransferValue = window.web3.utils.toBN(integerTransferAmount)
-          .mul(window.web3.utils.toBN(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
-          .div(window.web3.utils.toBN(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
-
-        // console.log("calculatedTransferValue", calculatedTransferValue);
-
-        // random address just to estimate gas
-        const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
-        const sender = window.web3.currentProvider.selectedAddress
-
-        // console.log("sender: ", sender);
-        // using the promise
-        await contractInstance.methods.transfer(receiver, calculatedTransferValue)
-          .estimateGas({ from: sender }, function (error, gasAmount) {
-            // console.log("got gas amount: ", gasAmount);
-            // console.log("got error: ", error);
-
-            gasLimit = gasAmount
-          })
-
-        // console.log("fetched gas limit to be", gasLimit);
-      }
-
-      const gasPriceResponse = await axios.get(
-        'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=M18A5B2C77P86CC29B34NT15H7SDWU51Y2'
-      )
-
-      const med = gasPriceResponse.data.result.ProposeGasPrice * 1_000_000_000
-
-      const gasInfo: GasInfo = {
-        gasLimit: gasLimit,
-        mediumGasPrice: med
-      }
-
-      // console.log("gasinfo:", gasInfo);
-
-      this.estimatedGas = gasInfo
-    }
-
-    private async getContractInstanceAndDecimals (coin: any) {
-      const contractInstance = this.getContractInstance(coin.contractAddress)
-      const decimals = await contractInstance.methods.decimals().call()
-      return { contractInstance, decimals }
-    }
-
-    public getContractInstance (contractAddress: string) {
-      const tokenContract = new web3.eth.Contract(
-        erc20TokenContractAbi,
-        contractAddress
-      )
-
-      return tokenContract
+      // TODO uncomment below code
     }
 
     /** ---------------------------------------------------------- **/
