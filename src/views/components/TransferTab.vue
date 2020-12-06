@@ -7,11 +7,10 @@
         id="converter__form"
         class
       >
-      
+
         <div class="arrow-down mx-auto mt-16"></div>
 
         <TransferVariantCoin />
-
 
         <template v-if="transferable">
           <TransferVariantPayment />
@@ -42,7 +41,7 @@
                     class="currency-value"
                     :class="{ light__font_two: light }"
                   >
-                    {{ $store.getters.fiatType.text === 'USD' ? '$' : '€'}}
+                    {{ $store.getters.fiat.name === 'USD' ? '$' : '€'}}
                   </span>
 
                   {{ serviceFees }}
@@ -138,25 +137,25 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator'
-  import TransferVariantCoin from "@/components/transferTab/TransferVariantCoin.vue";
-  import TransferVariantPayment from "@/components/transferTab/TransferVariantPayment.vue";
-  import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
-  import CButton from "@/components/tags/cButton.vue";
-  import VideoCard from "@/components/transferTab/VideoCard.vue";
-  import PrivateKeyModal from "@/components/modals/PrivateKeyModal.vue";
-  import GasRow from "@/components/transferTab/GasRow.vue";
-  import CustomInfoRow from "@/components/transferTab/CustomInfoRow.vue";
-  import ButtonsRow from "@/components/transferTab/ButtonsRow.vue";
-  import * as signalR from "@microsoft/signalr";
-  import axios from "axios";
-  import Entity from '@/interfaces/Entity';
-  import CommonSelectBox from "@/interfaces/CommonSelectBox";
-  import MetamaskService from '@/MetamaskService';
-  import {getAfterCommaSigns, rounded, toMaxPrecisions} from '@/utils/utils';
-  import { erc20TokenContractAbi } from '@/constants';
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import TransferVariantCoin from '@/components/transferTab/TransferVariantCoin.vue'
+import TransferVariantPayment from '@/components/transferTab/TransferVariantPayment.vue'
+import ConnectWalletButton from '@/components/transferTab/ConnectWalletButton.vue'
+import CButton from '@/components/tags/cButton.vue'
+import VideoCard from '@/components/transferTab/VideoCard.vue'
+import PrivateKeyModal from '@/components/modals/PrivateKeyModal.vue'
+import GasRow from '@/components/transferTab/GasRow.vue'
+import CustomInfoRow from '@/components/transferTab/CustomInfoRow.vue'
+import ButtonsRow from '@/components/transferTab/ButtonsRow.vue'
+import * as signalR from '@microsoft/signalr'
+import axios from 'axios'
+import Entity from '@/interfaces/Entity'
+import CommonSelectBox from '@/interfaces/CommonSelectBox'
+import MetamaskService from '@/MetamaskService'
+import { getAfterCommaSigns, rounded, toMaxPrecisions } from '@/utils/utils'
+import { erc20TokenContractAbi } from '@/constants'
 
-  const baseURL = "https://api-cash4crypto.azurewebsites.net/api"
+const baseURL = 'https://api-cash4crypto.azurewebsites.net/api'
   type GasInfo = {
     mediumGasPrice: number;
     gasLimit: number;
@@ -177,8 +176,7 @@
     }
   })
 
-  export default class TransferTab extends Vue {
-
+export default class TransferTab extends Vue {
     public coinAmount = 0
     public fiatAmount = 0
     public exchangeRate = 1.023
@@ -198,6 +196,7 @@
       gasLimit: -1,
       mediumGasPrice: -1
     }
+
     public getGasIntervalID = setInterval(this.getGas, 30000)
 
     public balance = 0;
@@ -211,34 +210,34 @@
       return this.$store.getters.theme == 'light'
     }
 
-    get serviceFees() {
+    get serviceFees () {
       return rounded(
         MetamaskService.getFees(
           this.coinAmount * this.exchangeRate
         )
-      );
+      )
     }
 
-    get currentCoin() {
+    get currentCoin () {
       return this.$store.getters.coin
     }
 
-    get currentFiat() {
+    get currentFiat () {
       return this.$store.getters.fiat
     }
 
-    get payment() {
+    get payment () {
       return this.$store.getters.payment
     }
 
-    get desEmail() {
+    get desEmail () {
       return this.$store.getters.desEmail
     }
 
-    get isLimitExceed() {
+    get isLimitExceed () {
       console.log('TransferTab-isLimitExceed')
       let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
-      coinFee = +toMaxPrecisions(''+coinFee, this.maxCoinPrecisions)
+      coinFee = +toMaxPrecisions('' + coinFee, this.maxCoinPrecisions)
 
       if (!this.account) return false
       if (!this.currentCoin) return false
@@ -271,13 +270,13 @@
     /** ------------------------------------------------------- **/
 
     @Watch('$store.getters.coin')
-    async onChangeCoin(nVal: any, oVal: any) {
+    async onChangeCoin (nVal: any, oVal: any) {
       console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
           oVal.id,
-          this.currentFiat.id,
+          this.currentFiat.id
         )
 
         await this.connection.invoke(
@@ -296,19 +295,19 @@
     }
 
     @Watch('$store.getters.fiat', { immediate: true, deep: true })
-    async onChangeFiat(nVal: any, oVal: any) {
+    async onChangeFiat (nVal: any, oVal: any) {
       console.log('TransferTab-onChangeFiat', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
           this.currentCoin.id,
-          oVal.id,
+          oVal.id
         )
 
         await this.connection.invoke(
           'Subscribe',
           this.currentCoin.id,
-          nVal.id,
+          nVal.id
         )
       }
 
@@ -316,7 +315,7 @@
     }
 
     @Watch('account')
-    async onChangeAccount() {
+    async onChangeAccount () {
       console.log('TransferTab-onChangeAccount')
       let balance = 0
       let ethBalance = 0
@@ -332,18 +331,18 @@
 
     /** ------------------------------------------------------- **/
 
-    async created() {
+    async created () {
       this.connection = new signalR.HubConnectionBuilder()
         .withUrl(`${baseURL}/exchangeRateHub`)
         .withAutomaticReconnect()
-        .build();
+        .build()
 
-      this.connection.on("NewExchangeRate", (data) => {
+      this.connection.on('NewExchangeRate', (data) => {
         if (
           this.$store.getters.coinType === data.cryptocurrency &&
           this.$store.getters.fiatType.value === data.currency
         ) {
-          this.exchangeRate = +data.amount;
+          this.exchangeRate = +data.amount
           if (this.exchangeRate <= 1) {
             this.maxCoinPrecisions = 2
           } else {
@@ -354,32 +353,32 @@
           // this.maxCoinPrecisions = getAfterCommaSigns(this.minCoinAmount);
           // console.log("received new exchange rate:", this.currencyExchangeRate);
         }
-      });
+      })
 
-      await this.connection.start();
-      await this.loadFiatList();
-      await this.loadCoinList();
-      await this.updateEstimatedGas();
+      await this.connection.start()
+      await this.loadFiatList()
+      await this.loadCoinList()
+      await this.updateEstimatedGas()
 
       this.connectionHeartBeat = new signalR.HubConnectionBuilder()
         .withUrl(`${baseURL}/heartbeatHub`)
         .withAutomaticReconnect()
-        .build();
+        .build()
 
-      this.connectionHeartBeat.on("heartbeat", (heartbeat) => {
+      this.connectionHeartBeat.on('heartbeat', (heartbeat) => {
         this.transferable = heartbeat
         // console.log('heartbeat', this.transferable, heartbeat)
       })
 
-      await this.connectionHeartBeat.start();
+      await this.connectionHeartBeat.start()
     }
 
-    public async loadFiatList() {
-      const response = await axios.get(`${baseURL}/supported-tokens/currencies`);
+    public async loadFiatList () {
+      const response = await axios.get(`${baseURL}/supported-tokens/currencies`)
       this.$store.commit('setFiatList', response.data)
     }
 
-    public async loadCoinList() {
+    public async loadCoinList () {
       const response = await axios.get<Entity[]>(
         `${baseURL}/supported-tokens/cryptocurrencies`
       )
@@ -390,7 +389,7 @@
           value: crypto.name.toLowerCase(),
           icon: `coins/${crypto.name.toLowerCase()}.svg`,
           isAllowed: true,
-          contractAddress: '',
+          contractAddress: ''
         }))
 
       if (process.env.NODE_ENV === 'development') {
@@ -420,7 +419,7 @@
 
     /** -----------------------------Get Gas---------------------------- **/
 
-    public async getGas ()/*: Promise<GasInfo>*/ {
+    public async getGas ()/*: Promise<GasInfo> */ {
       const fakeGas = Math.floor(Math.random() * (5 - 1) + 1) / 100
       console.log('TransferTab-getGas CALLED', fakeGas)
       return this.estimatedGas = {
@@ -430,9 +429,7 @@
       // TODO uncomment below code
     }
 
-    /** ---------------------------------------------------------- **/
-
-
-  }
+  /** ---------------------------------------------------------- **/
+}
 
 </script>
