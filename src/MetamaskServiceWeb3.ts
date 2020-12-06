@@ -1,15 +1,12 @@
 import { erc20TokenContractAbi } from '@/constants'
 import CommonSelectbox from '@/interfaces/CommonSelectbox'
-import { ethers } from 'ethers'
+// eslint-disable-next-line no-unused-vars
+import Web3 from 'web3'
 
-// eslint-disable-next-line no-undef
-let provider: ethers.providers.Provider | import('@ethersproject/abstract-signer').Signer | undefined
-// @ts-ignore
-window.ethereum.enable().then(provider = new ethers.providers.Web3Provider(window.ethereum))
-
-export default class MetamaskService {
+// not all methods are about metamask e.g getfees getamountminusfees
+export default class MetamaskServiceWeb3 {
   public static getAmountPlusFee (amount: number) {
-    const fees = MetamaskService.getFees(amount)
+    const fees = MetamaskServiceWeb3.getFees(amount)
 
     return amount + fees
   }
@@ -54,11 +51,10 @@ export default class MetamaskService {
     return fee[1]
   }
 
-  private static async getContractInstance (contractAddress: string) {
-    const tokenContract = new ethers.Contract(
-      contractAddress,
+  private static getContractInstance (contractAddress: string) {
+    const tokenContract = new window.web3.eth.Contract(
       erc20TokenContractAbi,
-      provider
+      contractAddress
     )
 
     return tokenContract
@@ -70,16 +66,23 @@ export default class MetamaskService {
 
   public static async getBalance (address: string, coin: (CommonSelectbox & {contractAddress: string})) {
     if (coin.value === 'eth') {
-      return MetamaskService.getEthBalancePromise(address)
+      return MetamaskServiceWeb3.getEthBalancePromise(address)
     }
 
-    return MetamaskService.getStableCoinBalancePromise(address, coin.contractAddress)
+    return MetamaskServiceWeb3.getStableCoinBalancePromise(address, coin.contractAddress)
   }
 
   public static async getEthBalancePromise (address: string): Promise<number> {
-    // @ts-ignore
-    var balance = await provider.getBalance('ethers.eth')
-    return +ethers.utils.formatEther(balance)
+    return new Promise((resolve, reject) => {
+      window.web3.eth.getBalance(address, (err, result) => {
+        const balance = window.web3.utils.fromWei(result, 'ether')
+        if (!err) {
+          resolve(balance as number)
+        } else {
+          reject(err)
+        }
+      })
+    })
   }
 
   private static async getStableCoinBalancePromise (address: string, contractAddress: string): Promise<number> {
@@ -106,21 +109,23 @@ export default class MetamaskService {
     ]
 
     // Get ERC20 Token contract instance
-    const contract = new ethers.Contract(contractAddress, minABI, provider)
-    // const value = await contract.getValue()
+    const contract = new window.web3.eth.Contract(
+      minABI,
+      contractAddress
+    )
 
     const decimals = await contract.methods.decimals().call()
     const tokenBalance = await contract.methods.balanceOf(walletAddress).call()
 
     let balance
-    if (ethers.BigNumber.from(tokenBalance)) {
+    if (window.web3.utils.isBN(tokenBalance)) {
       balance = tokenBalance
     } else {
-      balance = ethers.BigNumber.from(tokenBalance)
+      balance = window.web3.utils.toBN(tokenBalance)
     }
 
-    const bn10 = ethers.BigNumber.from(10)
-    const bnDecimals = ethers.BigNumber.from(decimals)
+    const bn10 = window.web3.utils.toBN(10)
+    const bnDecimals = window.web3.utils.toBN(decimals)
     const divAmount = bn10.pow(bnDecimals)
     balance = balance.div(divAmount)
 
