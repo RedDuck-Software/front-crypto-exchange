@@ -13,17 +13,15 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
   @Component({
     name: 'TransferVariant'
   })
 
-  export default class TransferVariant extends Vue {
-
-    @Prop({default: 1}) exchangeRate!: number
-
-  }
+export default class TransferVariant extends Vue {
+    @Prop({ default: 1 }) exchangeRate!: number
+}
 </script>
 
 <style scoped src="@/assets/css/transferTab.css">

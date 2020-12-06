@@ -35,24 +35,23 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch, Prop, Emit, Model } from 'vue-property-decorator'
-  import CommonSelectBox from "@/interfaces/CommonSelectBox";
-  import TransferVariant from "@/components/transferTab/TransferVariant.vue";
-  import CSelectBox from "@/components/tags/cSelectBox.vue";
-  import CInput from "@/components/tags/cInput.vue";
-  import {toMaxPrecisions} from "@/utils/utils";
+import { Component, Vue, Watch, Prop, Emit, Model } from 'vue-property-decorator'
+import CommonSelectBox from '@/interfaces/CommonSelectBox'
+import TransferVariant from '@/components/transferTab/TransferVariant.vue'
+import CSelectBox from '@/components/tags/cSelectBox.vue'
+import CInput from '@/components/tags/cInput.vue'
+import { toMaxPrecisions } from '@/utils/utils'
 
   @Component({
     name: 'TransferVariantPayment',
     components: { CInput, CSelectBox, TransferVariant }
   })
 
-  export default class TransferVariantPayment extends Vue {
-
-    @Model("change") fiatAmount!: number
+export default class TransferVariantPayment extends Vue {
+    @Model('change') fiatAmount!: number
     @Prop() coinAmount!: number
     @Prop() isLimitExceed!: number;
-    @Prop({default: 1}) exchangeRate!: number
+    @Prop({ default: 1 }) exchangeRate!: number
     public maxPrecisions = 2
     public payment = {} as CommonSelectBox
     public amount = 0
@@ -78,37 +77,37 @@
     /** ------------------------------------------------------------------ **/
 
     get icon () {
-      return this.$store.getters.fiat.name == 'USD' ? 'fas fa-dollar-sign' : 'fas fa-euro-sign'
+      return this.$store.getters.fiat.name === 'USD' ? 'fas fa-dollar-sign' : 'fas fa-euro-sign'
     }
 
     /** ------------------------------------------------------------------ **/
 
     @Watch('coinAmount')
-    onChangeCoinAmount() {
+    onChangeCoinAmount () {
       this.updateFiatAmount()
     }
 
     @Watch('exchangeRate')
-    onChangeRate() { this.updateFiatAmount() }
+    onChangeRate () { this.updateFiatAmount() }
 
     /** ------------------------------------------------------------------ **/
 
-    @Emit("change")
-    public changeFiatAmount(value: number) {
+    @Emit('change')
+    public changeFiatAmount (value: number) {
       return value
     }
 
-    public updateFiatAmount() {
-      if (this.$store.getters.typingActive != 'fiat') {
+    public updateFiatAmount () {
+      if (this.$store.getters.typingActive !== 'fiat') {
         const amount = this.coinAmount * this.exchangeRate
-        this.amount = +toMaxPrecisions(amount + "", this.maxPrecisions)
+        this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
       }
     }
 
-    public changePayment() {
+    public changePayment () {
       this.$store.commit('setPayment', this.payment)
     }
-  }
+}
 </script>
 
 <style scoped src="@/assets/css/transferTab.css" />

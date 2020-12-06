@@ -27,23 +27,21 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
   @Component({
     name: 'DonateTab'
   })
 
-  export default class DonateTab extends Vue {
-
-    get light () {
-      return this.$store.getters.theme == 'light'
-    }
-
-    get activeTab () {
-      return this.$store.getters.activeTab
-    }
-
+export default class DonateTab extends Vue {
+  get light () {
+    return this.$store.getters.theme == 'light'
   }
+
+  get activeTab () {
+    return this.$store.getters.activeTab
+  }
+}
 </script>
 
 <style src="@/assets/css/donateTab.css"/>

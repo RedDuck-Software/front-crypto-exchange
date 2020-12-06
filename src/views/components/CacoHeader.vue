@@ -59,37 +59,36 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Prop, Emit} from 'vue-property-decorator'
-  import ClickOutside from 'vue-click-outside';
-  import Ca from "@/components/tags/ca.vue";
-  import Entity from '@/interfaces/Entity';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator'
+import ClickOutside from 'vue-click-outside'
+import Ca from '@/components/tags/ca.vue'
+import Entity from '@/interfaces/Entity'
 
   @Component({
-    name: "CHeader",
-    components: {Ca},
+    name: 'CHeader',
+    components: { Ca },
     directives: {
-      ClickOutside,
-    },
+      ClickOutside
+    }
   })
 
-  export default class CHeader extends Vue {
-
+export default class CHeader extends Vue {
     public open = false
     public headLogo = {
       dark: {
-        href: "/",
+        href: '/',
         img: {
-          src: "logos/logoblack-2.svg",
-          alt: "Caco | cash 4 crypto",
-          classes: "header__logo"
+          src: 'logos/logoblack-2.svg',
+          alt: 'Caco | cash 4 crypto',
+          classes: 'header__logo'
         }
       },
       light: {
-        href: "/",
+        href: '/',
         img: {
-          src: "logos/caco-light-logo.svg",
-          alt: "Caco | cash 4 crypto",
-          classes: "header__logo light__logo"
+          src: 'logos/caco-light-logo.svg',
+          alt: 'Caco | cash 4 crypto',
+          classes: 'header__logo light__logo'
         }
       }
     }
@@ -100,12 +99,12 @@
       return this.$store.getters.theme == 'dark'
     }
 
-    get selectedFiat() {
+    get selectedFiat () {
       console.log('selectedFiat', this.$store.getters.fiat)
       return this.$store.getters.fiat
     }
 
-    get fiatList() {
+    get fiatList () {
       return this.$store.getters.fiatList
     }
 
@@ -113,7 +112,7 @@
 
     public switchTheme () {
       const next = this.dark ? 'light' : 'dark'
-      this.$store.commit("SET_THEME", next)
+      this.$store.commit('SET_THEME', next)
     }
 
     public hideSelect () {
@@ -122,9 +121,9 @@
 
     public changeFiat (item: Entity) {
       this.open = false
-      this.$store.commit("setFiat", item)
+      this.$store.commit('setFiat', item)
     }
-  }
+}
 
 </script>
 

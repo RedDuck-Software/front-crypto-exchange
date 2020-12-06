@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from "@/store"
+import store from '@/store'
 // @ts-ignore
 import VueInputAutowidth from 'vue-input-autowidth'
 
@@ -23,7 +23,7 @@ import './assets/css/text.css'
 import './assets/css/video.css'
 // @ts-ignore
 import PortalVue from 'portal-vue'
-import axios from 'axios'
+// import axios from 'axios'
 
 Vue.use(PortalVue)
 Vue.use(VueInputAutowidth)

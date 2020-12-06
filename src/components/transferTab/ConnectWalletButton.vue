@@ -36,92 +36,92 @@
 </template>
 
 <script lang="ts">
-  // @ts-nocheck
-  import { Component, Vue, Emit, Model } from "vue-property-decorator";
-  import { Wallet } from "@/interfaces/Wallet";
-  import TrezorConnect from "trezor-connect";
-  import Web3 from "web3";
-  import ClickOutside from "vue-click-outside";
-  import { GetPublicKey } from "trezor-connect/lib/types/networks/bitcoin.js.flow";
-  import CButton from "@/components/tags/cButton.vue";
+// @ts-nocheck
+import { Component, Vue, Emit, Model } from 'vue-property-decorator'
+import { Wallet } from '@/interfaces/Wallet'
+import TrezorConnect from 'trezor-connect'
+import Web3 from 'web3'
+import ClickOutside from 'vue-click-outside'
+import { GetPublicKey } from 'trezor-connect/lib/types/networks/bitcoin.js.flow'
+import CButton from '@/components/tags/cButton.vue'
 
-  const ethEnabled = async () => {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-      return true;
-    }
-    return false;
-  };
+const ethEnabled = async () => {
+  if (window.ethereum) {
+    window.web3 = new Web3(window.ethereum)
+    await window.ethereum.enable()
+    return true
+  }
+  return false
+}
 
   @Component({
     components: { CButton },
-    name: "ConnectWalletButton",
+    name: 'ConnectWalletButton',
     directives: {
-      ClickOutside,
-    },
+      ClickOutside
+    }
   })
 
-  export default class ConnectWalletButton extends Vue {
+export default class ConnectWalletButton extends Vue {
     public open = false;
 
-    @Model("change", { default: "" })
+    @Model('change', { default: '' })
     account!: string;
 
-    get isConnected() {
-      return !!this.account;
+    get isConnected () {
+      return !!this.account
     }
 
-    public onClickOutside() {
+    public onClickOutside () {
       if (!this.isConnected) {
-        this.open = false;
+        this.open = false
       }
     }
 
-    @Emit("change")
-    public accountPicked(sender: string) {
-      return sender;
+    @Emit('change')
+    public accountPicked (sender: string) {
+      return sender
     }
 
-    public async selectWallet(wallet: Wallet) {
-      if (wallet === "trezor") {
+    public async selectWallet (wallet: Wallet) {
+      if (wallet === 'trezor') {
         const response = await this.connectTrezor({
-          path: "m/44'/60'/0'/0'",
-        });
+          path: "m/44'/60'/0'/0'"
+        })
 
         if (response.success) {
         }
-      } else if (wallet === "metamask") {
-        const enabled = await ethEnabled();
+      } else if (wallet === 'metamask') {
+        const enabled = await ethEnabled()
 
         if (enabled) {
-          const accounts = await window.web3.eth.getAccounts();
-          const sender = accounts[0];
-          this.accountPicked(sender);
+          const accounts = await window.web3.eth.getAccounts()
+          const sender = accounts[0]
+          this.accountPicked(sender)
         }
       }
 
-      this.open = false;
+      this.open = false
     }
 
-    public async connectTrezor(params: GetPublicKey) {
-      return await TrezorConnect.getPublicKey(params);
+    public async connectTrezor (params: GetPublicKey) {
+      return await TrezorConnect.getPublicKey(params)
     }
 
-    public connectWalletClick() {
+    public connectWalletClick () {
       if (!this.isConnected) {
-        this.open = true;
+        this.open = true
       }
     }
 
-    get text() {
+    get text () {
       if (this.isConnected) {
-        return "Connected";
+        return 'Connected'
       } else {
-        return "Connect Wallet";
+        return 'Connect Wallet'
       }
     }
-  }
+}
 </script>
 
 <style scoped src="@/assets/css/connectWalletButton.css" />

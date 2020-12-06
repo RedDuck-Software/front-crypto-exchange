@@ -24,42 +24,42 @@
 </template>
 
 <script lang="ts">
-  import {Component, Model, Vue, Emit, Prop} from 'vue-property-decorator'
-  import CButton from "@/components/tags/cButton.vue";
-  import ConnectWalletButton from "@/components/transferTab/ConnectWalletButton.vue";
+import { Component, Model, Vue, Emit, Prop } from 'vue-property-decorator'
+import CButton from '@/components/tags/cButton.vue'
+import ConnectWalletButton from '@/components/transferTab/ConnectWalletButton.vue'
 
   @Component({
     name: 'ButtonsRow',
-    components: {ConnectWalletButton, CButton}
+    components: { ConnectWalletButton, CButton }
   })
 
-  export default class ButtonsRow extends Vue {
-
-    @Model("change", { default: "" })
+export default class ButtonsRow extends Vue {
+    @Model('change', { default: '' })
     account!: string;
-    @Prop({default: false}) transferNowDisabled!: boolean
+
+    @Prop({ default: false }) transferNowDisabled!: boolean
 
     public Account = ''
 
     get light () {
-      return this.$store.getters.theme == 'light'
+      return this.$store.getters.theme === 'light'
     }
 
-    get ifActiveLightMode() {
-      return this.light ? "classLightMode" : "";
+    get ifActiveLightMode () {
+      return this.light ? 'classLightMode' : ''
     }
 
-    get ifConnected() {
-      return "classLightModeBg"
+    get ifConnected () {
+      return 'classLightModeBg'
     }
 
     @Emit('change')
-    public onAccountChange() {
+    public onAccountChange () {
       return this.Account
     }
 
-    public send() {}
-  }
+    public send () {}
+}
 </script>
 
 <style scoped>

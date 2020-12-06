@@ -1,5 +1,5 @@
-import { Component, Prop, Vue, Emit, Ref } from 'vue-property-decorator';
-import CModal from "@/components/tags/cModal.vue";
+import { Component, Prop, Vue, Emit, Ref } from 'vue-property-decorator'
+import CModal from '@/components/tags/cModal.vue'
 
 @Component
 export default class BaseModal extends Vue {
@@ -10,12 +10,12 @@ export default class BaseModal extends Vue {
     public modal!: CModal;
 
     @Emit('close')
-    public close() {
-        return false;
+    public close () {
+      return false
     }
 
-    public closeWithCallback(callback: Function) {
-        this.modal.$once('close', callback);
-        this.close();
+    public closeWithCallback (callback: Function) {
+      this.modal.$once('close', callback)
+      this.close()
     }
 }

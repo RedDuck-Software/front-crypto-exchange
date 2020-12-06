@@ -72,43 +72,42 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
   @Component({
-    name:"CBodyTop",
+    name: 'CBodyTop'
   })
 
-  export default class CBodyTop extends Vue{
-
-    get activeTab () {
-      return this.$store.getters.activeTab
-    }
-
-    get light () {
-      return this.$store.getters.theme == 'light'
-    }
-
-    get transferStyle () {
-      return this.getTabStyle('transfer')
-    }
-
-    get donateStyle () {
-      return this.getTabStyle('donate')
-    }
-
-    public getTabStyle (tabName: string) {
-      if (this.activeTab === tabName) {
-        return 'transferClass'
-      } else if (this.light) {
-        return 'light__font_four'
-      }
-      return ''
-    }
-
-    public setTab (tabName: string) {
-      this.$store.commit('setActiveTab', tabName)
-    }
+export default class CBodyTop extends Vue {
+  get activeTab () {
+    return this.$store.getters.activeTab
   }
+
+  get light () {
+    return this.$store.getters.theme == 'light'
+  }
+
+  get transferStyle () {
+    return this.getTabStyle('transfer')
+  }
+
+  get donateStyle () {
+    return this.getTabStyle('donate')
+  }
+
+  public getTabStyle (tabName: string) {
+    if (this.activeTab === tabName) {
+      return 'transferClass'
+    } else if (this.light) {
+      return 'light__font_four'
+    }
+    return ''
+  }
+
+  public setTab (tabName: string) {
+    this.$store.commit('setActiveTab', tabName)
+  }
+}
 </script>
 
 <style scoped src='@/assets/css/converter.css'>

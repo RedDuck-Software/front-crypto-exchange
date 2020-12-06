@@ -7,21 +7,20 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
-  import TransferTab from "@/views/components/TransferTab.vue";
-  import DonateTab from "@/views/components/DonateTab.vue";
+import { Component, Vue } from 'vue-property-decorator'
+import TransferTab from '@/views/components/TransferTab.vue'
+import DonateTab from '@/views/components/DonateTab.vue'
 
   @Component({
     name: 'CBodyBottom',
-    components: {DonateTab, TransferTab}
+    components: { DonateTab, TransferTab }
   })
 
-  export default class CBodyBottom extends Vue {
-
-    get activeTab () {
-      return this.$store.getters.activeTab
-    }
+export default class CBodyBottom extends Vue {
+  get activeTab () {
+    return this.$store.getters.activeTab
   }
+}
 </script>
 
 <style scoped>

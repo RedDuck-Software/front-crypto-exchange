@@ -41,17 +41,17 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
   @Component({
     name: 'CustomInfoRow'
   })
 
-  export default class CustomInfoRow extends Vue {
-    get light () {
-      return this.$store.getters.theme == 'light'
-    }
+export default class CustomInfoRow extends Vue {
+  get light () {
+    return this.$store.getters.theme === 'light'
   }
+}
 </script>
 
 <style src="@/assets/css/transferTab.css" />

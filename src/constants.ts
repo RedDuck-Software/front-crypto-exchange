@@ -4,7 +4,8 @@ export const erc20TokenContractAbi = [
     inputs: [],
     name: 'name',
     outputs: [
-      { name: '',
+      {
+        name: '',
         type: 'string'
       }
     ],
@@ -19,7 +20,8 @@ export const erc20TokenContractAbi = [
         name: 'spender',
         type: 'address'
       },
-      { name: 'tokens',
+      {
+        name: 'tokens',
         type: 'uint256'
       }
     ],
@@ -295,5 +297,6 @@ export const erc20TokenContractAbi = [
       { indexed: false, name: 'tokens', type: 'uint256' }
     ],
     name: 'Approval',
-    type: 'event' }
-  ]
+    type: 'event'
+  }
+]

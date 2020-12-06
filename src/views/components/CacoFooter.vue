@@ -29,67 +29,66 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator'
-  import Ca from "@/components/tags/ca.vue";
+import { Component, Vue } from 'vue-property-decorator'
+import Ca from '@/components/tags/ca.vue'
 
   @Component({
-    name: "CFooter",
-    components: {Ca}
+    name: 'CFooter',
+    components: { Ca }
   })
 
-  export default class CFooter extends Vue {
-
+export default class CFooter extends Vue {
     public info = [
       {
-        text: "Contact",
-        href: "mailto:admin@cacoglobal.com",
+        text: 'Contact',
+        href: 'mailto:admin@cacoglobal.com'
       },
       {
-        text: "Terms & Conditions",
-        href: "https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing",
+        text: 'Terms & Conditions',
+        href: 'https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing'
       },
       {
-        text: "CACO Coin",
-        href: "https://drive.google.com/file/d/1EPEQNEEtD6ekaOldrq6bq5BZU_SiDkXW/view",
+        text: 'CACO Coin',
+        href: 'https://drive.google.com/file/d/1EPEQNEEtD6ekaOldrq6bq5BZU_SiDkXW/view'
       }
     ]
 
     public socialmedia = [
       {
-        icon: "fab fa-facebook-f",
-        href: "https://www.facebook.com/cacoglobal",
+        icon: 'fab fa-facebook-f',
+        href: 'https://www.facebook.com/cacoglobal'
       },
       {
         img: {
-          src: "socialmedia/Twitter.png"
+          src: 'socialmedia/Twitter.png'
         },
-        href: "https://twitter.com/cacoglobal",
+        href: 'https://twitter.com/cacoglobal'
       },
       {
         img: {
-          src: "socialmedia/Telegram.png"
+          src: 'socialmedia/Telegram.png'
         },
-        href: "https://t.me/CACOGlobal",
+        href: 'https://t.me/CACOGlobal'
       },
       {
         img: {
-          src: "socialmedia/Reddit.png"
+          src: 'socialmedia/Reddit.png'
         },
-        href: "https://www.reddit.com/user/cacoglobal",
+        href: 'https://www.reddit.com/user/cacoglobal'
       },
       {
-        icon: "fab fa-slack",
-        href: "https://join.slack.com/t/cacoglobal/signup",
+        icon: 'fab fa-slack',
+        href: 'https://join.slack.com/t/cacoglobal/signup'
       },
       {
         img: {
-          src: "socialmedia/Status.png",
-          classes: "footer__icon-status"
+          src: 'socialmedia/Status.png',
+          classes: 'footer__icon-status'
         },
-        href: "https://join.status.im/caco",
-      },
+        href: 'https://join.status.im/caco'
+      }
     ]
-  }
+}
 </script>
 
 <style scoped src="@/assets/css/footer.css">

@@ -30,18 +30,17 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
   @Component({
     name: 'GasRow'
   })
 
-  export default class GasRow extends Vue {
-
+export default class GasRow extends Vue {
     @Prop() serviceFees!: number
 
     get light () {
-      return this.$store.getters.theme == 'light'
+      return this.$store.getters.theme === 'light'
     }
-  }
+}
 </script>
