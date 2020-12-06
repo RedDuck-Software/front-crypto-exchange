@@ -80,7 +80,7 @@
   .coins-menu {
     width: 100%;
     margin: 1.15rem auto 1.15rem;
-    height: 200px;
+    height: 13.5rem;
     border: none;
     outline: none;
     overflow: scroll;
@@ -147,6 +147,10 @@
     right: .45rem;
     height: .5rem;
     transform: rotate(-35deg);
+  }
+
+  .fa-arrow-down {
+    margin-left: .6rem;
   }
 
   .email {
@@ -253,6 +257,7 @@
     align-items: center;
     margin-left: 1rem;
     transition: .1s ease-in;
+    outline: none;
   }
 
   @media screen and (max-width: 767px) {
@@ -313,11 +318,6 @@
       margin: -.4rem 0 0 0;
     }
 
-    .arrow-down {
-      margin: 1.47rem auto;
-      background-size: 1em;
-    }
-
     .coin__name::after {
       left: 2rem;
       top: .2rem;
@@ -362,7 +362,7 @@
 
   @media screen and (min-width: 768px) {
     .current__cur {
-      margin-left: -.3rem;
+      margin: .25rem 1.12rem 0 -.7rem;
     }
 
     .fa-dollar-sign {
@@ -517,6 +517,8 @@
   }
 
   .agree__text {
+    display: block;
+    margin: 0 auto;
     font-size: .7vw;
     text-align: center;
     padding-top: .3em;

@@ -151,7 +151,7 @@
               <button
                 type="button"
                 @click="onEmailDone"
-                class="input-email__btn small-transition bg-gray-300"
+                class="input-email__btn small-transition input-email__btn"
               >
                 Done
               </button>

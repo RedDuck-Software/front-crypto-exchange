@@ -126,37 +126,5 @@
   }
 </script>
 
-<style scoped>
-  .from__input {
-    max-width: 40%;
-    margin-right: 1rem;
-    margin-left: .9rem;
-    padding: .1rem .3rem .3rem 0;
-
-    background: inherit;
-
-    font-size: 1.5rem;
-    border-radius: 20px;
-  }
-
-  .from__input::placeholder {
-    font-size: .9em;
-    color: white;
-  }
-
-  .lightMode, .lightPlaceholder::placeholder{
-    color: #585858 !important;
-  }
-  .darkMode, .darkPlaceholder::placeholder{
-    color: #fff;
-  }
-
-  .text-color-pink {
-    color: #fd2c63;
-  }
-
-  .text-gray-main {
-    color: #c9c9c9;
-  }
-
+<style scoped src='@/assets/css/cinput.css'>
 </style>

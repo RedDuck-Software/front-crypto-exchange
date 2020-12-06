@@ -62,10 +62,6 @@ header {
     transition: none;
 }
 
-.fa-arrow-down {
-    margin: 0 -2rem 0 .8rem;
-}
-
 @media only screen and (min-width: 768px) {
     .currencySelection {
         font-size: .875rem;
