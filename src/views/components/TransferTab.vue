@@ -1,134 +1,140 @@
 <template>
-  <div class="form__wrapper">
-    <form
-      action="#"
-      id="converter__form"
-      class
-    >
-      <TransferVariantCoin />
+<section class="converter">
+  <div class="container">
+    <div class="form__wrapper">
+      <form
+        action="#"
+        id="converter__form"
+        class
+      >
+      
+        <div class="arrow-down mx-auto mt-16"></div>
 
-      <template v-if="transferable">
-        <TransferVariantPayment />
+        <TransferVariantCoin />
 
-        <!-- PRIVATE KEY FIELD -->
-        <!--<PrivateKeyModal
-          :visible="privateKeyModalVisible"
-          @close="privateKeyModalVisible = false"
-        />-->
 
-        <div class="gas__row">
-          <div class="gas__col">
-            <p
-              :class="{ light__font_two: light }"
-              class="gas__text"
-            >
-              <i class="fas fa-question-circle" />
-              <span class="gas__poppup">CACO Transaction Fee</span>
-              Service Fee =
-            </p>
+        <template v-if="transferable">
+          <TransferVariantPayment />
 
-            <div class="gas__button__col">
-              <label
-                style="color: white; margin-left: 2px;"
+          <!-- PRIVATE KEY FIELD -->
+          <!--<PrivateKeyModal
+            :visible="privateKeyModalVisible"
+            @close="privateKeyModalVisible = false"
+          />-->
+
+          <div class="gas__row">
+            <div class="gas__col">
+              <p
                 :class="{ light__font_two: light }"
+                class="gas__text"
               >
-                <span
-                  class="currency-value"
+                <i class="fas fa-question-circle" />
+                <span class="gas__poppup">CACO Transaction Fee</span>
+                Service Fee =
+              </p>
+
+              <div class="gas__button__col">
+                <label
+                  style="color: white; margin-left: 2px;"
                   :class="{ light__font_two: light }"
                 >
-                  {{ $store.getters.fiatType.text === 'USD' ? '$' : '€'}}
-                </span>
+                  <span
+                    class="currency-value"
+                    :class="{ light__font_two: light }"
+                  >
+                    {{ $store.getters.fiatType.text === 'USD' ? '$' : '€'}}
+                  </span>
 
-                {{ serviceFees }}
+                  {{ serviceFees }}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="converter__wallet-block flex flex-col flex-d-row sm:mt-4 justify-between">
+            <div class="converter__wallet-complete d-none">
+              <div class="wallet__select d-flex">
+                <div class="wallet__variant text-center" />
+              </div>
+            </div>
+
+            <ConnectWalletButton
+              :account="account"
+              @change="onAccountChange"
+              class="width50 lg:w-37%"
+            />
+
+            <c-button
+              @click="send"
+              :disabled="transferNowDisabled"
+              :class="[ifActiveLightMode, ifConnected]"
+              class="wallet__btn md:mt-0 width50 md:ml-4 lg:w-37%"
+            >
+              Transfer Now
+            </c-button>
+          </div>
+
+          <div class="customInfoRow">
+            <div class="customInfoCol">
+              <div class="d-flex justify-content-center mt-2">
+                <span
+                  class="agree__text"
+                  :class="{ light__font_six: light}"
+                >
+                  By clicking "Transfer Now" you agree to the
+                  <a
+                    href="https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing"
+                    class="agree__link"
+                    target="_blank"
+                  >
+                    Terms & Conditions
+                  </a>
+                </span>
+              </div>
+              <label class="checkboxContainer flex justify-between">
+                <input
+                  type="checkbox"
+                  checked="checked"
+                  :class="{ light__font_six: light }"
+                />
+                <span
+                  class="checkboxCheckmark"
+                  :class="{ checkboxCheckmark2: light }"
+                />
+                <p
+                  class="agree__text ml-1"
+                  :class="{ light__font_six: light}"
+                >
+                  Receive updates on CACO developments
+                </p>
               </label>
             </div>
           </div>
-        </div>
 
-        <div class="converter__wallet-block flex flex-col flex-d-row sm:mt-4 justify-between">
-          <div class="converter__wallet-complete d-none">
-            <div class="wallet__select d-flex">
-              <div class="wallet__variant text-center" />
-            </div>
+          <video-card />
+        </template>
+
+        <template v-else>
+          <div class="px-5 py-3">
+            <p
+              class="converter__text text-center px-10"
+              :class="{ light__font_two: light}"
+            >
+              Due to an overwhelming response and high demand, transfers have been temporarily placed on hold and will resume as soon as possible.
+            </p>
+
+            <p
+              class="converter__text text-center py-3"
+              :class="{ light__font_two: light}"
+            >
+              Apologies for the inconvenience.
+            </p>
           </div>
-
-          <ConnectWalletButton
-            :account="account"
-            @change="onAccountChange"
-            class="width50 lg:w-37%"
-          />
-
-          <c-button
-            @click="send"
-            :disabled="transferNowDisabled"
-            :class="[ifActiveLightMode, ifConnected]"
-            class="wallet__btn md:mt-0 width50 md:ml-4 lg:w-37%"
-          >
-            Transfer Now
-          </c-button>
-        </div>
-
-        <div class="customInfoRow">
-          <div class="customInfoCol">
-            <div class="d-flex justify-content-center mt-2">
-              <span
-                class="agree__text"
-                :class="{ light__font_six: light}"
-              >
-                By clicking "Transfer Now" you agree to the
-                <a
-                  href="https://drive.google.com/file/d/1P8AhZuP6856r7Pq7UgMKxBjlKseuPn3O/view?usp=sharing"
-                  class="agree__link"
-                  target="_blank"
-                >
-                  Terms & Conditions
-                </a>
-              </span>
-            </div>
-            <label class="checkboxContainer">
-              <p
-                class="agree__text ml-1"
-                :class="{ light__font_six: light}"
-              >
-                Receive updates on CACO developments
-              </p>
-
-              <input
-                type="checkbox"
-                checked="checked"
-                :class="{ light__font_six: light }"
-              />
-
-              <span
-                class="checkboxCheckmark"
-                :class="{ checkboxCheckmark2: light }"
-              />
-            </label>
-          </div>
-        </div>
-
-        <video-card />
-      </template>
-
-      <template v-else>
-        <div class="px-5 py-3">
-          <p
-            class="converter__text text-center px-10"
-            :class="{ light__font_two: light}"
-          >
-            Due to an overwhelming response and high demand, transfers have been temporarily placed on hold and will resume as soon as possible.
-          </p>
-
-          <p
-            class="converter__text text-center py-3"
-            :class="{ light__font_two: light}"
-          >
-            Apologies for the inconvenience.
-          </p>
-        </div>
-      </template>
-    </form>
+        </template>
+      </form>
+    </div>
   </div>
+</section>
 </template>
 
 <script lang="ts">

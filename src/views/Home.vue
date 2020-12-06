@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ light: light}" class="main">
+  <main :class="{ light: light}" class="main">
     <CHeader/>
 
     <CBodyTop></CBodyTop>
@@ -7,7 +7,7 @@
     <CBodyBottom></CBodyBottom>
 
     <CFooter/>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">

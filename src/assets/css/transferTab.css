@@ -80,7 +80,7 @@
   .coins-menu {
     width: 100%;
     margin: 1.15rem auto 1.15rem;
-    height: 200px;
+    height: 13.5rem;
     border: none;
     outline: none;
     overflow: scroll;
@@ -318,11 +318,6 @@
       margin: -.4rem 0 0 0;
     }
 
-    .arrow-down {
-      margin: 1.47rem auto;
-      background-size: 1em;
-    }
-
     .coin__name::after {
       left: 2rem;
       top: .2rem;
@@ -522,6 +517,8 @@
   }
   
   .agree__text {
+    display: block;
+    margin: 0 auto;
     font-size: .7vw;
     text-align: center;
     padding-top: .3em;

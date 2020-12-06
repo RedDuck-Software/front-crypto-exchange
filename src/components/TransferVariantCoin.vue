@@ -8,7 +8,7 @@
         @change="changeCoin"
       />
     </template>
-
+    <div class="arrow-down mx-auto mt-16"></div>
     <template v-slot:input>
       <c-input />
     </template>
