@@ -164,20 +164,22 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop, Model } from 'vue-property-decorator'
-  import CommonSelectBox from "@/interfaces/CommonSelectBox";
-  import ClickOutside from 'vue-click-outside'
+import { Component, Vue, Prop, Model } from 'vue-property-decorator'
+import CommonSelectBox from '@/interfaces/CommonSelectBox'
+import ClickOutside from 'vue-click-outside'
 
   @Component({
     name: 'CSelectBox',
+    directives: {
+      ClickOutside
+    }
   })
 
-  export default class CSelectBox extends Vue {
-
-    @Model("change") vModel!: CommonSelectBox;
+export default class CSelectBox extends Vue {
+    @Model('change') vModel!: CommonSelectBox;
     @Prop() balance!: number;
     @Prop() items!: CommonSelectBox[];
-    @Prop({ default: false}) multistep!: boolean
+    @Prop({ default: false }) multistep!: boolean
 
     public open = false
     public step = 1
@@ -186,12 +188,12 @@
     /* --------------------------------------------------------------------- */
 
     get currentClass () {
-      return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
+      return this.$store.getters.theme === 'dark' ? 'darkMode' : 'lightMode'
     }
 
     get arrowClass () {
       var clss1 = this.open ? 'coin__arrow-open' : 'coin__arrow-close'
-      var clss2 = this.$store.getters.theme == 'dark' ? 'arrowDarkMode' : 'arrowLightMode'
+      var clss2 = this.$store.getters.theme === 'dark' ? 'arrowDarkMode' : 'arrowLightMode'
       return `${clss1} ${clss2}`
     }
 
@@ -213,36 +215,35 @@
       this.open = false
     }
 
-    public select(item: CommonSelectBox) {
+    public select (item: CommonSelectBox) {
       if (item.isAllowed) {
-        this.$emit("change", item);
+        this.$emit('change', item)
         if (this.multistep) {
-          this.step = 2;
+          this.step = 2
         } else {
-          this.open = false;
+          this.open = false
         }
       }
     }
-
 
     /** ------------------------------ MultiStep -------------------------------------- **/
 
     public email = ''
     public emailError = ''
 
-    public onBackClicked() {
+    public onBackClicked () {
       // this.$emit("select", 0);
-      this.step = 1;
+      this.step = 1
     }
 
-    public onEmailDone() {
+    public onEmailDone () {
       const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
       if (!regex.test(this.email)) {
         this.emailError = 'Invalid Email'
         return ''
       }
-      this.open = false;
+      this.open = false
       this.$store.commit('setDesEmail', this.email)
     }
-  }
+}
 </script>

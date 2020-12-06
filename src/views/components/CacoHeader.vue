@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import ClickOutside from 'vue-click-outside'
 import Ca from '@/components/tags/ca.vue'
 import Entity from '@/interfaces/Entity'
@@ -96,7 +96,7 @@ export default class CHeader extends Vue {
     /** ----------------------------------------------- **/
 
     get dark () {
-      return this.$store.getters.theme == 'dark'
+      return this.$store.getters.theme === 'dark'
     }
 
     get selectedFiat () {
@@ -127,5 +127,4 @@ export default class CHeader extends Vue {
 
 </script>
 
-<style scoped src="@/assets/css/header.css">
-</style>
+<style scoped src="@/assets/css/header.css" />
