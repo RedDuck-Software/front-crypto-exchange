@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <transfer-tab v-if="activeTab == 'transfer'" />
+    <transfer-tab v-if="activeTab === 'transfer'" />
 
     <donate-tab v-else />
   </div>
