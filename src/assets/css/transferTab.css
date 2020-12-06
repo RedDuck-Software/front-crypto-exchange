@@ -149,6 +149,10 @@
     transform: rotate(-35deg);
   }
 
+  .fa-arrow-down {
+    margin-left: .6rem;
+  }
+
   .email {
     display: none;
   }
@@ -253,6 +257,7 @@
     align-items: center;
     margin-left: 1rem;
     transition: .1s ease-in;
+    outline: none;
   }
 
   @media screen and (max-width: 767px) {
@@ -362,7 +367,7 @@
 
   @media screen and (min-width: 768px) {
     .current__cur {
-      margin-left: -.3rem;
+      margin: .25rem 1.12rem 0 -.7rem;
     }
 
     .fa-dollar-sign {
