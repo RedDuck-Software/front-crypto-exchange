@@ -193,7 +193,7 @@ export default class CSelectBox extends Vue {
 
     get arrowClass () {
       var clss1 = this.open ? 'coin__arrow-open' : 'coin__arrow-close'
-      var clss2 = this.$store.getters.theme === 'dark' ? 'arrowDarkMode' : 'arrowLightMode'
+      var clss2 = this.$store.getters.theme === 'dark' ? 'arrowLightMode' : 'arrowDarkMode'
       return `${clss1} ${clss2}`
     }
 

@@ -1,5 +1,8 @@
 <template>
-  <div class="custom-bg hover:cursor-pointer converter__from">
+  <div 
+    class="converter__from hover:cursor-pointer"
+    :class="{ light: light, border: light, light__field_bg: light}"
+  >
     <div class="w-full">
       <div class="coin__wrap flex items-center justify-between">
         <slot name="selection" />
@@ -21,8 +24,11 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 export default class TransferVariant extends Vue {
     @Prop({ default: 1 }) exchangeRate!: number
+    
+    get light () {
+      return this.$store.getters.theme == 'light'
+    }
 }
 </script>
 
-<style scoped src="@/assets/css/transferTab.css">
-</style>
+<style scoped src="@/assets/css/transferTab.css"></style>

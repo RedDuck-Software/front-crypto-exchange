@@ -17,40 +17,28 @@ header {
   margin: 0 auto 0 0;
 }
 
-@media only screen and (min-width: 768px) {
-  .header__beta {
-    width: 2.5rem;
-  }
-}
-
-@media only screen and (max-width: 767px) {
-  .header__logo {
-    width: 5rem;
-  }
-}
-
 .header__light {
   margin: 1.65rem 1.6rem 0 auto;
   font-size: 1.3em;
 }
 
 .bg-color {
-    background: #fd2c63;
+  background: #fd2c63;
 }
 
 .b-shadow {
-    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
 }
 
 .text-gray {
-    color: #9a9a9a;
+  color: #9a9a9a;
 }
 
 .button__open {
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .button__closed {
@@ -58,14 +46,8 @@ header {
 }
 
 .currencyButton {
-    padding: .5rem 2.7rem .5rem 2.1rem;
-    transition: none;
-}
-
-@media only screen and (min-width: 768px) {
-    .currencySelection {
-        font-size: .875rem;
-    }
+  padding: .5rem 2.7rem .5rem 2.1rem;
+  transition: none;
 }
 
 .toggling_icons {
@@ -137,9 +119,48 @@ header {
   .currency-active i {
     padding-left: 10px;
   }
-  
-  .fa-angle-down:before {
-    font-size: 1.1em;
-    font-family: "FontAwesome";
+
+  .currencyButton .fa-arrow-down {
+    margin-right: -2rem;
+  }
+
+  @media screen and (max-width: 450px) {
+    .fa-moon {
+      display: block;
+      font-size: .85em;
+      margin: .35rem 0 0 -0.3rem;
+    }
+
+    .sun-icon {
+      margin: .15rem 0 0 0;
+      max-width: 1.4rem;
+    }
   }
   
+  @media screen and (max-width: 767px) {
+    .header__logo {
+      width: 5rem;
+    }
+
+    .header__light {
+      margin: 1.5rem .6rem 0 auto;
+    }
+
+    .currencyButton {
+      padding: .35rem 1.65rem .3rem;
+    }
+
+    .currencyButton .fa-arrow-down {
+      margin: 0 -1.1rem 0 .5rem;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .header__beta {
+      width: 2.5rem;
+    }
+
+    .currencySelection {
+      font-size: .875rem;
+    }
+  }

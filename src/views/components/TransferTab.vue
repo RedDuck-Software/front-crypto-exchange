@@ -4,6 +4,7 @@
       action="#"
       class="converter__form"
     >
+    <div class="arrow-down mx-auto mt-16"></div>
       <TransferVariantCoin
         v-model="coinAmount"
         :fiat-amount="fiatAmount"

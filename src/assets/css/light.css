@@ -55,8 +55,21 @@
     background-color: #efefef !important;
 }
 
+@media screen and (max-width: 767px) {
+    .light__field_bg {
+        border: .93rem solid #ebebeb!important;
+        background-color: #ebebeb!important;
+    }
+}
+
 .border {
     border: 30px solid #ebebeb !important;
+}
+
+@media screen and (max-width: 767px) {
+    .border {
+        border: .93rem solid #434548 !important;
+    }
 }
 
 .btn_border {
@@ -66,4 +79,18 @@
 .btn_border_radius {
     border: 2px solid #585858 !important;
     border-radius: 50%;
+}
+
+.lightMode, .lightPlaceholder::placeholder{
+    color: #585858 !important;
+}
+.darkMode, .darkPlaceholder::placeholder{
+    color: #fff;
+}
+
+.arrowDarkMode {
+    background-color: #585858 !important;
+}
+.arrowLightMode {
+    background-color: #fff;
 }

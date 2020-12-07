@@ -49,7 +49,7 @@
     </div>
 
     <div
-      class="menu-options field-bg d-flex"
+      class="menu-options d-flex"
       :class="{ light__bg: light}"
     >
       <button
