@@ -13,12 +13,12 @@ export default class MetamaskServiceWeb3 {
 
   // not tested well, try 200$ value it will give 0
   public static getFees (amount : number) {
-    const feePercent = this.getFeesPercent(amount)
+    const feePercent = this.getFeesPercentWeb3(amount)
 
     return feePercent * amount
   }
 
-  public static getFeesPercent (givenAmount : number) {
+  public static getFeesPercentWeb3 (givenAmount : number) {
     console.log('getFeesPercent:', givenAmount)
 
     const amount = parseFloat(givenAmount.toFixed(2))

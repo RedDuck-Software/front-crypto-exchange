@@ -44,6 +44,7 @@ import Web3 from 'web3'
 import ClickOutside from 'vue-click-outside'
 import { GetPublicKey } from 'trezor-connect/lib/types/networks/bitcoin.js.flow'
 import CButton from '@/components/tags/cButton.vue'
+import { ethers } from 'ethers'
 
 const ethEnabled = async () => {
   if (window.ethereum) {
@@ -94,10 +95,13 @@ export default class ConnectWalletButton extends Vue {
       } else if (wallet === 'metamask') {
         const enabled = await ethEnabled()
 
+        const provider = new ethers.providers.JsonRpcProvider()
         if (enabled) {
-          const accounts = await window.web3.eth.getAccounts()
-          const sender = accounts[0]
-          this.accountPicked(sender)
+          const address = provider.getSigner(0).getAddress()
+          console.log('signer', provider.getSigner(0))
+          console.log('address', address)
+          // const sender = accounts[0]
+          this.accountPicked(address)
         }
       }
 

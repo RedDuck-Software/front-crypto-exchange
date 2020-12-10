@@ -84,6 +84,7 @@ export default class MetamaskService {
 
   private static async getStableCoinBalancePromise (address: string, contractAddress: string): Promise<number> {
     const walletAddress = address
+    console.log('walletAddress', walletAddress)
 
     // The minimum ABI to get ERC20 Token balance
     const minABI = [
@@ -107,10 +108,13 @@ export default class MetamaskService {
 
     // Get ERC20 Token contract instance
     const contract = new ethers.Contract(contractAddress, minABI, provider)
+    console.log('contract', contract)
     // const value = await contract.getValue()
 
-    const decimals = await contract.methods.decimals().call()
-    const tokenBalance = await contract.methods.balanceOf(walletAddress).call()
+    const decimals = await contract.decimals()
+    console.log('decimal', decimals)
+    const tokenBalance = await contract.balanceOf(walletAddress)
+    console.log('tokenBalance', tokenBalance)
 
     let balance
     if (ethers.BigNumber.from(tokenBalance)) {
