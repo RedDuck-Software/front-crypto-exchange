@@ -78,13 +78,14 @@ export default class MetamaskService {
 
   public static async getEthBalancePromise (address: string): Promise<number> {
     // @ts-ignore
-    var balance = await provider.getBalance('ethers.eth')
+    var balance = await provider.getBalance(address)
+    // console.log('getEthBalance', balance)
     return +ethers.utils.formatEther(balance)
   }
 
   private static async getStableCoinBalancePromise (address: string, contractAddress: string): Promise<number> {
     const walletAddress = address
-    console.log('walletAddress', walletAddress)
+    // console.log('walletAddress', walletAddress)
 
     // The minimum ABI to get ERC20 Token balance
     const minABI = [
@@ -108,13 +109,13 @@ export default class MetamaskService {
 
     // Get ERC20 Token contract instance
     const contract = new ethers.Contract(contractAddress, minABI, provider)
-    console.log('contract', contract)
+    // console.log('contract', contract)
     // const value = await contract.getValue()
 
     const decimals = await contract.decimals()
-    console.log('decimal', decimals)
+    // console.log('decimal', decimals)
     const tokenBalance = await contract.balanceOf(walletAddress)
-    console.log('tokenBalance', tokenBalance)
+    // console.log('tokenBalance', tokenBalance)
 
     let balance
     if (ethers.BigNumber.from(tokenBalance)) {
@@ -128,7 +129,7 @@ export default class MetamaskService {
     const divAmount = bn10.pow(bnDecimals)
     balance = balance.div(divAmount)
 
-    console.log('fetched balance:', balance.toString())
+    console.log('fetched balance:', balance.toString(), balance.toNumber())
 
     return balance.toNumber()
   }

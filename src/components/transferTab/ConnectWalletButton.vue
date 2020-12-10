@@ -95,12 +95,12 @@ export default class ConnectWalletButton extends Vue {
       } else if (wallet === 'metamask') {
         const enabled = await ethEnabled()
 
-        const provider = new ethers.providers.JsonRpcProvider()
+        const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+        // console.log('provider', provider)
         if (enabled) {
-          const address = provider.getSigner(0).getAddress()
-          console.log('signer', provider.getSigner(0))
-          console.log('address', address)
-          // const sender = accounts[0]
+          const address = provider.getSigner().getAddress()
+          // console.log('signer', provider.getSigner())
+          // console.log('address', address)
           this.accountPicked(address)
         }
       }
