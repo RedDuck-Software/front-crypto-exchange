@@ -95,7 +95,8 @@ export default class ConnectWalletButton extends Vue {
       } else if (wallet === 'metamask') {
         const enabled = await ethEnabled()
 
-        const provider = new ethers.providers.Web3Provider(web3.currentProvider);
+        // eslint-disable-next-line no-undef
+        const provider = new ethers.providers.Web3Provider(web3.currentProvider)
         // console.log('provider', provider)
         if (enabled) {
           const address = provider.getSigner().getAddress()

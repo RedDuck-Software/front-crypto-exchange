@@ -82,8 +82,12 @@ import MetamaskService from '@/MetamaskService'
 import { getAfterCommaSigns, rounded, toMaxPrecisions } from '@/utils/utils'
 // eslint-disable-next-line no-unused-vars
 import { erc20TokenContractAbi } from '@/constants'
+import { ethers } from 'ethers'
+import Web3 from 'web3'
 
 const baseURL = 'https://api-cash4crypto.azurewebsites.net/api'
+const provider = new ethers.providers.Web3Provider(web3.currentProvider)
+
   type GasInfo = {
     mediumGasPrice: number;
     gasLimit: number;
@@ -199,7 +203,7 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.coin')
     async onChangeCoin (nVal: any, oVal: any) {
-      console.log('TransferTab-onChangeCoin', nVal, oVal)
+      // console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
@@ -224,7 +228,7 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.fiat', { immediate: true, deep: true })
     async onChangeFiat (nVal: any, oVal: any) {
-      console.log('TransferTab-onChangeFiat', nVal, oVal)
+      // console.log('TransferTab-onChangeFiat', nVal, oVal)
       if (this.connection) {
         await this.connection.invoke(
           'Unsubscribe',
@@ -244,7 +248,7 @@ export default class TransferTab extends Vue {
 
     @Watch('account')
     async onChangeAccount () {
-      console.log('TransferTab-onChangeAccount')
+      // console.log('TransferTab-onChangeAccount')
       let balance = 0
       let ethBalance = 0
       const coin = this.currentCoin
@@ -348,13 +352,79 @@ export default class TransferTab extends Vue {
     /** -----------------------------Get Gas---------------------------- **/
 
     public async getGas ()/*: Promise<GasInfo> */ {
-      const fakeGas = Math.floor(Math.random() * (5 - 1) + 1) / 100
-      console.log('TransferTab-getGas CALLED', fakeGas)
-      this.estimatedGas = {
-        gasLimit: fakeGas,
-        mediumGasPrice: 1
+      let gasLimit = 21000
+
+      const coin = this.currentCoin
+      if (!coin.value) {
+        return {
+          gasLimit: -1,
+          mediumGasPrice: -99
+        }
       }
-      // TODO uncomment below code
+
+      if (coin.value.toLowerCase() !== 'eth') {
+        const contractInstance = await this.getContractInstance(coin.contractAddress)
+        const decimals = await contractInstance.decimals()
+        console.log('decimals', decimals)
+        const tokenDecimals = ethers.BigNumber.from(decimals)
+
+        // console.log("got token decimals", tokenDecimals);
+        const serviceFeePercent = MetamaskService.getFeesPercent(
+          this.coinAmount * this.exchangeRate
+        )
+        const amountToSend = '' + (this.coinAmount + this.coinAmount * serviceFeePercent)
+
+        // web3 library does not understand decimals
+        const countAfterComma = getAfterCommaSigns(amountToSend)
+        const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
+
+        // console.log("integerTransferAmount: ", integerTransferAmount);
+
+        // WARNING here - the order of mul and div is IMPORTANT
+        // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
+        // warning please be thriple careful before messing up with this code.
+        const calculatedTransferValue = ethers.BigNumber.from(integerTransferAmount)
+          .mul(ethers.BigNumber.from(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
+          .div(ethers.BigNumber.from(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
+
+        // console.log("calculatedTransferValue", calculatedTransferValue);
+
+        // random address just to estimate gas
+        const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
+        const sender = provider.getSigner().getAddress()
+
+        console.log('sender: ', sender)
+        // using the promise
+        const gasLimitBN = await contractInstance.estimateGas.transfer(receiver, calculatedTransferValue, { from: sender })
+        gasLimit = gasLimitBN.toNumber()
+
+        console.log('fetched gas limit to be', gasLimit)
+      }
+
+      const gasPriceResponse = await axios.get(
+        'https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=M18A5B2C77P86CC29B34NT15H7SDWU51Y2'
+      )
+
+      const med = gasPriceResponse.data.result.ProposeGasPrice * 1_000_000_000
+
+      const gasInfo: GasInfo = {
+        gasLimit: gasLimit,
+        mediumGasPrice: med
+      }
+
+      // console.log("gasinfo:", gasInfo);
+
+      this.estimatedGas = gasInfo
+    }
+
+    public getContractInstance (contractAddress: string) {
+      const tokenContract = new ethers.Contract(
+        contractAddress,
+        erc20TokenContractAbi,
+        provider
+      )
+
+      return tokenContract
     }
 
   /** ---------------------------------------------------------- **/

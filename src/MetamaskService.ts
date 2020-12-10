@@ -22,11 +22,9 @@ export default class MetamaskService {
   }
 
   public static getFeesPercent (givenAmount : number) {
-    console.log('getFeesPercent:', givenAmount)
-
+    // console.log('getFeesPercent:', givenAmount)
     const amount = parseFloat(givenAmount.toFixed(2))
-
-    console.log('current amount:', amount)
+    // console.log('current amount:', amount)
 
     if (amount <= 0 || amount > 200) { return 0 }
 
@@ -54,7 +52,7 @@ export default class MetamaskService {
     return fee[1]
   }
 
-  private static async getContractInstance (contractAddress: string) {
+  public static async getContractInstance (contractAddress: string) {
     const tokenContract = new ethers.Contract(
       contractAddress,
       erc20TokenContractAbi,
@@ -79,7 +77,6 @@ export default class MetamaskService {
   public static async getEthBalancePromise (address: string): Promise<number> {
     // @ts-ignore
     var balance = await provider.getBalance(address)
-    // console.log('getEthBalance', balance)
     return +ethers.utils.formatEther(balance)
   }
 
@@ -109,13 +106,9 @@ export default class MetamaskService {
 
     // Get ERC20 Token contract instance
     const contract = new ethers.Contract(contractAddress, minABI, provider)
-    // console.log('contract', contract)
-    // const value = await contract.getValue()
 
     const decimals = await contract.decimals()
-    // console.log('decimal', decimals)
     const tokenBalance = await contract.balanceOf(walletAddress)
-    // console.log('tokenBalance', tokenBalance)
 
     let balance
     if (ethers.BigNumber.from(tokenBalance)) {

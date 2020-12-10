@@ -6,13 +6,13 @@ import Web3 from 'web3'
 // not all methods are about metamask e.g getfees getamountminusfees
 export default class MetamaskServiceWeb3 {
   public static getAmountPlusFee (amount: number) {
-    const fees = MetamaskServiceWeb3.getFees(amount)
+    const fees = MetamaskServiceWeb3.getFeesWeb3(amount)
 
     return amount + fees
   }
 
   // not tested well, try 200$ value it will give 0
-  public static getFees (amount : number) {
+  public static getFeesWeb3 (amount : number) {
     const feePercent = this.getFeesPercentWeb3(amount)
 
     return feePercent * amount
@@ -51,7 +51,7 @@ export default class MetamaskServiceWeb3 {
     return fee[1]
   }
 
-  private static getContractInstance (contractAddress: string) {
+  private static getContractInstanceWeb3 (contractAddress: string) {
     const tokenContract = new window.web3.eth.Contract(
       erc20TokenContractAbi,
       contractAddress
@@ -64,15 +64,15 @@ export default class MetamaskServiceWeb3 {
 
   }
 
-  public static async getBalance (address: string, coin: (CommonSelectbox & {contractAddress: string})) {
+  public static async getBalanceWeb3 (address: string, coin: (CommonSelectbox & {contractAddress: string})) {
     if (coin.value === 'eth') {
-      return MetamaskServiceWeb3.getEthBalancePromise(address)
+      return MetamaskServiceWeb3.getEthBalancePromiseWeb3(address)
     }
 
-    return MetamaskServiceWeb3.getStableCoinBalancePromise(address, coin.contractAddress)
+    return MetamaskServiceWeb3.getStableCoinBalancePromiseWeb3(address, coin.contractAddress)
   }
 
-  public static async getEthBalancePromise (address: string): Promise<number> {
+  public static async getEthBalancePromiseWeb3 (address: string): Promise<number> {
     return new Promise((resolve, reject) => {
       window.web3.eth.getBalance(address, (err, result) => {
         const balance = window.web3.utils.fromWei(result, 'ether')
@@ -85,7 +85,7 @@ export default class MetamaskServiceWeb3 {
     })
   }
 
-  private static async getStableCoinBalancePromise (address: string, contractAddress: string): Promise<number> {
+  private static async getStableCoinBalancePromiseWeb3 (address: string, contractAddress: string): Promise<number> {
     const walletAddress = address
 
     // The minimum ABI to get ERC20 Token balance
