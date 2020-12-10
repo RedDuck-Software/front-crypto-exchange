@@ -96,7 +96,9 @@ export default class ConnectWalletButton extends Vue {
 
         if (enabled) {
           const accounts = await window.web3.eth.getAccounts()
+          console.log('accounts', accounts)
           const sender = accounts[0]
+          console.log('sender', sender)
           this.accountPicked(sender)
         }
       }
