@@ -50,6 +50,7 @@ export default class TransferVariantCoin extends Vue {
 
     @Watch('coin')
     onChangeCoin () {
+      console.log('TransferVariantCoin-onChangeCoin', this.coin)
       this.$store.commit('setCoin', this.coin)
     }
 
@@ -63,7 +64,7 @@ export default class TransferVariantCoin extends Vue {
       this.updateCoinAmount()
     }
 
-    @Watch('coinList')
+        @Watch('coinList')
     onUpdateCoinList () {
       console.log('coinList', this.coinList)
       if (this.coinList) {
@@ -71,13 +72,13 @@ export default class TransferVariantCoin extends Vue {
       }
     }
 
-    /** ----------------------------------------------------------------- **/
+        /** ----------------------------------------------------------------- **/
 
     @Emit('change')
-    public changeCoinAmount (value: number) {
-      // console.log("changeCoinAmount", this.$store.getters.typingActive, value, this.amount)
-      return value
-    }
+        public changeCoinAmount (value: number) {
+          // console.log("changeCoinAmount", this.$store.getters.typingActive, value, this.amount)
+          return value
+        }
 
     /** ----------------------------------------------------------------- **/
 

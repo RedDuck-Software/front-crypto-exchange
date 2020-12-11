@@ -4,7 +4,7 @@
       action="#"
       class="converter__form"
     >
-    <div class="arrow-down mx-auto mt-16"></div>
+    <div class="arrow-down mx-auto mt-16" />
       <TransferVariantCoin
         v-model="coinAmount"
         :fiat-amount="fiatAmount"
@@ -203,13 +203,15 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.coin')
     async onChangeCoin (nVal: any, oVal: any) {
-      // console.log('TransferTab-onChangeCoin', nVal, oVal)
+      console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
-        await this.connection.invoke(
-          'Unsubscribe',
-          oVal.id,
-          this.currentFiat.id
-        )
+        if (oVal.id) {
+          await this.connection.invoke(
+            'Unsubscribe',
+            oVal.id,
+            this.currentFiat.id
+          )
+        }
 
         await this.connection.invoke(
           'Subscribe',
@@ -217,9 +219,11 @@ export default class TransferTab extends Vue {
           this.currentFiat.id
         )
 
-        if (nVal) {
+        if (nVal && this.account) {
           const balance = await MetamaskService.getBalance(this.account, nVal)
           this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
+          // this.balance = balance
+          // console.log('balance', balance)
         }
 
         await this.updateEstimatedGas()
@@ -228,8 +232,8 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.fiat', { immediate: true, deep: true })
     async onChangeFiat (nVal: any, oVal: any) {
-      // console.log('TransferTab-onChangeFiat', nVal, oVal)
-      if (this.connection) {
+      console.log('TransferTab-onChangeFiat', nVal, oVal)
+      if (this.connection && oVal) {
         await this.connection.invoke(
           'Unsubscribe',
           this.currentCoin.id,
@@ -331,14 +335,15 @@ export default class TransferTab extends Vue {
         }))
       }
 
-      this.$store.commit('setCoin', this.coinList[0])
-      if (this.connection) {
+      // this.$store.commit('setCoin', this.coinList[0])
+      /*      if (this.connection) {
+        console.log('SUBSCRIBE')
         await this.connection.invoke(
           'Subscribe',
           this.coinList[0].id,
           this.currentFiat.id
         )
-      }
+      } */
     }
 
     public updateEstimatedGas () {
@@ -365,10 +370,8 @@ export default class TransferTab extends Vue {
       if (coin.value.toLowerCase() !== 'eth') {
         const contractInstance = await this.getContractInstance(coin.contractAddress)
         const decimals = await contractInstance.decimals()
-        console.log('decimals', decimals)
         const tokenDecimals = ethers.BigNumber.from(decimals)
 
-        // console.log("got token decimals", tokenDecimals);
         const serviceFeePercent = MetamaskService.getFeesPercent(
           this.coinAmount * this.exchangeRate
         )
@@ -393,7 +396,6 @@ export default class TransferTab extends Vue {
         const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
         const sender = provider.getSigner().getAddress()
 
-        console.log('sender: ', sender)
         // using the promise
         const gasLimitBN = await contractInstance.estimateGas.transfer(receiver, calculatedTransferValue, { from: sender })
         gasLimit = gasLimitBN.toNumber()
