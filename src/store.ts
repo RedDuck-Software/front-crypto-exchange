@@ -7,13 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     theme: 'dark',
-    fiat: {id:0, name:'USD'},
+    fiat: { id: 0, name: 'USD' },
     coin: {},
     activeTab: 'transfer',
     typingActive: '',
     fiatList: [],
     payment: {},
-    desEmail: '',
+    desEmail: ''
   },
 
   mutations: {
@@ -25,16 +25,16 @@ export default new Vuex.Store({
       state.fiat = type
     },
 
-    setCoin (state, num) {
-      state.coin = num
+    setCoin (state, coin) {
+      state.coin = coin
     },
 
     setActiveTab (state, type) {
-      state.activeTab = type    // transfer or donate
+      state.activeTab = type // transfer or donate
     },
 
     setInputActive (state, type) {
-      state.typingActive = type  // coin or fiat
+      state.typingActive = type // coin or fiat
     },
 
     setFiatList (state, payload) {
@@ -45,7 +45,7 @@ export default new Vuex.Store({
       state.payment = payload
     },
 
-    setDesEmail(state, payload) {
+    setDesEmail (state, payload) {
       state.desEmail = payload
     }
   },
