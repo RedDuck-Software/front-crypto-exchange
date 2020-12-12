@@ -10,16 +10,16 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
   @Component({
     name: 'CButton'
   })
 
-  export default class CButton extends Vue {
-    @Prop({default:'bg-color'})
+export default class CButton extends Vue {
+    @Prop({ default: 'bg-color' })
     public readonly bgClass!: string;
-  }
+}
 </script>
 
 <style scoped>

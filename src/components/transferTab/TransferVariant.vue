@@ -1,5 +1,5 @@
 <template>
-  <div 
+  <div
     class="converter__from hover:cursor-pointer"
     :class="{ light: light, border: light, light__field_bg: light}"
   >
@@ -24,9 +24,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 export default class TransferVariant extends Vue {
     @Prop({ default: 1 }) exchangeRate!: number
-    
+
     get light () {
-      return this.$store.getters.theme == 'light'
+      return this.$store.getters.theme === 'light'
     }
 }
 </script>

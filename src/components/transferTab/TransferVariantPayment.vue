@@ -1,7 +1,5 @@
 <template>
-  <transfer-variant
-    variant="fiat"
-  >
+  <transfer-variant>
     <template v-slot:selection>
       <c-select-box
         v-model="payment"

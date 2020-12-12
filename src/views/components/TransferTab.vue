@@ -203,7 +203,7 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.coin')
     async onChangeCoin (nVal: any, oVal: any) {
-      console.log('TransferTab-onChangeCoin', nVal, oVal)
+      // console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
         if (oVal.id) {
           await this.connection.invoke(
@@ -221,8 +221,8 @@ export default class TransferTab extends Vue {
 
         if (nVal && this.account) {
           const balance = await MetamaskService.getBalance(this.account, nVal)
-          this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
-          // this.balance = balance
+          // this.balance = parseFloat(parseFloat(balance.toString()).toFixed(4))
+          this.balance = balance
           // console.log('balance', balance)
         }
 
@@ -232,7 +232,7 @@ export default class TransferTab extends Vue {
 
     @Watch('$store.getters.fiat', { immediate: true, deep: true })
     async onChangeFiat (nVal: any, oVal: any) {
-      console.log('TransferTab-onChangeFiat', nVal, oVal)
+      // console.log('TransferTab-onChangeFiat', nVal, oVal)
       if (this.connection && oVal) {
         await this.connection.invoke(
           'Unsubscribe',

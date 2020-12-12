@@ -55,11 +55,11 @@
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-  import { Portal } from 'portal-vue';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator'
+import { Portal } from 'portal-vue'
 
   @Component({ name: 'CModal', components: { Portal } })
-  export default class CModal extends Vue {
+export default class CModal extends Vue {
     @Prop({ required: true })
     readonly visible!: boolean;
 
@@ -79,23 +79,23 @@
     readonly borderColorClass!: string;
 
     @Watch('visible', { immediate: true })
-    public onVisibilityChange(visible: boolean) {
+    public onVisibilityChange (visible: boolean) {
       if (visible) {
-        this.show();
+        this.show()
       } else {
-        this.close();
+        this.close()
       }
     }
 
-    get leaving() {
-      return this.backdropLeaving || this.cardLeaving;
+    get leaving () {
+      return this.backdropLeaving || this.cardLeaving
     }
 
     @Watch('leaving')
-    public onLeavingChange(leaving: boolean) {
+    public onLeavingChange (leaving: boolean) {
       if (!leaving) {
-        this.modalVisible = false;
-        this.$emit('close');
+        this.modalVisible = false
+        this.$emit('close')
       }
     }
 
@@ -109,49 +109,49 @@
 
     private cardLeaving = false;
 
-    public onCloseClick() {
+    public onCloseClick () {
       if (this.clickCloseAction) {
-        this.clickCloseAction();
+        this.clickCloseAction()
       } else {
-        this.close();
+        this.close()
       }
     }
 
-    public show() {
-      this.modalVisible = true;
-      this.backdropVisible = true;
-      this.showContent = true;
+    public show () {
+      this.modalVisible = true
+      this.backdropVisible = true
+      this.showContent = true
 
-      document.body.style.setProperty('overflow', 'hidden');
+      document.body.style.setProperty('overflow', 'hidden')
     }
 
-    public close() {
-      this.backdropVisible = false;
-      this.showContent = false;
+    public close () {
+      this.backdropVisible = false
+      this.showContent = false
 
-      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow')
     }
 
-    public handleBackdropClick() {
+    public handleBackdropClick () {
       if (this.shouldCloseOnOutsideClick) {
-        this.close();
+        this.close()
       }
     }
 
-    private created() {
+    private created () {
       const onEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape' && this.visible) {
-          this.close();
+          this.close()
         }
-      };
+      }
 
-      document.addEventListener('keydown', onEscape);
+      document.addEventListener('keydown', onEscape)
 
       this.$once('hook:destroyed', () => {
-        document.removeEventListener('keydown', onEscape);
-      });
+        document.removeEventListener('keydown', onEscape)
+      })
     }
-  }
+}
 </script>
 
 <style>

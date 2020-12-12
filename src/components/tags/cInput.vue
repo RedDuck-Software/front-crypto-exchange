@@ -36,16 +36,15 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop, Model, Emit, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop, Model, Watch } from 'vue-property-decorator'
 
   @Component({
-    name: 'CInput',
+    name: 'CInput'
   })
 
-  export default class CInput extends Vue {
-
+export default class CInput extends Vue {
     @Model() vModel!: number
-    @Prop() icon!:   string
+    @Prop() icon!: string
     @Prop() append!: string
     @Prop() limit!: Array<number>
     @Prop() maxPrecisions!: number
@@ -56,11 +55,11 @@
     /** ---------------------------------- GET ---------------------------------------- **/
 
     get currentClass () {
-      return this.$store.getters.theme == 'dark' ? 'darkMode' : 'lightMode'
+      return this.$store.getters.theme === 'dark' ? 'darkMode' : 'lightMode'
     }
 
     get currentPlaceholder () {
-      return this.$store.getters.theme == 'dark' ? 'darkPlaceholder' : 'lightPlaceholder'
+      return this.$store.getters.theme === 'dark' ? 'darkPlaceholder' : 'lightPlaceholder'
     }
 
     get limitValidation () {
@@ -72,9 +71,9 @@
 
     /** ---------------------------------- Watch --------------------------------------- **/
 
-    @Watch("vModel")
-    onChangeOutside(newVal: number) {
-      if (this.$store.getters.typingActive != this.variant) this.amount = newVal
+    @Watch('vModel')
+    onChangeOutside (newVal: number) {
+      if (this.$store.getters.typingActive !== this.variant) this.amount = newVal
     }
 
     /** ------------------------------------------------------------------------------ **/
@@ -84,26 +83,26 @@
         this.checkDecimalPrecisions($event) &&
         this.checkLimit($event)
       ) {
-        this.$store.commit("setInputActive", this.variant)
-        this.$emit("change", this.amount);
+        this.$store.commit('setInputActive', this.variant)
+        this.$emit('change', this.amount)
       }
     }
 
-    public onlyNumber($event: KeyboardEvent) {
+    public onlyNumber ($event: KeyboardEvent) {
       const char = $event.key
-      if (!/[0-9\.]/.test(char) && char != 'Backspace' && char != 'Delete') {
+      if (!/[0-9\\.]/.test(char) && char !== 'Backspace' && char !== 'Delete') {
         $event.preventDefault()
         return false
       }
       return true
     }
 
-    public checkDecimalPrecisions($event: KeyboardEvent) {
+    public checkDecimalPrecisions ($event: KeyboardEvent) {
       const char = $event.key
-      const tmp = this.amount + ""
-      const decimal = tmp.split(".")[1]
+      const tmp = this.amount + ''
+      const decimal = tmp.split('.')[1]
       if (decimal) {
-        if (decimal.length >= this.maxPrecisions && char != 'Backspace' && char != 'Delete') {
+        if (decimal.length >= this.maxPrecisions && char !== 'Backspace' && char !== 'Delete') {
           $event.preventDefault()
           return false
         }
@@ -111,19 +110,19 @@
       return true
     }
 
-    public checkLimit($event: KeyboardEvent) {
+    public checkLimit ($event: KeyboardEvent) {
       const char = $event.key
       if (!this.limit) return true
-      if ((this.amount < this.limit[0]
-        || this.amount > this.limit[1]) &&
-        char != 'Backspace' && char != 'Delete'
+      if ((this.amount < this.limit[0] ||
+        this.amount > this.limit[1]) &&
+        char !== 'Backspace' && char !== 'Delete'
       ) {
         $event.preventDefault()
         return false
       }
       return true
     }
-  }
+}
 </script>
 
 <style scoped src='@/assets/css/cinput.css'>
