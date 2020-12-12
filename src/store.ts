@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Entity from "@/interfaces/Entity";
 
 Vue.use(Vuex)
 

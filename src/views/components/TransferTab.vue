@@ -381,7 +381,7 @@ export default class TransferTab extends Vue {
         const countAfterComma = getAfterCommaSigns(amountToSend)
         const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
 
-        // console.log("integerTransferAmount: ", integerTransferAmount);
+        // console.log('integerTransferAmount: ', integerTransferAmount)
 
         // WARNING here - the order of mul and div is IMPORTANT
         // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
@@ -390,7 +390,7 @@ export default class TransferTab extends Vue {
           .mul(ethers.BigNumber.from(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
           .div(ethers.BigNumber.from(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
 
-        // console.log("calculatedTransferValue", calculatedTransferValue);
+        // console.log('calculatedTransferValue', calculatedTransferValue)
 
         // random address just to estimate gas
         const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
@@ -400,7 +400,7 @@ export default class TransferTab extends Vue {
         const gasLimitBN = await contractInstance.estimateGas.transfer(receiver, calculatedTransferValue, { from: sender })
         gasLimit = gasLimitBN.toNumber()
 
-        console.log('fetched gas limit to be', gasLimit)
+        // console.log('fetched gas limit to be', gasLimit)
       }
 
       const gasPriceResponse = await axios.get(

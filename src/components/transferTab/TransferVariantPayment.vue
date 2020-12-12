@@ -82,24 +82,27 @@ export default class TransferVariantPayment extends Vue {
 
     @Watch('coinAmount')
     onChangeCoinAmount () {
-      this.updateFiatAmount()
+      // console.log('TransferVariantPayment-onChangeCoinAmount')
+      this.computeFiatAmount()
     }
 
     @Watch('exchangeRate')
-    onChangeRate () { this.updateFiatAmount() }
+    onChangeRate () { this.computeFiatAmount() }
 
     /** ------------------------------------------------------------------ **/
 
     @Emit('change')
     public changeFiatAmount (value: number) {
+      // console.log('TransferVariantPayment-changeFiatAmount', value)
       return value
     }
 
-    public updateFiatAmount () {
+    public computeFiatAmount () {
       if (this.$store.getters.typingActive !== 'fiat') {
         const amount = this.coinAmount * this.exchangeRate
         this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
       }
+      // console.log('TransferVariantPayment-computeFiatAmount', this.$store.getters.typingActive, this.amount)
     }
 
     public changePayment () {

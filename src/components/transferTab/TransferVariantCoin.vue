@@ -50,43 +50,45 @@ export default class TransferVariantCoin extends Vue {
 
     @Watch('coin')
     onChangeCoin () {
-      console.log('TransferVariantCoin-onChangeCoin', this.coin)
+      // console.log('TransferVariantCoin-onChangeCoin', this.coin)
       this.$store.commit('setCoin', this.coin)
     }
 
     @Watch('fiatAmount')
     onChangeFiatAmount () {
-      this.updateCoinAmount()
+      // console.log('TransferVariantCoin-onChangeFiatAmount', this.fiatAmount)
+      this.computeCoinAmount()
     }
 
     @Watch('exchangeRate')
     onChangeRate () {
-      this.updateCoinAmount()
+      this.computeCoinAmount()
     }
 
-        @Watch('coinList')
+    @Watch('coinList')
     onUpdateCoinList () {
-      console.log('coinList', this.coinList)
+      // console.log('coinList', this.coinList)
       if (this.coinList) {
         this.coin = this.coinList[0]
       }
     }
 
-        /** ----------------------------------------------------------------- **/
+    /** ----------------------------------------------------------------- **/
 
     @Emit('change')
-        public changeCoinAmount (value: number) {
-          // console.log("changeCoinAmount", this.$store.getters.typingActive, value, this.amount)
-          return value
-        }
+    public changeCoinAmount (value: number) {
+      // console.log('TransferVariantCoin-changeCoinAmount', this.$store.getters.typingActive, value, this.amount)
+      return value
+    }
 
     /** ----------------------------------------------------------------- **/
 
-    public updateCoinAmount () {
+    public computeCoinAmount () {
       if (this.$store.getters.typingActive !== 'coin') {
         const amount = this.fiatAmount / this.exchangeRate
         this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
       }
+      // console.log('TransferVariantCoin-computeCoinAmount', this.$store.getters.typingActive, this.amount)
     }
 }
 </script>
