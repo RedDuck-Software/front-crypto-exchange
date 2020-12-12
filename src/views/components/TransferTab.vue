@@ -167,12 +167,12 @@ export default class TransferTab extends Vue {
     }
 
     get isLimitExceed () {
-      console.log('TransferTab-isLimitExceed')
-      let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
-      coinFee = +toMaxPrecisions('' + coinFee, this.maxCoinPrecisions)
-
       if (!this.account) return false
       if (!this.currentCoin) return false
+
+      // console.log('TransferTab-isLimitExceed')
+      let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
+      coinFee = +toMaxPrecisions('' + coinFee, this.maxCoinPrecisions)
 
       const userEthAmount = this.ethBalance
       const gasInEthAmount =
