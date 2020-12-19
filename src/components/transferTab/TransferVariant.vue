@@ -1,6 +1,6 @@
 <template>
   <div
-    class="converter__from hover:cursor-pointer"
+    class="custom-bg converter__from hover:cursor-pointer"
     :class="{ light: light, border: light, light__field_bg: light}"
   >
     <div class="w-full">
@@ -30,5 +30,3 @@ export default class TransferVariant extends Vue {
     }
 }
 </script>
-
-<style scoped src="@/assets/css/transferTab.css"></style>

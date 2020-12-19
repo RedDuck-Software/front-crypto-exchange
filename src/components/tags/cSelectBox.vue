@@ -32,6 +32,18 @@
       />
 
       <div
+        class="text-white sm:ml-0 md:ml-3 d-flex align-items-center"
+        v-if="validEmail"
+      >
+        <p class="email" :class="currentClass">{{ validEmail }}</p>
+        <img
+          src="@/assets/img/icons/accept.png"
+          alt="Done!"
+          class="valid_email_tick"
+        />
+      </div>
+
+      <div
         v-if="balance != undefined"
         class="ml-3 text-xs crypto__val"
         :class="currentClass"
@@ -183,6 +195,7 @@ export default class CSelectBox extends Vue {
 
     public open = false
     public step = 1
+    public validEmail = ''
 
     /* --------------------------------------------------------------------- */
     /* --------------------------------------------------------------------- */
@@ -242,6 +255,7 @@ export default class CSelectBox extends Vue {
         this.emailError = 'Invalid Email'
         return ''
       }
+      this.validEmail = this.email
       this.open = false
       this.$store.commit('setDesEmail', this.email)
     }
