@@ -41,7 +41,7 @@ export default class MetamaskService {
 
     const fee = map.find(i => amount < i[0])
 
-    console.log('found fee:', fee)
+    // console.log('found fee:', fee)
 
     // eslint-disable-next-line eqeqeq
     if (fee == undefined) {

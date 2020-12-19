@@ -100,7 +100,7 @@ export default class CHeader extends Vue {
     }
 
     get selectedFiat () {
-      console.log('selectedFiat', this.$store.getters.fiat)
+      // console.log('selectedFiat', this.$store.getters.fiat)
       return this.$store.getters.fiat
     }
 

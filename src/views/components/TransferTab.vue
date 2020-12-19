@@ -173,6 +173,7 @@ export default class TransferTab extends Vue {
       // console.log('TransferTab-isLimitExceed')
       let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
       coinFee = +toMaxPrecisions('' + coinFee, this.maxCoinPrecisions)
+      console.log('coinFee', coinFee)
 
       const userEthAmount = this.ethBalance
       const gasInEthAmount =
@@ -180,9 +181,13 @@ export default class TransferTab extends Vue {
         1_000_000_000 /
         1_000_000_000
 
+      console.log('gasInEthAmount', gasInEthAmount)
+      console.log('userEthAmount', userEthAmount)
+
       if (userEthAmount < gasInEthAmount) return true
 
-      let summedPrice = this.coinAmount + +coinFee
+      let summedPrice = +this.coinAmount + +coinFee
+      console.log('summedPrice', summedPrice)
       if (this.currentCoin.value === 'eth') {
         summedPrice += gasInEthAmount
       }
@@ -375,12 +380,16 @@ export default class TransferTab extends Vue {
         const serviceFeePercent = MetamaskService.getFeesPercent(
           this.coinAmount * this.exchangeRate
         )
-        const amountToSend = '' + (this.coinAmount + this.coinAmount * serviceFeePercent)
+        const amountToSend = '' + (+this.coinAmount + +this.coinAmount * serviceFeePercent)
+        // console.log('serviceFeePercent', serviceFeePercent)
+        // console.log('amountToSend', amountToSend)
 
         // web3 library does not understand decimals
         const countAfterComma = getAfterCommaSigns(amountToSend)
         const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
 
+        // console.log('tokenDecimals: ', tokenDecimals)
+        // console.log('countAfterComma: ', countAfterComma)
         // console.log('integerTransferAmount: ', integerTransferAmount)
 
         // WARNING here - the order of mul and div is IMPORTANT
@@ -394,10 +403,12 @@ export default class TransferTab extends Vue {
 
         // random address just to estimate gas
         const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
-        const sender = provider.getSigner().getAddress()
+        const sender = await provider.getSigner().getAddress()
 
+        // console.log('sender', sender)
         // using the promise
-        const gasLimitBN = await contractInstance.estimateGas.transfer(receiver, calculatedTransferValue, { from: sender })
+        const gasLimitBN = await contractInstance.estimateGas.transfer(receiver,
+          calculatedTransferValue, { from: sender })
         gasLimit = gasLimitBN.toNumber()
 
         // console.log('fetched gas limit to be', gasLimit)
@@ -414,7 +425,7 @@ export default class TransferTab extends Vue {
         mediumGasPrice: med
       }
 
-      // console.log("gasinfo:", gasInfo);
+      // console.log('gasinfo:', gasInfo)
 
       this.estimatedGas = gasInfo
     }
@@ -423,7 +434,7 @@ export default class TransferTab extends Vue {
       const tokenContract = new ethers.Contract(
         contractAddress,
         erc20TokenContractAbi,
-        provider
+        provider.getSigner()
       )
 
       return tokenContract
