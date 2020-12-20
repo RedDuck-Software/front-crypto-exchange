@@ -1,6 +1,6 @@
 <template>
   <main :class="{ light: light}" class="main">
-    <preloader>
+    <preloader />
 
     <CHeader/>
 
