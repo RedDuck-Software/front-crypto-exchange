@@ -122,7 +122,7 @@ export default class MetamaskService {
     const divAmount = bn10.pow(bnDecimals)
     balance = balance.div(divAmount)
 
-    console.log('fetched balance:', balance.toString(), balance.toNumber())
+    // console.log('fetched balance:', balance.toString(), balance.toNumber())
 
     return balance.toNumber()
   }
