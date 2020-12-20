@@ -1,6 +1,7 @@
 <template>
   <main :class="{ light: light}" class="main">
     <preloader />
+    <PortalTarget name="modals" />
 
     <CHeader/>
 

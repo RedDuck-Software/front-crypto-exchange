@@ -31,7 +31,17 @@
 
         <buttons-row
           v-model="account"
+          :coin-amount="coinAmount"
           :transfer-now-disabled="transferNowDisabled"
+          @send="sendMoney"
+        />
+
+        <transfer-modal
+          :error="transferError"
+          :loading="isTransferModalProcessing"
+          :visible="transferModalVisible"
+          :txID="txID"
+          @close="transferModalVisible = false"
         />
 
         <custom-info-row />
@@ -73,14 +83,14 @@ import PrivateKeyModal from '@/components/modals/PrivateKeyModal.vue'
 import GasRow from '@/components/transferTab/GasRow.vue'
 import CustomInfoRow from '@/components/transferTab/CustomInfoRow.vue'
 import ButtonsRow from '@/components/transferTab/ButtonsRow.vue'
+import TransferModal from '@/components/modals/TransferModal.vue'
+
 import * as signalR from '@microsoft/signalr'
 import axios from 'axios'
 import Entity from '@/interfaces/Entity'
 import CommonSelectBox from '@/interfaces/CommonSelectBox'
 import MetamaskService from '@/MetamaskService'
-// eslint-disable-next-line no-unused-vars
 import { getAfterCommaSigns, rounded, toMaxPrecisions } from '@/utils/utils'
-// eslint-disable-next-line no-unused-vars
 import { erc20TokenContractAbi } from '@/constants'
 import { ethers } from 'ethers'
 import Web3 from 'web3'
@@ -96,6 +106,7 @@ const provider = new ethers.providers.Web3Provider(web3.currentProvider)
   @Component({
     name: 'TransferTab',
     components: {
+      TransferModal,
       ButtonsRow,
       CustomInfoRow,
       GasRow,
@@ -134,6 +145,11 @@ export default class TransferTab extends Vue {
     public balance = 0;
     public ethBalance = 0;
     public account = '';
+
+    public transferError = ''
+    public txID = ''
+    public isTransferModalProcessing = false
+    public transferModalVisible = false
 
     /** ------------------------------------------------------- **/
     /** ------------------------------------------------------- **/
@@ -202,6 +218,13 @@ export default class TransferTab extends Vue {
         this.isLimitExceed ||
         !this.payment || !this.desEmail
       )
+    }
+
+    get amountToSend () {
+      const serviceFeePercent = MetamaskService.getFeesPercent(
+        this.coinAmount * this.exchangeRate
+      )
+      return '' + (+this.coinAmount + +this.coinAmount * serviceFeePercent)
     }
 
     /** ------------------------------------------------------- **/
@@ -339,16 +362,6 @@ export default class TransferTab extends Vue {
           contractAddress: '0xf6fe970533fe5c63d196139b14522eb2956f8621' // TENJ
         }))
       }
-
-      // this.$store.commit('setCoin', this.coinList[0])
-      /*      if (this.connection) {
-        console.log('SUBSCRIBE')
-        await this.connection.invoke(
-          'Subscribe',
-          this.coinList[0].id,
-          this.currentFiat.id
-        )
-      } */
     }
 
     public updateEstimatedGas () {
@@ -359,7 +372,7 @@ export default class TransferTab extends Vue {
       this.getGasIntervalID = setInterval(this.getGas, 30000)
     }
 
-    /** -----------------------------Get Gas---------------------------- **/
+    /** -------------------------Get Gas------------------------- **/
 
     public async getGas ()/*: Promise<GasInfo> */ {
       let gasLimit = 21000
@@ -373,39 +386,14 @@ export default class TransferTab extends Vue {
       }
 
       if (coin.value.toLowerCase() !== 'eth') {
+        const amountToSend = this.amountToSend
         const contractInstance = await this.getContractInstance(coin.contractAddress)
-        const decimals = await contractInstance.decimals()
-        const tokenDecimals = ethers.BigNumber.from(decimals)
-
-        const serviceFeePercent = MetamaskService.getFeesPercent(
-          this.coinAmount * this.exchangeRate
-        )
-        const amountToSend = '' + (+this.coinAmount + +this.coinAmount * serviceFeePercent)
-        // console.log('serviceFeePercent', serviceFeePercent)
-        // console.log('amountToSend', amountToSend)
-
-        // web3 library does not understand decimals
-        const countAfterComma = getAfterCommaSigns(amountToSend)
-        const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
-
-        // console.log('tokenDecimals: ', tokenDecimals)
-        // console.log('countAfterComma: ', countAfterComma)
-        // console.log('integerTransferAmount: ', integerTransferAmount)
-
-        // WARNING here - the order of mul and div is IMPORTANT
-        // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
-        // warning please be thriple careful before messing up with this code.
-        const calculatedTransferValue = ethers.BigNumber.from(integerTransferAmount)
-          .mul(ethers.BigNumber.from(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
-          .div(ethers.BigNumber.from(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
-
-        // console.log('calculatedTransferValue', calculatedTransferValue)
+        const calculatedTransferValue = this.getTransferValue(contractInstance, amountToSend)
 
         // random address just to estimate gas
         const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
         const sender = await provider.getSigner().getAddress()
 
-        // console.log('sender', sender)
         // using the promise
         const gasLimitBN = await contractInstance.estimateGas.transfer(receiver,
           calculatedTransferValue, { from: sender })
@@ -425,8 +413,6 @@ export default class TransferTab extends Vue {
         mediumGasPrice: med
       }
 
-      // console.log('gasinfo:', gasInfo)
-
       this.estimatedGas = gasInfo
     }
 
@@ -440,7 +426,96 @@ export default class TransferTab extends Vue {
       return tokenContract
     }
 
-  /** ---------------------------------------------------------- **/
+    public async getTransferValue (contractInstance: ethers.Contract, amountToSend: string) {
+      const decimals = await contractInstance.decimals()
+      const tokenDecimals = ethers.BigNumber.from(decimals)
+
+      const countAfterComma = getAfterCommaSigns(amountToSend)
+      const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
+
+      // WARNING here - the order of mul and div is IMPORTANT
+      // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
+      // warning please be thriple careful before messing up with this code.
+      const calculatedTransferValue = ethers.BigNumber.from(integerTransferAmount)
+        .mul(ethers.BigNumber.from(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
+        .div(ethers.BigNumber.from(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
+
+      return calculatedTransferValue
+    }
+
+    /** ---------------------------------------------------------- **/
+
+    public async sendMoney () {
+      // TODO unchecked
+      console.log('sendMoney CALLED')
+      const response = await axios.post(`${baseURL}/prepare-transfer`, {
+        email: this.desEmail,
+        currency: this.currentFiat,
+        cryptocurrency: this.currentCoin,
+        destination: this.payment
+      })
+
+      // eslint-disable-next-line no-undef
+      const provider = new ethers.providers.Web3Provider(web3.currentProvider)
+      const receiver = response.data
+      const coin = this.currentCoin
+
+      // set values to strings because that's all web3 understands
+      const gasPrice = '' + this.estimatedGas.mediumGasPrice
+      const gasLimit = '' + this.estimatedGas.gasLimit
+      let amountToSend = this.amountToSend
+
+      if (coin.value.toLowerCase() === 'eth') {
+        // console.log("setting gas to: ", gasLimit);
+        // console.log("setting gasPrice to:", gasPrice);
+        // console.log("truncating precision to WEI because it's eth - 18");
+
+        amountToSend = (+amountToSend).toFixed(18)
+        // console.log("new amount to send: ", amountToSend);
+
+        await provider.getSigner().sendTransaction(
+          {
+            to: receiver,
+            nonce: 0,
+            gasLimit: gasLimit,
+            gasPrice: gasPrice,
+            data: '0x',
+            value: ethers.utils.parseEther(amountToSend),
+            chainId: 3 // TODO check this code
+          }
+        ).then((res) => {
+          console.log('response', res)
+          this.txID = res.raw || ''
+          console.log('TxID:', this.txID)
+          this.isTransferModalProcessing = false
+        }).catch(err => {
+          if (err) {
+            this.transferError = 'Transfer cancelled'
+          }
+        }).finally(() => {
+          // TODO this.updateCoinAmount('0')
+        })
+      } else {
+        const contractInstance = await this.getContractInstance(coin.contractAddress)
+        const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
+        // console.log("calculatedTransferValue", calculatedTransferValue);
+
+        const transaction = {
+          to: receiver,
+          value: ethers.utils.parseEther(calculatedTransferValue.toNumber().toString()),
+          gasLimit: gasLimit,
+          gasPrice: gasPrice
+        }
+
+        const sendTransactionPromise = contractInstance.signer.sendTransaction(transaction)
+        sendTransactionPromise.then(function (transactionHash) {
+          console.log(transactionHash)
+        }).catch((e) => {
+          this.transferError = 'Transfer cancelled'
+          this.isTransferModalProcessing = false
+        })
+      }
+    }
 }
 
 </script>

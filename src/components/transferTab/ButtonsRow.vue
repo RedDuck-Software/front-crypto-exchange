@@ -58,7 +58,10 @@ export default class ButtonsRow extends Vue {
       return this.Account
     }
 
-    public send () {}
+    @Emit('send')
+    public send () {
+      return true
+    }
 }
 </script>
 
