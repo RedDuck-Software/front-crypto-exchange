@@ -67,39 +67,38 @@
 </template>
 
 <script lang="ts">
-  import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-  import { Portal } from 'portal-vue';
-  import CModal from "@/components/tags/cModal.vue";
-  import BaseModal from "@/components/BaseModal";
-  import CButton from "@/components/tags/cButton.vue";
+import { Component, Prop } from 'vue-property-decorator'
+import { Portal } from 'portal-vue'
+import CModal from '@/components/tags/cModal.vue'
+import BaseModal from '@/components/BaseModal'
+import CButton from '@/components/tags/cButton.vue'
 
   @Component({
     name: 'TransferModal',
-    components: {CButton, CModal, Portal }
+    components: { CButton, CModal, Portal }
   })
 
-  export default class TransferModal extends BaseModal {
-
-    @Prop({required: true})
+export default class TransferModal extends BaseModal {
+    @Prop({ required: true })
     public readonly loading!: boolean;
 
-    @Prop({required: true})
+    @Prop({ required: true })
     public readonly error!: string;
 
-    @Prop({required: true})
+    @Prop({ required: true })
     public readonly txID!: string;
 
-    get link() {
-      let isDev = process.env.NODE_ENV == 'development';
+    get link () {
+      const isDev = process.env.NODE_ENV === 'development'
 
       if (isDev) {
         // we use kovan network for development
-        return `https://kovan.etherscan.io/tx/${this.txID}`;
+        return `https://kovan.etherscan.io/tx/${this.txID}`
       } else {
         return `https://etherscan.io/tx/${this.txID}`
       }
     }
-  }
+}
 </script>
 
 <style scope>
