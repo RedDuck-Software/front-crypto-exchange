@@ -82,6 +82,7 @@ export default class CInput extends Vue {
 
     public onChangeAmount () {
       // console.log('CInput-onChangeAmount', this.amount)
+      this.amount = +this.amount
       this.$store.commit('setInputActive', this.variant)
       this.$emit('change', this.amount)
     }
