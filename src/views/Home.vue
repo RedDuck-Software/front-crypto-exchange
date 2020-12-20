@@ -1,5 +1,7 @@
 <template>
   <main :class="{ light: light}" class="main">
+    <preloader>
+
     <CHeader/>
 
     <CBodyTop></CBodyTop>
@@ -16,12 +18,14 @@ import CFooter from '@/views/components/CacoFooter.vue'
 import CHeader from '@/views/components/CacoHeader.vue'
 import CBodyTop from '@/views/components/CacoBodyTop.vue'
 import CBodyBottom from '@/views/components/CacoBodyBottom.vue'
+import Preloader from '@/components/Preloader.vue'
 
 // const baseURL = 'https://api-cash4crypto.azurewebsites.net/api'
 
   @Component({
     name: 'Home',
     components: {
+      Preloader,
       CBodyBottom,
       CBodyTop,
       CFooter,
