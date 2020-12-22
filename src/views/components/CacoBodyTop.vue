@@ -1,9 +1,6 @@
 <template>
   <div class="container">
-    <div
-      v-if="activeTab === 'transfer'"
-      class="converter__wrap-text"
-    >
+    <div class="converter__wrap-text">
       <h1
         class="converter__title primary-title text-center"
         :class="{ light__font_one: light }"
@@ -29,10 +26,7 @@
 
     <!-- On click on btn Donate replace title -->
     <!-- ------------------------------------ -->
-    <div
-      v-else
-      class="donate__wrap-text d-none"
-    >
+    <div class="donate__wrap-text d-none">
       <h1
         class="donate__title text-center"
         :class="{ light__font_one: light }"

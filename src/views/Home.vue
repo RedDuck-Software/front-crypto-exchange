@@ -1,16 +1,13 @@
 <template>
-  <main :class="{ light: light}" class="main">
-    <preloader />
-    <PortalTarget name="modals" />
-
+  <div class="main">
     <CHeader/>
 
-    <CBodyTop></CBodyTop>
+    <CBodyTop/>
 
-    <CBodyBottom></CBodyBottom>
+    <CBodyBottom/>
 
     <CFooter/>
-  </main>
+  </div>
 </template>
 
 <script lang="ts">
