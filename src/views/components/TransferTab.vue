@@ -233,7 +233,8 @@ export default class TransferTab extends Vue {
     async onChangeCoin (nVal: any, oVal: any) {
       // console.log('TransferTab-onChangeCoin', nVal, oVal)
       if (this.connection) {
-        if (oVal.id) {
+        if (oVal.id && this.currentFiat.id) {
+          console.log('TransferTab-onChangeCoin unsubscribe', oVal, this.currentFiat)
           await this.connection.invoke(
             'Unsubscribe',
             oVal.id,
@@ -261,18 +262,21 @@ export default class TransferTab extends Vue {
     @Watch('$store.getters.fiat', { immediate: true, deep: true })
     async onChangeFiat (nVal: any, oVal: any) {
       // console.log('TransferTab-onChangeFiat', nVal, oVal)
-      if (this.connection && oVal) {
-        await this.connection.invoke(
-          'Unsubscribe',
-          this.currentCoin.id,
-          oVal.id
-        )
+      if (this.connection) {
+        if (oVal.id && this.currentCoin.id) {
+          // console.log('TransferTab-onChangeFiat unsubscribe', oVal.id, this.currentCoin.id)
+          await this.connection.invoke(
+            'Unsubscribe',
+            this.currentCoin.id,
+            oVal.id
+          )
 
-        await this.connection.invoke(
-          'Subscribe',
-          this.currentCoin.id,
-          nVal.id
-        )
+          await this.connection.invoke(
+            'Subscribe',
+            this.currentCoin.id,
+            nVal.id
+          )
+        }
       }
 
       await this.updateEstimatedGas()
@@ -340,6 +344,7 @@ export default class TransferTab extends Vue {
     public async loadFiatList () {
       const response = await axios.get(`${baseURL}/supported-tokens/currencies`)
       this.$store.commit('setFiatList', response.data)
+      this.$store.commit('setFiat', response.data[0])
     }
 
     public async loadCoinList () {
@@ -446,15 +451,20 @@ export default class TransferTab extends Vue {
     /** ---------------------------------------------------------- **/
 
     public async sendMoney () {
+      this.transferError = ''
+      this.isTransferModalProcessing = true
+      this.transferModalVisible = true
+
       // TODO unchecked
       console.log('sendMoney CALLED')
       const response = await axios.post(`${baseURL}/prepare-transfer`, {
         email: this.desEmail,
-        currency: this.currentFiat,
-        cryptocurrency: this.currentCoin,
-        destination: this.payment
+        currency: this.currentFiat.id,
+        cryptocurrency: this.currentCoin.id,
+        destination: this.payment.id
       })
 
+      console.log('after prepare-transfer')
       // eslint-disable-next-line no-undef
       const provider = new ethers.providers.Web3Provider(web3.currentProvider)
       const receiver = response.data
@@ -473,6 +483,7 @@ export default class TransferTab extends Vue {
         amountToSend = (+amountToSend).toFixed(18)
         // console.log("new amount to send: ", amountToSend);
 
+        console.log('eth before sendTransaction, amountToSend: ', amountToSend)
         await provider.getSigner().sendTransaction(
           {
             to: receiver,
@@ -498,22 +509,26 @@ export default class TransferTab extends Vue {
       } else {
         const contractInstance = await this.getContractInstance(coin.contractAddress)
         const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
-        // console.log("calculatedTransferValue", calculatedTransferValue);
+        console.log('calculatedTransferValue', calculatedTransferValue)
 
         const transaction = {
           to: receiver,
-          value: ethers.utils.parseEther(calculatedTransferValue.toNumber().toString()),
+          value: ethers.utils.parseEther(calculatedTransferValue.toString()),
           gasLimit: gasLimit,
           gasPrice: gasPrice
         }
-
-        const sendTransactionPromise = contractInstance.signer.sendTransaction(transaction)
-        sendTransactionPromise.then(function (transactionHash) {
-          console.log(transactionHash)
-        }).catch((e) => {
-          this.transferError = 'Transfer cancelled'
-          this.isTransferModalProcessing = false
-        })
+        console.log('before sendTransaction, amountToSend: ', amountToSend)
+        await contractInstance.signer.sendTransaction(transaction)
+          .then((res) => {
+            console.log('response', res)
+            this.txID = res.raw || ''
+            console.log('TxID:', this.txID)
+          }).catch((e) => {
+            this.transferError = 'Transfer cancelled'
+            this.isTransferModalProcessing = false
+          }).finally(() => {
+            console.log('finally')
+          })
       }
     }
 }

@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     theme: 'dark',
-    fiat: { id: 0, name: 'USD' },
+    fiat: {},
     coin: {},
     activeTab: 'transfer',
     typingActive: '',
