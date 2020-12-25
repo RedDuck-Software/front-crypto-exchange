@@ -1,4 +1,4 @@
-.video {
+  .video {
     width: 11rem;
     margin-top: 4rem;
     height: 3.3rem;
@@ -6,21 +6,21 @@
     border: 1px solid #fff;
     transition: .3s ease-in-out;
   }
-  
+
   .video:hover {
     box-shadow: 0 0 9px rgba(0 0 0 1) inset;
     border: 1px solid rgba(253 44 99 .6);
   }
-  
+
   .video:hover i {
     color: rgba(253 44 99 .6);
   }
-  
+
   .video__play {
     margin: .25rem .8rem 0.3rem .5rem;
     cursor: pointer;
   }
-  
+
   .video__play i {
     color: #fff;
     padding: .5rem .5rem .5rem .65rem;
@@ -28,13 +28,13 @@
     border: 2px solid #fff;
     transition: .3s ease-in-out;
   }
-  
+
   @media only screen and (max-width: 767px) {
     .video {
       height: 2.3rem;
       margin-top: 3rem;
     }
-  
+
     .video__play i {
       padding: .35rem .3rem .25rem .4rem;
       font-size: .8em;
@@ -43,4 +43,3 @@
       margin: .25rem 1.1rem 0.3rem .4rem;
     }
   }
-  

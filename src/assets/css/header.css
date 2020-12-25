@@ -1,5 +1,17 @@
 header {
+  min-height: 150px;
+  max-width: 100%;
+  width: 100%;
+}
+
+header {
   grid-area: header;
+}
+
+@media screen and (max-width: 767px) {
+  header {
+    min-height: 6rem;
+  }
 }
 
 .header__wrap {
@@ -50,26 +62,26 @@ header {
   transition: none;
 }
 
-.toggling_icons {
+  .toggling_icons {
     transform: rotate(-7deg);
     transition: 0.3s ease-in-out;
   }
-  
+
   .toggling_icons:hover {
     cursor: pointer;
     transform: scale(1.1);
   }
-  
+
   .fa-moon {
     color: #fd2c63;
     font-size: 1.1em;
     transition: 0.3s ease-in-out;
   }
-  
+
   .sun-icon {
     transition: 0.3s ease-in-out;
   }
-  
+
   .header__currency {
     width: 76px;
     height: 27px;
@@ -78,7 +90,7 @@ header {
     border-radius: 14px;
     opacity: 0.9;
   }
-  
+
   .active-eur,
   .active-ukr,
   .active-usd {
@@ -94,7 +106,7 @@ header {
     text-align: end;
     margin-top: 0.5rem;
   }
-  
+
   .currency-active {
     padding: 0.315rem 0.625rem;
     margin-top: 0;
@@ -106,16 +118,16 @@ header {
     border: none;
     background: none;
   }
-  
+
   .currency-active:hover {
     box-shadow: none;
   }
-  
+
   .currency-active:focus {
     outline: none;
     background: none;
   }
-  
+
   .currency-active i {
     padding-left: 10px;
   }
@@ -136,7 +148,7 @@ header {
       max-width: 1.4rem;
     }
   }
-  
+
   @media screen and (max-width: 767px) {
     .header__logo {
       width: 5rem;
@@ -144,10 +156,6 @@ header {
 
     .header__light {
       margin: 1.5rem .6rem 0 auto;
-    }
-
-    .currencyButton {
-      padding: .35rem 1.65rem .3rem;
     }
 
     .currencyButton .fa-arrow-down {

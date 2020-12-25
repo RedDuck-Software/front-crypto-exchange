@@ -364,11 +364,11 @@ export default class TransferTab extends Vue {
       }
     }
 
-    public updateEstimatedGas () {
+    public async updateEstimatedGas () {
       if (this.getGasIntervalID) {
         clearInterval(this.getGasIntervalID)
       }
-      this.getGas()
+      await this.getGas()
       this.getGasIntervalID = setInterval(this.getGas, 30000)
     }
 
