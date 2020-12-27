@@ -94,3 +94,8 @@
 .arrowLightMode {
     background-color: #fff;
 }
+
+.classLightMode {
+    background-color: #dbdbdb !important;
+    color: #fff !important;
+}

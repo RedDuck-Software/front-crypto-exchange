@@ -1,0 +1,528 @@
+/* ------- COINS-MENU POPPUP */
+/* -------------------------- */
+
+.coins-menu::-webkit-scrollbar {
+    width: 5px;
+}
+
+.coins-menu::-webkit-scrollbar-track {
+    margin-left: .75rem;
+    background: none;
+}
+
+.coins-menu::-webkit-scrollbar-thumb {
+    padding-right: .625rem;
+    height: 10%;
+    background: #EBEBEB;
+    border-radius: 6px;
+}
+
+.coins-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 126, 126, .5);
+    transition: .3s ease-in-out;
+}
+
+/* poppup payment wallet */
+
+.to-coins-container {
+    top: 8.125rem;
+}
+
+.to-coins-container .coins-menu {
+    margin-top: 1.25rem;
+    height: 90%;
+}
+
+.to-coins-container .coins-item {
+    height: 25%;
+}
+
+/*----------- wallets */
+
+.converter__payment-var {
+    position: absolute;
+    /*top: -7.68rem;*/
+    left: 0;
+    width: 796px;
+    /*height: 150px;*/
+    background: #fff;
+    border-radius: 50px 50px 50px 0;
+    border: none;
+    z-index: -1;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+    .converter__payment-var {
+        flex-direction: column;
+        width: 100%;
+        height: 25.75rem;
+        top: -23.7rem;
+        border-radius: 50px 50px 0 0;
+    }
+  }
+
+  @media screen and (min-width: 450px) {
+    .converter__payment-var {
+        border-radius: 50px 50px 50px 0;
+    }
+  }
+
+.wallet__variant {
+    position: relative;
+    width: 25%;
+    height: 100%;
+    transition: .3s ease-in-out;
+}
+
+    @media screen and (min-width: 320px) and (max-width: 1100px) {
+        .wallet__variant {
+            width: 100%;
+            height: 25%;
+        }
+    }
+
+.wallet__variant:hover {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0), -23px 0 19px -23px rgba(0, 0, 0, .8), 25px 0 16px -27px rgba(0, 0, 0, .8), 0 0 42px rgba(0, 0, 0, 0) inset;
+    border: none;
+}
+
+.wallet-2, .wallet-3 {
+    text-transform: uppercase;
+}
+
+.wallet-1 {
+    background: url(../../assets/img/logos/ledger.png)no-repeat center center;
+}
+
+.wallet-2 {
+    background: url(../../assets/img/logos/trezor.png)no-repeat center center;
+}
+
+.wallet-3 {
+    background: url(../../assets/img/logos/metamask.png)no-repeat center center;
+}
+
+.wallet-4 {
+    padding-top: 3.7rem;
+    font: 400 1.43em "Lato", sans-serif;
+    color: #fd2c63;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+    .wallet-4 {
+        padding-top: .9rem;
+    }
+}
+
+.payment-var-back {
+    position: absolute;
+    top: .93rem;
+    left: 2.5rem;
+    color: #fd2c63;
+    font: 300 1.06em 'Lato', sans-serif;
+    text-decoration: underline;
+    border: none;
+}
+
+.payment-var-back:hover {
+
+}
+
+/* private key */
+
+.private-key {
+    position: absolute;
+    top: 2.18rem;
+    left: 0;
+    width: 49.81rem;
+    height: 21.56rem;
+    border-radius: 22px;
+    background: #ffffff;
+    z-index: 1;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+    .private-key {
+        top: -7rem;
+        left: 0;
+        width: 100%;
+        height: 25.7rem;
+    }
+}
+
+.private-key__wrapper {
+    width: 95%;
+    margin: 2.18rem auto 0;
+}
+
+.private-key__title {
+    position: relative;
+    margin: 2.18rem auto;
+    color: #474747;
+    font: 400 1.37em "CircularStd-Medium", sans-serif;
+}
+
+    @media screen and (min-width: 320px) and (max-width: 1100px)  {
+        .private-key__title {
+            margin: 3.125rem auto;
+        }
+    }
+
+.private-key__title::before {
+    content: "";
+    position: absolute;
+    display: block;
+    background: url(../../assets/img/icons/key.png)no-repeat center top;
+    top: 0;
+    right: 6rem;
+    left: -4rem;
+    margin: 0 auto;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+    @media screen and (min-width: 320px) and (max-width: 1100px)  {
+        .private-key__wrapper .border-grey {
+            padding: .9rem 0 .9rem 1.25rem;
+            margin: 0 auto;
+            width: 100%;
+            border-radius: 86px;
+            border: 20px solid #B9B9B9;
+        }
+    }
+
+.private-key__enter {}
+
+.private-key__enter::placeholder {
+    color: #c0c0c0;
+    font: 400 1.25em "Lato";
+}
+
+.private-key__import {
+    display: block;
+    margin: 2.81rem 0 1.25rem auto;
+    width: 205px;
+    height: 52px;
+    background: #FD2C63;
+    font-size: 1.18rem;
+    font-weight: 400;
+    color: #fff;
+    border-radius: 26px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+   .private-key__import {
+        margin: 2.5rem auto 7.18rem;
+    }
+}
+
+/* payment wallet email address */
+
+.converter__input-email {
+    position: absolute;
+    top: 8.125rem;
+    left: 2.5rem;
+    height: 236px;
+    width: 248px;
+    border-radius: 22px;
+    background: #ffffff;
+    z-index: 2000;
+}
+
+.input-email__wrapper {
+    margin: 1.56rem auto;
+    width: 90%;
+    height: 90%;
+}
+
+.input-email__wrapper label {
+    margin: 1.875rem auto 2.18rem;
+    display: block;
+    font: 400 .875em "Lato", sans-serif;
+    color: #9f9f9f;
+}
+
+.converter__selected-wallet {
+    height: 25%;
+}
+
+#input-email__enter {
+    width: 100%;
+    padding: 0 0 .625rem .18rem;
+    border: none;
+    border-bottom: .5px solid #979797;
+}
+
+#input-email__enter:focus {
+    outline: none;
+}
+
+#input-email__enter::placeholder {
+    font-weight: 400;
+    font-size: .875em;
+    font-family: "Lato", sans-serif;
+    color: #5a5a5a;
+}
+
+.input-email__btn {
+    display: block;
+    width: 80px;
+    height: 34px;
+    border-radius: 17px;
+    background: #fd2c63;
+    font-size: .81em;
+    color: #ffffff;
+}
+
+/* -------- wallet-complete */
+
+.converter__wallet-complete {
+    position: absolute;
+    top: 1.5rem;
+    left: 0;
+    width: 18rem;
+    height: 150px;
+    background: #fff;
+    border-radius: 0 0 50px 50px;
+    z-index: -1;
+}
+
+@media screen and (min-width: 320px) and (max-width: 1100px) {
+    .converter__wallet-complete {
+        top: 1.5rem;
+        width: 100%;
+        height: 95px;
+        border-radius: 0 0 50px 50px;
+        z-index: -1;
+    }
+}
+
+@media screen and (min-width: 450px) and (max-width: 1100px) {
+    .converter__wallet-complete {
+        width: 49%;
+    }
+}
+@media screen and (min-width: 1100px) and (max-width: 1400px) {
+    .converter__wallet-complete {
+
+    }
+}
+
+.wallet__select {
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.wallet__select .wallet__variant {
+    width: 100%;
+    height: 160px;
+}
+
+.wallet__select .wallet-1:hover {
+    box-shadow: none;
+}
+
+/* ----------------PROCESSING
+
+.processing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0, .5);
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+.processing__wrap {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 16vh auto;
+    /*width: 788px;*/
+    /*height: 456px;*/
+/*    background: #fff;*/
+/*    border-radius: 17px;*/
+/*}*/
+
+.processing__cycle {
+        width: 76px;
+        height: 76px;
+}
+
+.processing__text {
+    margin-top: 30px;
+    font-family: "Lato-Medium", sans-serif;
+    font-weight: 700;
+    font-size: 38px;
+    color: #5a5a5a;
+}
+
+.processing__cycle i {
+    animation: 1s linear 0s normal none infinite running processing__cycle;
+    -webkit-animation: 1s linear 0s normal none infinite running processing__cycle;
+    font-size: 76px;
+    color: #EC2F61;
+  }
+  @keyframes processing__cycle {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes processing__cycle {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  /* ------------ transfer complete */
+
+.transfer-complete {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0, .5);
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+}
+
+.complete__wrap {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*width: 788px;*/
+    /*height: 456px;*/
+    background: #fff;
+    border-radius: 17px;
+}
+
+.complete__img {
+
+}
+
+.text-gray-custom {
+    color: #5a5a5a;
+}
+
+.complete__wrap .complete__btn {
+    margin: 0 auto 85px;
+}
+
+/* notified window */
+
+.notified {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0, .5);
+    top: 0;
+    left: 0;
+}
+
+.notified__wrapp{
+    margin: 200px auto 0;
+    width: 788px;
+    height: 456px;
+    border-radius: 17px;
+    background: #ffffff;
+}
+
+.notified__title {
+    padding: 65px 0 40px;
+    margin: 0 auto;
+    width: 480px;
+    color: #7f7f7f;
+    font-family: Lato;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+.notified__input-wrapp {
+    position: relative;
+}
+
+.input__icon {
+    position: absolute;
+    top: 70px;
+    left: 110px;
+    height: auto;
+    width: auto;
+    z-index: 1;
+}
+
+.notified__email {
+    position: relative;
+    height: 70px;
+    text-indent: 70px;
+}
+
+.notified__email::placeholder {
+    color: #c0c0c0;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+/* THANKS WINDOW */
+
+.thanks {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0, .5);
+    top: 0;
+    left: 0;
+}
+.thanks__wrapp {
+    margin: 200px auto 0;
+    width: 788px;
+    height: 456px;
+    border-radius: 17px;
+    background: #ffffff;
+}
+
+.thanks__img {
+    display: block;
+    width: 104px;
+    height: 104px;
+    padding: 55px 0 10px;
+    margin: 0 auto;
+}
+
+.thanks__title {
+    color: #5a5a5a;
+    font-family: Lato;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 30px;
+}
+
+.thanks__note {
+    color: #fd2c63;
+    font-family: Lato;
+    font-size: 23px;
+    font-weight: 700;
+    margin: 40px auto 5px;
+}
+
+.thanks__text {
+    width: 95%;
+    color: #7f7f7f;
+    font-family: Lato;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    margin: 0 auto;
+}
+
+.thanks .thanks__btn {
+    margin-top: 65px;
+}

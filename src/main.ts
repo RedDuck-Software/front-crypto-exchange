@@ -21,6 +21,7 @@ import './assets/css/transferTab.css'
 import './assets/css/donateTab.css'
 import './assets/css/text.css'
 import './assets/css/video.css'
+import './assets/css/poppups.css'
 // @ts-ignore
 import PortalVue from 'portal-vue'
 // import axios from 'axios'
