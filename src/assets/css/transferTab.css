@@ -387,12 +387,6 @@
     margin-top: 5px;
   }
 
-  .form__wrapper {
-    position: relative;
-    margin: 1.25rem auto 0;
-    width: 49.75rem;
-  }
-
   /* custom row */
 
   .customInfoRow {
@@ -752,4 +746,10 @@
     .form__wrapper {
       width: 77%;
     }
+  }
+
+  .form__wrapper {
+    position: relative;
+    margin: 1.25rem auto 0;
+    width: 49.75rem;
   }
