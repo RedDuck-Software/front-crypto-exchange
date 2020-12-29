@@ -276,7 +276,41 @@
   /* ----------- gas ------------ */
 
   .gas__row {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .gas__col {
     margin-right: 3.15rem;
+    display: flex;
+  }
+
+  @media screen and (min-width: 1100px) {
+    .gas__col {
+      margin-right: 3.65rem;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .gas__row {
+      justify-content: none;
+    }
+
+    .gas__col {
+      justify-content: flex-end;
+      margin-right: .9rem;
+    }
+
+    .converter__title {
+      width: 100%;
+      margin: 0 auto;
+      font-size: calc(3.5vw + .3em) !important;
+    }
+
+    .gas__item__label {
+      margin-top: 2px;
+    }
   }
 
   .gas__poppup {
@@ -294,6 +328,13 @@
     border-radius: 6px;
     visibility: hidden;
     z-index: 1;
+  }
+
+  @media screen and (max-width: 767px) {
+    .gas__poppup {
+      top: -1.1rem;
+      width: 7.8rem;
+    }
   }
 
   .gas__text {
@@ -482,16 +523,6 @@
 
   /* ---------------------------- */
   /* ----- media queries ------- */
-
-  @media screen and (max-width: 767px) {
-    .gas__row {
-      margin: -1.8rem 0 1.1rem;
-    }
-
-    .gas__item__label {
-      margin-top: 2px;
-    }
-  }
 
   @media (min-width: 768px) {
     .text-margin {
@@ -693,17 +724,7 @@
       font-size: calc(2.4vw - .5vw);
     }
   }
-@media screen and (min-width: 1100px) {
-    .gas__row {
-      margin-right: 3.65rem;
-    }
-  }
-@media screen and (max-width: 767px) {
-    .gas__poppup {
-      top: -1.1rem;
-      width: 7.8rem;
-    }
-  }
+
 @media screen and (max-width: 767px) {
     .gas__button__col {
       margin-right: .1rem;

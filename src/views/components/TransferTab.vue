@@ -19,6 +19,7 @@
           :coin-amount="coinAmount"
           :exchange-rate="exchangeRate"
           :is-limit-exceed="isLimitExceed"
+          class="mb-3"
         />
 
         <!-- PRIVATE KEY FIELD -->
