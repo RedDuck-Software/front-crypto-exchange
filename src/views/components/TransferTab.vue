@@ -335,7 +335,7 @@ export default class TransferTab extends Vue {
         .build()
 
       this.connectionHeartBeat.on('heartbeat', (heartbeat) => {
-        this.transferable = heartbeat
+        this.transferable = true // TODO set this value to "heartbeat"
         // console.log('heartbeat', this.transferable, heartbeat)
       })
 
@@ -472,8 +472,8 @@ export default class TransferTab extends Vue {
       const coin = this.currentCoin
 
       // set values to strings because that's all web3 understands
-      const gasPrice = '' + this.estimatedGas.mediumGasPrice
-      const gasLimit = '' + this.estimatedGas.gasLimit
+      const gasPrice = ethers.utils.hexlify(ethers.BigNumber.from('' + this.estimatedGas.mediumGasPrice))
+      const gasLimit = ethers.utils.hexlify(ethers.BigNumber.from('' + this.estimatedGas.gasLimit))
       let amountToSend = this.amountToSend
 
       if (coin.value.toLowerCase() === 'eth') {
@@ -492,7 +492,7 @@ export default class TransferTab extends Vue {
             gasLimit: gasLimit,
             gasPrice: gasPrice,
             data: '0x',
-            value: ethers.utils.parseEther(amountToSend),
+            value: amountToSend,
             chainId: 3 // TODO check this code
           }
         ).then((res) => {
@@ -510,11 +510,11 @@ export default class TransferTab extends Vue {
       } else {
         const contractInstance = await this.getContractInstance(coin.contractAddress)
         const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
-        console.log('calculatedTransferValue', calculatedTransferValue)
+        // console.log('calculatedTransferValue', calculatedTransferValue)
 
         const transaction = {
           to: receiver,
-          value: ethers.utils.parseEther(calculatedTransferValue.toString()),
+          value: calculatedTransferValue,
           gasLimit: gasLimit,
           gasPrice: gasPrice
         }
@@ -525,6 +525,7 @@ export default class TransferTab extends Vue {
             this.txID = res.raw || ''
             console.log('TxID:', this.txID)
           }).catch((e) => {
+            console.log('error', e)
             this.transferError = 'Transfer cancelled'
             this.isTransferModalProcessing = false
           }).finally(() => {
