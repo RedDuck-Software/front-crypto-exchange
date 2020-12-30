@@ -51,7 +51,7 @@ export default class CInput extends Vue {
     @Prop() maxPrecisions!: number
     @Prop() variant!: string
 
-    public amount = 0
+    public amount = ''
 
     /** ---------------------------------- GET ---------------------------------------- **/
 
@@ -67,7 +67,7 @@ export default class CInput extends Vue {
       if (!this.limit) return ''
       const min = this.limit[0]
       const max = this.limit[1]
-      return (this.amount < min || this.amount > max) ? 'validation-result-money' : ''
+      return (+this.amount < min || +this.amount > max) ? 'validation-result-money' : ''
     }
 
     /** ---------------------------------- Watch --------------------------------------- **/
@@ -75,16 +75,16 @@ export default class CInput extends Vue {
     @Watch('vModel')
     onChangeOutside (newVal: number) {
       // console.log('CInput-onChangeOutside', this.$store.getters.typingActive, this.variant)
-      if (this.$store.getters.typingActive !== this.variant) this.amount = newVal
+      if (this.$store.getters.typingActive !== this.variant) this.amount = '' + newVal
     }
 
     /** ------------------------------------------------------------------------------ **/
 
     public onChangeAmount () {
       // console.log('CInput-onChangeAmount', this.amount)
-      this.amount = +this.amount
+      const amount = +this.amount
       this.$store.commit('setInputActive', this.variant)
-      this.$emit('change', this.amount)
+      this.$emit('change', amount)
     }
 
     public checkInput ($event: KeyboardEvent) {
@@ -134,8 +134,8 @@ export default class CInput extends Vue {
         // console.log('CInput-checkLimit-true')
         return true
       }
-      if ((this.amount < this.limit[0] ||
-        this.amount > this.limit[1]) &&
+      if ((+this.amount < this.limit[0] ||
+        +this.amount > this.limit[1]) &&
         char !== 'Backspace' && char !== 'Delete'
       ) {
         $event.preventDefault()
