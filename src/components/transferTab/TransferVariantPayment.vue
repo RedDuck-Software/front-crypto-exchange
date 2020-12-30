@@ -49,7 +49,7 @@ export default class TransferVariantPayment extends Vue {
     @Model('change') fiatAmount!: number
     @Prop() coinAmount!: number
     @Prop() isLimitExceed!: number;
-    @Prop({ default: 1 }) exchangeRate!: number
+    @Prop() exchangeRate!: number
     public maxPrecisions = 2
     public payment = {} as CommonSelectBox
     public amount = 0

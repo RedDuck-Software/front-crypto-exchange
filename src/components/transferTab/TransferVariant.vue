@@ -23,7 +23,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
   })
 
 export default class TransferVariant extends Vue {
-    @Prop({ default: 1 }) exchangeRate!: number
+    @Prop() exchangeRate!: number
 
     get light () {
       return this.$store.getters.theme === 'light'

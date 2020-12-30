@@ -37,7 +37,7 @@ export default class TransferVariantCoin extends Vue {
     @Model('change') coinAmount!: number
     @Prop() fiatAmount!: number
     @Prop() balance!: number
-    @Prop({ default: 1 }) exchangeRate!: number
+    @Prop() exchangeRate!: number
     @Prop() coinList!: (CommonSelectBox & { contractAddress: string })[]
     public amount = 0
     public coin = {} as CommonSelectBox & { contractAddress: string }
@@ -85,8 +85,12 @@ export default class TransferVariantCoin extends Vue {
 
     public computeCoinAmount () {
       if (this.$store.getters.typingActive !== 'coin') {
-        const amount = this.fiatAmount / this.exchangeRate
-        this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
+        if (this.exchangeRate) {
+          const amount = this.fiatAmount / this.exchangeRate
+          this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
+        } else {
+          this.amount = 0
+        }
       }
       // console.log('TransferVariantCoin-computeCoinAmount', this.$store.getters.typingActive, this.amount)
     }
