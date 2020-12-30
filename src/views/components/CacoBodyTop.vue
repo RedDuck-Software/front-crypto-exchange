@@ -78,7 +78,7 @@ export default class CBodyTop extends Vue {
   }
 
   get light () {
-    return this.$store.getters.theme == 'light'
+    return this.$store.getters.theme === 'light'
   }
 
   get transferStyle () {
