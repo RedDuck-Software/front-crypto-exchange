@@ -161,6 +161,14 @@ body {
   padding-right: 1.5rem!important;
 }
 
+.pl-5, .px-5 {
+  padding-left: 3rem!important;
+}
+
+.pr-5, .px-5 {
+  padding-right: 3rem!important;
+}
+
 .m-4 {
   margin: 1.5rem!important;
 }

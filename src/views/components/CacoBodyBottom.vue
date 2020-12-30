@@ -1,9 +1,11 @@
 <template>
-  <div class="container">
-    <transfer-tab v-if="activeTab === 'transfer'" />
+  <section class="converter">
+    <div class="container">
+      <transfer-tab v-if="activeTab === 'transfer'" />
 
-    <donate-tab v-else />
-  </div>
+      <donate-tab v-else />
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
