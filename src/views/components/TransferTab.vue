@@ -123,7 +123,7 @@ const provider = new ethers.providers.Web3Provider(web3.currentProvider)
 export default class TransferTab extends Vue {
     public coinAmount = 0
     public fiatAmount = 0
-    public exchangeRate = 1.023
+    public exchangeRate = 0
     public transferable = true
     public privateKeyModalVisible = false
     public connection: signalR.HubConnection | null = null
@@ -190,7 +190,7 @@ export default class TransferTab extends Vue {
       // console.log('TransferTab-isLimitExceed')
       let coinFee = this.exchangeRate ? this.serviceFees / this.exchangeRate : 0
       coinFee = +toMaxPrecisions('' + coinFee, this.maxCoinPrecisions)
-      console.log('coinFee', coinFee)
+      // console.log('coinFee', coinFee)
 
       const userEthAmount = this.ethBalance
       const gasInEthAmount =
@@ -198,8 +198,8 @@ export default class TransferTab extends Vue {
         1_000_000_000 /
         1_000_000_000
 
-      console.log('gasInEthAmount', gasInEthAmount)
-      console.log('userEthAmount', userEthAmount)
+      // console.log('gasInEthAmount', gasInEthAmount)
+      // console.log('userEthAmount', userEthAmount)
 
       if (userEthAmount < gasInEthAmount) return true
 
@@ -308,8 +308,8 @@ export default class TransferTab extends Vue {
 
       this.connection.on('NewExchangeRate', (data) => {
         if (
-          this.$store.getters.coinType === data.cryptocurrency &&
-          this.$store.getters.fiatType.value === data.currency
+          this.$store.getters.coin.id === data.cryptocurrency &&
+          this.$store.getters.fiat.id === data.currency
         ) {
           this.exchangeRate = +data.amount
           if (this.exchangeRate <= 1) {
