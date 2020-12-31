@@ -198,8 +198,8 @@ export default class TransferTab extends Vue {
         1_000_000_000 /
         1_000_000_000
 
-      // console.log('gasInEthAmount', gasInEthAmount)
-      // console.log('userEthAmount', userEthAmount)
+      console.log('gasInEthAmount', gasInEthAmount)
+      console.log('userEthAmount', userEthAmount)
 
       if (userEthAmount < gasInEthAmount) return true
 
@@ -212,10 +212,17 @@ export default class TransferTab extends Vue {
     }
 
     get transferNowDisabled () {
+      // console.log('transferNowDisabled')
+      // console.log('!account', !this.account)
+      // console.log('fiatAmount', this.fiatAmount, this.fiatAmount && this.fiatAmount > 200)
+      // console.log('coinAmount', this.coinAmount, !this.coinAmount || this.coinAmount <= 0)
+      // console.log('isLimitExccess', this.isLimitExceed)
+      // console.log('payment', !this.payment)
+      // console.log('desEmail', this.desEmail)
       return (
         !this.account ||
-        (this.fiatAmount && this.fiatAmount > 200) ||
-        !this.coinAmount || this.coinAmount <= 0 ||
+        (!this.fiatAmount || this.fiatAmount <= 0 || this.fiatAmount > 200) ||
+        (!this.coinAmount || this.coinAmount <= 0) ||
         this.isLimitExceed ||
         !this.payment || !this.desEmail
       )
@@ -452,6 +459,8 @@ export default class TransferTab extends Vue {
     /** ---------------------------------------------------------- **/
 
     public async sendMoney () {
+      await this.getGas()
+
       this.transferError = ''
       this.isTransferModalProcessing = true
       this.transferModalVisible = true
@@ -464,8 +473,8 @@ export default class TransferTab extends Vue {
         cryptocurrency: this.currentCoin.id,
         destination: this.payment.id
       })
+      console.log('response', response)
 
-      console.log('after prepare-transfer')
       // eslint-disable-next-line no-undef
       const provider = new ethers.providers.Web3Provider(web3.currentProvider)
       const receiver = response.data
@@ -518,7 +527,7 @@ export default class TransferTab extends Vue {
           gasLimit: gasLimit,
           gasPrice: gasPrice
         }
-        console.log('before sendTransaction, amountToSend: ', amountToSend)
+        console.log('before sendTransaction, amountToSend: ', calculatedTransferValue)
         await contractInstance.signer.sendTransaction(transaction)
           .then((res) => {
             console.log('response', res)

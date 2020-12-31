@@ -98,9 +98,10 @@ export default class TransferVariantPayment extends Vue {
     }
 
     public computeFiatAmount () {
-      if (this.$store.getters.typingActive !== 'fiat') {
+      if (this.$store.getters.typingActive === 'coin') {
         const amount = this.coinAmount * this.exchangeRate
         this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
+        this.changeFiatAmount(this.amount)
       }
       // console.log('TransferVariantPayment-computeFiatAmount', this.$store.getters.typingActive, this.amount)
     }

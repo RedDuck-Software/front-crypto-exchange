@@ -84,13 +84,14 @@ export default class TransferVariantCoin extends Vue {
     /** ----------------------------------------------------------------- **/
 
     public computeCoinAmount () {
-      if (this.$store.getters.typingActive !== 'coin') {
+      if (this.$store.getters.typingActive === 'fiat') {
         if (this.exchangeRate) {
           const amount = this.fiatAmount / this.exchangeRate
           this.amount = +toMaxPrecisions(amount + '', this.maxPrecisions)
         } else {
           this.amount = 0
         }
+        this.changeCoinAmount(this.amount)
       }
       // console.log('TransferVariantCoin-computeCoinAmount', this.$store.getters.typingActive, this.amount)
     }
