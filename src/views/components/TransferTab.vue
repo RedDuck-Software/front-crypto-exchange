@@ -230,6 +230,9 @@ export default class TransferTab extends Vue {
     }
 
     get amountToSend () {
+      if (!this.coinAmount || !this.exchangeRate) {
+        return ''
+      }
       const serviceFeePercent = MetamaskService.getFeesPercent(
         this.coinAmount * this.exchangeRate
       )
@@ -484,9 +487,7 @@ export default class TransferTab extends Vue {
 
         const transaction = {
           to: receiver,
-          value: ethers.utils.parseEther(amountToSend),
-          gasLimit: gasLimit,
-          gasPrice: gasPrice
+          value: ethers.utils.parseEther(amountToSend)
         }
         await provider.getSigner().sendTransaction(transaction)
           .then((res) => {
@@ -497,6 +498,8 @@ export default class TransferTab extends Vue {
             this.transferError = 'Transfer cancelled'
           }).finally(() => {
             this.isTransferModalProcessing = false
+            this.coinAmount = 0
+            this.$store.commit('setInputActive', 'coin')
           })
       } else {
         const contractInstance = await this.getContractInstance(coin.contractAddress)
@@ -519,6 +522,8 @@ export default class TransferTab extends Vue {
             this.transferError = 'Transfer cancelled'
           }).finally(() => {
             this.isTransferModalProcessing = false
+            this.coinAmount = 0
+            this.$store.commit('setInputActive', 'coin')
           })
       }
     }
