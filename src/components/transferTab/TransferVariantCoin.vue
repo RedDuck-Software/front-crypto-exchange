@@ -42,7 +42,7 @@ export default class TransferVariantCoin extends Vue {
     public amount = 0
     public coin = {} as CommonSelectBox & { contractAddress: string }
     public value = '0';
-    public maxPrecisions = 3
+    public maxPrecisions = 5
 
     /** ----------------------------------------------------------------- **/
 

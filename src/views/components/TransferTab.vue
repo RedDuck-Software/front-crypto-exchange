@@ -207,6 +207,7 @@ export default class TransferTab extends Vue {
       console.log('summedPrice', summedPrice)
       if (this.currentCoin.value === 'eth') {
         summedPrice += gasInEthAmount
+        console.log('summedPrice', summedPrice)
       }
       return summedPrice > this.balance
     }
@@ -459,13 +460,16 @@ export default class TransferTab extends Vue {
     /** ---------------------------------------------------------- **/
 
     public async sendMoney () {
+      if (Number.isNaN(+this.coinAmount)) {
+        return
+      }
+
       await this.getGas()
 
       this.transferError = ''
       this.isTransferModalProcessing = true
       this.transferModalVisible = true
 
-      // TODO unchecked
       console.log('sendMoney CALLED')
       const response = await axios.post(`${baseURL}/prepare-transfer`, {
         email: this.desEmail,
@@ -494,51 +498,44 @@ export default class TransferTab extends Vue {
         // console.log("new amount to send: ", amountToSend);
 
         console.log('eth before sendTransaction, amountToSend: ', amountToSend)
-        await provider.getSigner().sendTransaction(
-          {
-            to: receiver,
-            nonce: 0,
-            gasLimit: gasLimit,
-            gasPrice: gasPrice,
-            data: '0x',
-            value: amountToSend,
-            chainId: 3 // TODO check this code
-          }
-        ).then((res) => {
-          console.log('response', res)
-          this.txID = res.raw || ''
-          console.log('TxID:', this.txID)
-          this.isTransferModalProcessing = false
-        }).catch(err => {
-          if (err) {
-            this.transferError = 'Transfer cancelled'
-          }
-        }).finally(() => {
-          // TODO this.updateCoinAmount('0')
-        })
-      } else {
-        const contractInstance = await this.getContractInstance(coin.contractAddress)
-        const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
-        // console.log('calculatedTransferValue', calculatedTransferValue)
 
         const transaction = {
           to: receiver,
-          value: calculatedTransferValue,
+          value: ethers.utils.parseEther(amountToSend),
           gasLimit: gasLimit,
           gasPrice: gasPrice
         }
-        console.log('before sendTransaction, amountToSend: ', calculatedTransferValue)
-        await contractInstance.signer.sendTransaction(transaction)
+        await provider.getSigner().sendTransaction(transaction)
           .then((res) => {
-            console.log('response', res)
-            this.txID = res.raw || ''
+            this.txID = res.hash || ''
             console.log('TxID:', this.txID)
           }).catch((e) => {
-            console.log('error', e)
+            console.error(e)
             this.transferError = 'Transfer cancelled'
-            this.isTransferModalProcessing = false
           }).finally(() => {
-            console.log('finally')
+            this.isTransferModalProcessing = false
+          })
+      } else {
+        const contractInstance = await this.getContractInstance(coin.contractAddress)
+        const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
+        // console.log('calculatedTransferValue', calculatedTransferValue, amountToSend)
+
+        await contractInstance.functions.transfer(
+          receiver,
+          calculatedTransferValue,
+          {
+            gasLimit: gasLimit,
+            gasPrice: gasPrice
+          })
+          .then(res => {
+            console.log('tx hash', res.hash)
+            this.txID = res.hash || ''
+          })
+          .catch(err => {
+            console.error(err)
+            this.transferError = 'Transfer cancelled'
+          }).finally(() => {
+            this.isTransferModalProcessing = false
           })
       }
     }
