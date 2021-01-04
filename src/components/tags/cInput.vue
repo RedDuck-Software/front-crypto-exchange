@@ -18,7 +18,7 @@
       :class="[limitValidation, currentClass, currentPlaceholder]"
       placeholder="0"
       class="mr-2 text-xl from__input text-right"
-      v-autowidth="{maxWidth: '210px', minWidth: 'auto', comfortZone: 0}"
+      v-autowidth="{maxWidth: '210px', minWidth: '20px', comfortZone: 0}"
     />
 
     <slot

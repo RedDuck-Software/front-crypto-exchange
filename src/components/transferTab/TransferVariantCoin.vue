@@ -12,6 +12,7 @@
       <c-input
         v-model="amount"
         :max-precisions="maxPrecisions"
+        :limit="[0, 1000]"
         variant="coin"
         @change="changeCoinAmount(value = $event)"
       />

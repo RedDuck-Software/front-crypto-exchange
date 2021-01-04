@@ -91,7 +91,7 @@ import axios from 'axios'
 import Entity from '@/interfaces/Entity'
 import CommonSelectBox from '@/interfaces/CommonSelectBox'
 import MetamaskService from '@/MetamaskService'
-import { getAfterCommaSigns, rounded, toMaxPrecisions } from '@/utils/utils'
+import { calculateTransferValue, rounded, toMaxPrecisions } from '@/utils/utils'
 import { erc20TokenContractAbi } from '@/constants'
 import { ethers } from 'ethers'
 import Web3 from 'web3'
@@ -198,8 +198,8 @@ export default class TransferTab extends Vue {
         1_000_000_000 /
         1_000_000_000
 
-      console.log('gasInEthAmount', gasInEthAmount)
-      console.log('userEthAmount', userEthAmount)
+      // console.log('gasInEthAmount', gasInEthAmount)
+      // console.log('userEthAmount', userEthAmount)
 
       if (userEthAmount < gasInEthAmount) return true
 
@@ -402,7 +402,7 @@ export default class TransferTab extends Vue {
       if (coin.value.toLowerCase() !== 'eth') {
         const amountToSend = this.amountToSend
         const contractInstance = await this.getContractInstance(coin.contractAddress)
-        const calculatedTransferValue = this.getTransferValue(contractInstance, amountToSend)
+        const calculatedTransferValue = calculateTransferValue(contractInstance, amountToSend)
 
         // random address just to estimate gas
         const receiver = '0xF231C3443c2725E534c828B1e42e71c16875d0f3' // TBD - replace with our address - estimate how crucial it is
@@ -438,23 +438,6 @@ export default class TransferTab extends Vue {
       )
 
       return tokenContract
-    }
-
-    public async getTransferValue (contractInstance: ethers.Contract, amountToSend: string) {
-      const decimals = await contractInstance.decimals()
-      const tokenDecimals = ethers.BigNumber.from(decimals)
-
-      const countAfterComma = getAfterCommaSigns(amountToSend)
-      const integerTransferAmount = '' + Math.floor(+amountToSend * (10 ** countAfterComma))
-
-      // WARNING here - the order of mul and div is IMPORTANT
-      // WARNING here - it's important for it to be 10 ** countAfterComma since countAfterComma here is a number not a BN.
-      // warning please be thriple careful before messing up with this code.
-      const calculatedTransferValue = ethers.BigNumber.from(integerTransferAmount)
-        .mul(ethers.BigNumber.from(10).pow(tokenDecimals)) // multiply by ERC20 token decimals
-        .div(ethers.BigNumber.from(10 ** countAfterComma)) // return the actual amount (we multiplied it earlier to get rid of decimal)
-
-      return calculatedTransferValue
     }
 
     /** ---------------------------------------------------------- **/
@@ -517,7 +500,7 @@ export default class TransferTab extends Vue {
           })
       } else {
         const contractInstance = await this.getContractInstance(coin.contractAddress)
-        const calculatedTransferValue = await this.getTransferValue(contractInstance, amountToSend)
+        const calculatedTransferValue = await calculateTransferValue(contractInstance, amountToSend)
         // console.log('calculatedTransferValue', calculatedTransferValue, amountToSend)
 
         await contractInstance.functions.transfer(
