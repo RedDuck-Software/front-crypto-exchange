@@ -346,7 +346,7 @@ export default class TransferTab extends Vue {
         .build()
 
       this.connectionHeartBeat.on('heartbeat', (heartbeat) => {
-        this.transferable = true // TODO set this value to "heartbeat"
+        this.transferable = heartbeat
         // console.log('heartbeat', this.transferable, heartbeat)
       })
 
