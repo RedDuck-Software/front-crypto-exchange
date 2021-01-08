@@ -346,7 +346,7 @@ export default class TransferTab extends Vue {
         .build()
 
       this.connectionHeartBeat.on('heartbeat', (heartbeat) => {
-        this.transferable = heartbeat
+        this.transferable = true // TODO set back to heartbeat
         // console.log('heartbeat', this.transferable, heartbeat)
       })
 
@@ -466,7 +466,6 @@ export default class TransferTab extends Vue {
       console.log('response', response)
 
       // eslint-disable-next-line no-undef
-      const provider = new ethers.providers.Web3Provider(web3.currentProvider)
       const receiver = response.data
       const coin = this.currentCoin
 

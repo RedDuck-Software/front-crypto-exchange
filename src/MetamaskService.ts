@@ -1,11 +1,9 @@
 import { erc20TokenContractAbi } from '@/constants'
 import CommonSelectbox from '@/interfaces/CommonSelectbox'
 import { ethers } from 'ethers'
+import Web3 from 'web3'
 
-// eslint-disable-next-line no-undef
-let provider: ethers.providers.Provider | import('@ethersproject/abstract-signer').Signer | undefined
-// @ts-ignore
-window.ethereum.enable().then(provider = new ethers.providers.Web3Provider(window.ethereum))
+const provider = new ethers.providers.Web3Provider(web3.currentProvider)
 
 export default class MetamaskService {
   public static getAmountPlusFee (amount: number) {
