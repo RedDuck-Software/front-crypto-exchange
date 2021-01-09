@@ -294,7 +294,7 @@
 
   @media screen and (max-width: 767px) {
     .gas__row {
-      justify-content: none;
+      justify-content: unset;
     }
 
     .gas__col {
@@ -621,7 +621,7 @@
     }
 
     .fa-euro-sign {
-      margin-right: -.5rem;
+      margin-right: .3rem;
     }
   }
 
