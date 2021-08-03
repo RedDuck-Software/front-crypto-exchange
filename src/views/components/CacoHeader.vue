@@ -9,7 +9,7 @@
         />
 
         <ca
-          :item="(darkTheme) ? headLogo.dark : headLogo.light"
+          :item="(dark) ? headLogo.dark : headLogo.light"
           class="header__logo-link p-8 z-50"
         />
 
@@ -17,88 +17,114 @@
           <div @click="switchTheme" class="toggling_icons">
             <img
               class="sun-icon"
-              v-if="darkTheme"
+              v-if="dark"
               src="@/assets/img/icons/sun-icon.svg"
               alt=""
             />
 
-            <i v-else class="far fa-moon"></i>
+            <i v-else class="far fa-moon" />
           </div>
         </div>
 
-        <select class="select-fiat">
-          <option
-            v-for="(item, i) in currencies"
-            :key="i"
-            :value="item.value"
+        <div
+          v-click-outside="hideSelect"
+          class="text-center text-xs hover:cursor-pointer relative mt-6 currencySelection"
+        >
+          <button
+            @click.prevent="open = !open"
+            :class="open ? 'button__open' : 'button__closed'"
+            class="bg-color text-white currencyButton"
           >
-            {{ item.text }}
-          </option>
-        </select>
+            <span>{{ selectedFiat.name }}</span>
+            <i class="fa fa-arrow-down" />
+          </button>
 
-<!--        <p-select
-          name="fiat"
-          v-model="fiat"
-          :options="currencies"
-        />-->
+          <div
+            v-show="open"
+            class="flex flex-col absolute bg-white text-gray b-shadow rounded-b-lg w-full"
+          >
+            <button
+              class="p-2 z-50 grey-color"
+              @click.stop="changeFiat(val)"
+              v-for="(val, key) in fiatList"
+              :key="key"
+            >
+              {{ val.name }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-  import {Component, Vue, Prop, Emit} from 'vue-property-decorator'
-  import Ca from "@/components/tags/ca.vue";
-
-  type Currency = { text: string; value: number };
+import { Component, Vue } from 'vue-property-decorator'
+import ClickOutside from 'vue-click-outside'
+import Ca from '@/components/tags/ca.vue'
+import Entity from '@/interfaces/Entity'
 
   @Component({
-    name: "CHeader",
-    components: {Ca}
+    name: 'CHeader',
+    components: { Ca },
+    directives: {
+      ClickOutside
+    }
   })
 
-  export default class CHeader extends Vue {
-    public darkTheme = true
-    public fiat = { text: "USD", value: 0 }
-
-/*    @Prop({ default: () => [] })
-    currencies!: Currency[];*/
-
-    public currencies = [
-      { text: "USD", value: 0 },
-      { text: "EUR", value: 1 },
-    ]
-
+export default class CHeader extends Vue {
+    public open = false
     public headLogo = {
       dark: {
-        href: "/",
+        href: '/',
         img: {
-          src: "logos/logoblack-2.svg",
-          alt: "Caco | cash 4 crypto",
-          classes: "header__logo"
+          src: 'logos/logoblack-2.svg',
+          alt: 'Caco | cash 4 crypto',
+          classes: 'header__logo'
         }
       },
       light: {
-        href: "/",
+        href: '/',
         img: {
-          src: "logos/caco-light-logo.svg",
-          alt: "Caco | cash 4 crypto",
-          classes: "header__logo light__logo"
+          src: 'logos/caco-light-logo.svg',
+          alt: 'Caco | cash 4 crypto',
+          classes: 'header__logo light__logo'
         }
       }
     }
 
-    @Emit('change-mode')
-    public switchTheme () {
-      this.darkTheme = !this.darkTheme
-      return this.darkTheme
+    /** ----------------------------------------------- **/
+
+    get dark () {
+      return this.$store.getters.theme === 'dark'
     }
-  }
+
+    get selectedFiat () {
+      // console.log('selectedFiat', this.$store.getters.fiat)
+      return this.$store.getters.fiat
+    }
+
+    get fiatList () {
+      return this.$store.getters.fiatList
+    }
+
+    /** ----------------------------------------------- **/
+
+    public switchTheme () {
+      const next = this.dark ? 'light' : 'dark'
+      this.$store.commit('SET_THEME', next)
+    }
+
+    public hideSelect () {
+      this.open = false
+    }
+
+    public changeFiat (item: Entity) {
+      this.open = false
+      this.$store.commit('setFiat', item)
+    }
+}
 
 </script>
 
-<style scoped>
-  .select-fiat {
-    /* TODO CSS: input style!!! */
-  }
-</style>
+<style scoped src="@/assets/css/header.css" />

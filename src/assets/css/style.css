@@ -1,31 +1,3 @@
-@font-face {
-  font-family: "CircularStd-Medium";
-  src: url("../fonts/circular/CircularStd-Book.woff"),
-    url("../fonts/circular/CircularStd-Book.woff2") format("woff2"),
-    url("../fonts/circular/CircularStd-Book.ttf") format("truetype");
-}
-
-@font-face {
-  font-family: "Lato", sans-serif;
-  src: url("../fonts/lato/latolight.ttf"),
-    url("../fonts/lato/latolight.woff2") format("woff2"),
-    url("../fonts/lato/latolight.woff") format("truetype");
-}
-
-@font-face {
-  font-family: "Lato-Medium", sans-serif;
-  src: url("../fonts/lato/latomedium.ttf"),
-    url("../fonts/lato/latomedium.woff2") format("woff2"),
-    url("../fonts/lato/latomedium.woff") format("truetype");
-}
-
-@font-face {
-  font-family: "Lato-Bold", sans-serif;
-  src: url("../fonts/lato/latobold.ttf"),
-    url("../fonts/lato/latobold.woff2") format("woff2"),
-    url("../fonts/lato/latobold.woff") format("truetype");
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -104,14 +76,11 @@ input:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-
 /* *********** */
+
 #app {
   background-color: #343639;
 }
-
-/* ------------------------------ */
-/* ****************************** */
 
 .main {
   height: 100%;
@@ -126,39 +95,92 @@ input:focus {
   padding: 0 1.2rem;
 }
 
-/* --------------------HEADER------------------------ */
-header {
-  grid-area: header;
+.d-flex {
+  display: flex;
 }
 
-.header__wrap {
-  justify-content: space-between;
+.d-none {
+  display: none !important;
 }
 
-.header__beta {
-  width: 2rem;
+.d-block {
+  display: block !important;
 }
 
-.header__logo {
-  height: 101%;
-  width: 5rem;
-  width: 8rem;
-  margin: 0 auto 0 0;
+.sm-margin {
+  margin-top: .3rem;
 }
 
-@media only screen and (min-width: 768px) {
-  .header__beta {
-    width: 2.5rem;
+.block-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+}
+
+.grey-color {
+  color: #585858;
+}
+
+body {
+  background: rgba(63, 67, 74, 1);
+}
+
+@media screen and (min-width: 768px) and (max-width: 900px) {
+  .width50 {
+    width: 50%;
   }
 }
 
-@media only screen and (max-width: 767px) {
-  .header__logo {
-    width: 5rem;
+@media screen and (min-width: 901px) {
+  .width50 {
+    width: 44%;
   }
 }
 
-.header__light {
-  margin: 1.65rem 1.6rem 0 auto;
-  font-size: 1.3em;
+@media screen and (min-width: 1023px) {
+  .width50 {
+    width: 37%;
+  }
+}
+
+.pb-3, .py-3 {
+  padding-bottom: 1rem!important;
+}
+
+.pt-3, .py-3 {
+  padding-top: 1rem!important;
+}
+
+.pl-4, .px-4 {
+  padding-left: 1.5rem!important;
+}
+
+.pb-4, .py-4 {
+  padding-bottom: 1.5rem!important;
+}
+
+.pr-4, .px-4 {
+  padding-right: 1.5rem!important;
+}
+
+.pl-5, .px-5 {
+  padding-left: 3rem!important;
+}
+
+.pr-5, .px-5 {
+  padding-right: 3rem!important;
+}
+
+.m-4 {
+  margin: 1.5rem!important;
+}
+
+.ml-auto, .mx-auto {
+  margin-left: auto!important;
+}
+
+.mr-auto, .mx-auto {
+  margin-right: auto!important;
+}
+
+.mb-3, .my-3 {
+  margin-bottom: 1rem!important;
 }

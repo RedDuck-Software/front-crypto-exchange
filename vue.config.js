@@ -19,6 +19,7 @@ module.exports = {
       })
   },
   configureWebpack: {
+    devtool: 'source-map',
     devServer: {
       watchOptions: {
         ignored: ['node_modules'],
@@ -27,5 +28,10 @@ module.exports = {
       },
       public: '192.168.56.132' // vagrant machine address
     }
+  },
+  css: {
+    sourceMap: true,
+    extract: false
   }
+  // productionSourceMap: true
 }

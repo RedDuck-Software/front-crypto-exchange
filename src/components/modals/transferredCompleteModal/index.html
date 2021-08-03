@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- font-awesome -->
+    <script src="https://kit.fontawesome.com/1cd7067188.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <section class="transfered">
+        <a href="https://www.cash4crypto.io" class="transfered__link-web">
+            <img src="./transfer-logo.svg" class="transfered__logo mx-auto" alt="caco cash 4 crypto">
+        </a>
+        <div class="transfered__wrapper mx-auto">
+            <div class="transfered__wrapper-small mx-auto">
+                <img src="./done.svg" class="transfered__done mx-auto"></img>
+                <p class="transfered__title text-center">You transfered
+                    <span class="transfered__value">$</span>
+                    <span class="transfered__amount">10.00</span>
+                    of
+                    <span class="transfered__currency uppercase">usdc</span>
+                    to
+                    <span class="transfered__system">Paypal</span>
+                </p>
+                <table class="transfered__code">
+                    <tr>
+                        <td>Reference code</td>
+                        <td class="code__reference uppercase">PWF8USWQ</td>
+                    </tr>
+                    <tr>
+                        <td>Payment method</td>
+                        <td>Caco</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>August 08, 2020</td>
+                    </tr>
+                    <tr>
+                        <td>Amount</td>
+                        <td>3.65947116 KNC</td>
+                    </tr>
+                    <tr>
+                        <td>Exchange rate</td>
+                        <td>@ 1.58811756 USDC / PAYPAL</td>
+                    </tr>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td>5.81167040 USDC</td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td>5.81167040 USDC</td>
+                    </tr>
+                </table>
+                <p class="transfered__support text-center">
+                    For customer service inquiries, please contact
+                    <a href="#" class="transfered__support-link">
+                        customer support.
+                    </a>
+                     Please include your reference code
+                     <span class="transfered__id">PWF8USWQ</span>.
+                </p>
+            </div>
+        </div>
+        <div class="transfered__terms mx-auto text-center">
+            <a href="#" class="terms__link text-center">Terms of Service</a>
+            <p class="terms__copyright text-center">© CACO 2020 </p>
+            <p class="terms__company text-center">CACO Pty Ltd.</p>
+            <p class="terms__location text-center">90 Sippydowns Drive | Sunshine Coast | Australia</p>
+        </div>
+    </section>
+    <style>
+        .transfered {
+            background-color: #343639;
+        }
+
+        .transfered__logo {
+            padding-top: 35px;
+        }
+
+        .transfered__wrapper {
+            width: 50%;
+            margin-top: 1.55rem;
+
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        .transfered__wrapper-small {
+            width: 85%;
+        }
+
+        .transfered__done {
+            padding: 2.85rem 0 3.3rem;
+        }
+
+        .transfered__title {
+            font-family: 'Lato-Bold', sans-serif;
+            font-size: 27px;
+            color: #5A5A5A;
+        }
+
+        .transfered__title::after {
+            content: '';
+            display: block;
+            width: 90%;
+            height: 1px;
+
+            margin: 2.9rem auto 2.85rem;
+
+            background-color: #979797;
+
+        }
+
+        .transfered__value {
+            margin: 0 -.6rem 0 -.1rem;
+        }
+
+        .transfered__amount {
+            margin-right: -.1rem;
+        }
+
+        .transfered__currency {
+            margin: 0 -.1rem 0;
+        }
+
+        .transfered__system {
+            margin: 0 -.1rem 0;
+        }
+
+        .transfered__code {
+            font: 500 17px 'Lato-Medium', sans-serif;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .transfered__code::after {
+            content: '';
+            display: block;
+            width: 200%;
+            height: 1px;
+
+            margin-top: 1.3rem;
+
+            background-color: #979797;
+        }
+
+        .transfered__code td {
+            width: 50%;
+            padding-bottom: 1.45rem;
+
+            color: #5A5A5A;
+        }
+
+        .code__reference {
+            padding-left: 1.5rem;
+        }
+
+        .transfered__support {
+            margin-top: 3rem;
+            padding-bottom: 3.2rem;
+
+            width: 86%;
+
+            font-family: 'Arial', sans-serif;
+            font-size: 13px;
+
+            color: #5A5A5A;
+        }
+
+        .transfered__support-link {
+            color: #FD2C63;
+        }
+
+        .transfered__terms {
+            margin-top: 1.4rem;
+            padding-bottom: 220px;
+
+            color: #fff;
+        }
+
+        .terms__copyright {
+            margin: -.3rem 0;
+        }
+
+        .terms__location {
+            margin-top: -.4rem;
+        }
+    </style>
+</body>
+</html>

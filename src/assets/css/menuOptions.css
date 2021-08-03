@@ -1,0 +1,115 @@
+.menu-options {
+    height: 3.875rem;
+    width: 49.75rem;
+    margin: 2.5rem auto 0.95rem;
+    border-radius: 32px;
+    background: #5e6062;
+  }
+  
+  @media screen and (min-width: 320px) and (max-width: 624px) {
+    .menu-options {
+      width: 100%;
+      height: 3.85rem;
+    }
+  }
+  
+  @media screen and (min-width: 625px) and (max-width: 1200px) {
+    .menu-options {
+      width: 75%;
+      margin-top: 1.5rem;
+    }
+  }
+
+  @media screen and (min-width: 900px) and (min-height: 950px) {
+    .menu-options {
+      margin-top: 2.5rem;
+    }
+  }
+  
+  .menu-option {
+    width: 50%;
+    font-family: "Lato", sans-serif;
+    color: #fff;
+    font-size: 1.43em;
+    font-weight: 400;
+    line-height: 1.125em;
+    margin: 0.317rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .menu-option span {
+    z-index: 2;
+    position: relative;
+  }
+  
+  .menu__transfer {
+    margin-right: 0;
+  }
+  
+  .menu__donate {
+    margin-left: 0;
+  }
+  
+  .menu-option::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 26px;
+    background: #fd2c63;
+    color: #fff;
+    -webkit-transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  .menu__transfer::before {
+    left: 100%;
+    right: auto;
+  }
+  
+  .menu__transfer.transferClass::before {
+    left: 0;
+    right: auto;
+  }
+  
+  .menu__donate::before {
+    right: 100%;
+    left: auto;
+  }
+  
+  .menu__donate.transferClass::before {
+    right: 0;
+    left: auto;
+    transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  
+  @media screen and (min-width: 320px) and (max-width: 1100px) {
+    .menu-option {
+      font-size: 1em;
+    }
+  }
+  
+  @media screen and (min-width: 750px) and (max-width: 1100px) {
+    .menu-option {
+      font-size: 1.2em;
+    }
+  }
+  
+  .option-active {
+    background: #fd2c63;
+    color: #fff;
+  }
+  
+  .option-active:hover {
+    box-shadow: none;
+    cursor: auto;
+  }
+  
+  @media screen and (min-width: 320px) {
+    .option-active {
+      width: 55%;
+    }
+  }

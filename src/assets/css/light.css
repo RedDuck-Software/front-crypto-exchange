@@ -1,3 +1,101 @@
-body {
+
+.dNone {
+    display: none;
+}
+
+.light {
+    background: #fff !important;
+}
+
+.light__font_one span {
+    color: #484848 !important;
+}
+
+.light__font_two span {
+    color: #585858 !important;
+}
+
+.light__font_three span {
+    color: #585858 !important;
+}
+
+.light__font_four span {
+    color: #a0a0a0 !important;
+}
+
+.light__font_six span {
+    color: #8a8a8a !important;
+}
+
+.light__font_one {
+    color: #484848 !important;
+}
+
+.light__font_two {
+    color: #585858 !important;
+}
+
+.light__font_three {
+    color: #585858 !important;
+}
+
+.light__bg_arrow{
+    background-color: #585858 !important;
+}
+
+.light__font_four {
+    color: #a0a0a0 !important;
+}
+
+.light__font_six {
+    color: #8a8a8a !important;
+}
+
+.light__bg {
+    background-color: #efefef !important;
+}
+
+@media screen and (max-width: 767px) {
+    .light__field_bg {
+        border: .93rem solid #ebebeb!important;
+        background-color: #ebebeb!important;
+    }
+}
+
+.border {
+    border: 30px solid #ebebeb !important;
+}
+
+@media screen and (max-width: 767px) {
+    .border {
+        border: .93rem solid #434548 !important;
+    }
+}
+
+.btn_border {
+    border: 1px solid #585858 !important;
+}
+
+.btn_border_radius {
+    border: 2px solid #585858 !important;
+    border-radius: 50%;
+}
+
+.lightMode, .lightPlaceholder::placeholder{
+    color: #585858 !important;
+}
+.darkMode, .darkPlaceholder::placeholder{
+    color: #fff;
+}
+
+.arrowDarkMode {
+    background-color: #585858 !important;
+}
+.arrowLightMode {
     background-color: #fff;
+}
+
+.classLightMode {
+    background-color: #dbdbdb !important;
+    color: #fff !important;
 }

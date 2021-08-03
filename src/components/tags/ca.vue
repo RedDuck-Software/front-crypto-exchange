@@ -30,29 +30,29 @@
 </template>
 
 <script lang="ts">
-  import {Vue, Prop, Component} from 'vue-property-decorator'
+import { Vue, Prop, Component } from 'vue-property-decorator'
 
   @Component({
-    name: "ca"
+    name: 'ca'
   })
 
-  export default class ca extends Vue {
-
+export default class ca extends Vue {
     @Prop({ default: true })
     public isDarkTheme!: boolean;
 
-    @Prop({ default: {
+    @Prop({
+      default: {
         href: '',
         text: '',
         icon: '',
         img: {
           src: '',
-          classes: '',
-        },
+          classes: ''
+        }
       }
     })
     public item!: Object;
-  }
+}
 </script>
 
 <style scoped>
